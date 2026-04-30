@@ -1,11 +1,20 @@
 {
   "version": 1,
   "skills": {
-    "migrate-to-vinext": {
-      "source": "cloudflare/vinext",
+    "accessibility": {
+      "source": "addyosmani/web-quality-skills",
       "sourceType": "github",
-      "skillPath": ".agents/skills/migrate-to-vinext/SKILL.md",
-      "computedHash": "660f2e78a96c76792fd8a74b0ce714c69a67fed95de8698df4b32186b3cec097"
+      "computedHash": "6462f04969f59f771150e6410e6a11fa397f2934be0b51e8650f495feed1e28d"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "gh-cli": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "cbe644b0c6760ae2a1eaafa39133920d889331327065d92a131675a665273e56"
     }
   }
 }
