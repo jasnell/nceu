@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nceu",
+  "compatibility_date": "2026-02-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "vinext/server/app-router-entry",
+  "assets": {
+    "not_found_handling": "none"
+  },
+  "account_id": "c90070fbe9f928f17c328c65fb3781ab"
+}
