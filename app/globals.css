@@ -1,3 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+  --paper: #ffffff;
+  --paper-deep: #f6fbf7;
+  --ink: #1e2933;
+  --muted: #485766;
+  --accent: #3c873a;
+  --accent-strong: #3c873a;
+  --accent-soft: #dff0da;
+  --border: rgba(30, 41, 51, 0.14);
+  --divider: rgba(30, 41, 51, 0.1);
+  --panel: rgba(255, 255, 255, 0.94);
+  --panel-strong: #20262e;
+  --shadow: 0 16px 40px rgba(30, 41, 51, 0.08);
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-elevated: rgba(255, 255, 255, 0.98);
+  --hero-surface-end: rgba(245, 250, 246, 0.98);
+  --footer-chip: rgba(246, 251, 247, 0.92);
+  --pulse-divider: rgba(255, 255, 255, 0.1);
+  --pulse-copy: rgba(223, 240, 218, 0.78);
+  --page-top: #ffffff;
+  --page-mid: #f7faf8;
+  --page-bottom: #f2f7f4;
+  --gridline: rgba(30, 41, 51, 0.018);
+  --display: 'IBM Plex Sans', sans-serif;
+  --serif: 'Instrument Serif', serif;
+  --body: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+
+  font-family: var(--body);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink);
+  background: #fff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root[data-theme='dark'] {
+  --paper: #0f1418;
+  --paper-deep: #e7efe9;
+  --ink: #e7efe9;
+  --muted: #afbdc5;
+  --accent: #8cd978;
+  --accent-strong: #74c365;
+  --accent-soft: rgba(116, 195, 101, 0.2);
+  --border: rgba(231, 239, 233, 0.14);
+  --divider: rgba(231, 239, 233, 0.12);
+  --panel: rgba(17, 23, 28, 0.92);
+  --panel-strong: #10161b;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  --surface: rgba(19, 26, 31, 0.92);
+  --surface-elevated: rgba(23, 31, 37, 0.98);
+  --hero-surface-end: rgba(18, 24, 29, 0.96);
+  --footer-chip: rgba(20, 28, 33, 0.96);
+  --pulse-divider: rgba(255, 255, 255, 0.08);
+  --pulse-copy: rgba(215, 234, 209, 0.76);
+  --page-top: #0c1115;
+  --page-mid: #10181c;
+  --page-bottom: #162027;
+  --gridline: rgba(255, 255, 255, 0.03);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+main,
+section[id] {
+  scroll-margin-top: 1.5rem;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(95, 160, 78, 0.08), transparent 20%),
+    radial-gradient(circle at 82% 6%, rgba(95, 160, 78, 0.07), transparent 22%),
+    linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 46%, var(--page-bottom) 100%);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(var(--gridline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gridline) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#root {
+  width: min(1240px, calc(100% - 1.5rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 2rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  color: var(--ink);
+}
+
+h1 {
+  font-size: clamp(3.8rem, 8vw, 7.6rem);
+}
+
+h2 {
+  font-size: clamp(2.1rem, 4.5vw, 3.6rem);
+}
+
+h3 {
+  font-size: 1.45rem;
+}
+
+p {
+  margin: 0;
+  color: var(--muted);
+}
+
+img {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: clamp(2.8rem, 14vw, 4rem);
+  }
+
+  h2 {
+    font-size: clamp(1.85rem, 9vw, 2.4rem);
+  }
+
+  #root {
+    width: min(100%, calc(100% - 0.5rem));
+    padding-top: 0.5rem;
+  }
+}
+
 .page-shell {
   display: grid;
   gap: 2rem;

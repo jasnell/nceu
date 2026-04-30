@@ -1,176 +1,206 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+"use client";
 
-const themeStorageKey = 'nodeconf-theme'
+import { useEffect, useState } from "react";
 
-const eventDate = new Date('2026-09-29T09:00:00+02:00')
-const now = new Date()
-const daysUntil = Math.max(
-  0,
-  Math.ceil((eventDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)),
-)
+type Theme = "light" | "dark";
 
-const pulseStats = [
-  { value: `${daysUntil}d`, label: 'until event' },
-  { value: '2 days', label: 'of talks and hallway track' },
-  { value: '1 venue', label: 'Hotel Savoia Regency' },
-  { value: '∞', label: 'side quests and conversations' },
-]
+type IconName =
+  | "ticket"
+  | "mic"
+  | "venue"
+  | "map"
+  | "youtube"
+  | "x"
+  | "spark"
+  | "chain"
+  | "network";
+
+const themeStorageKey = "nodeconf-theme";
+
+const eventDate = new Date("2026-09-29T09:00:00+02:00");
+
+function getDaysUntilEvent(): number {
+  return Math.max(
+    0,
+    Math.ceil(
+      (eventDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
+    ),
+  );
+}
+
+function buildPulseStats(daysUntil: number | null) {
+  return [
+    { value: daysUntil === null ? "—" : `${daysUntil}d`, label: "until event" },
+    { value: "2 days", label: "of talks and hallway track" },
+    { value: "1 venue", label: "Hotel Savoia Regency" },
+    { value: "∞", label: "side quests and conversations" },
+  ];
+}
 
 const highlights = [
   {
-    title: 'Runtime and platform talks',
+    title: "Runtime and platform talks",
     body:
-      'Expect a focused program for engineers working on Node.js applications, runtimes, tooling, observability, architecture, and production systems.',
+      "Expect a focused program for engineers working on Node.js applications, runtimes, tooling, observability, architecture, and production systems.",
   },
   {
-    title: 'A schedule built for conversation',
+    title: "A schedule built for conversation",
     body:
-      'Two days, one venue, and enough breathing room between sessions to actually meet people, compare notes, and keep discussions going after the talks end.',
+      "Two days, one venue, and enough breathing room between sessions to actually meet people, compare notes, and keep discussions going after the talks end.",
   },
   {
-    title: 'The community in one room',
+    title: "The community in one room",
     body:
-      'You are not just showing up for slides. You are showing up for maintainers, staff engineers, library authors, and teams building serious JavaScript products.',
+      "You are not just showing up for slides. You are showing up for maintainers, staff engineers, library authors, and teams building serious JavaScript products.",
   },
-]
+];
 
-const links = [
+const links: { title: string; href: string; blurb: string; icon: IconName }[] = [
   {
-    title: 'Tickets',
-    href: 'https://ti.to/apropos/nodeconf-eu-2026',
-    blurb: 'Reserve your spot for the 2026 edition.',
-    icon: 'ticket',
+    title: "Tickets",
+    href: "https://ti.to/apropos/nodeconf-eu-2026",
+    blurb: "Reserve your spot for the 2026 edition.",
+    icon: "ticket",
   },
   {
-    title: 'Call For Papers',
-    href: 'http://forms.gle/g2Pa2dAPPAnNcz1J7',
-    blurb: 'Send the talk you want developers to remember.',
-    icon: 'mic',
+    title: "Call For Papers",
+    href: "https://forms.gle/g2Pa2dAPPAnNcz1J7",
+    blurb: "Send the talk you want developers to remember.",
+    icon: "mic",
   },
   {
-    title: 'Venue',
-    href: 'https://www.savoia.eu/it/savoia-hotel-regency.html',
-    blurb: 'Hotel Savoia Regency, Bologna.',
-    icon: 'venue',
+    title: "Venue",
+    href: "https://www.savoia.eu/it/savoia-hotel-regency.html",
+    blurb: "Hotel Savoia Regency, Bologna.",
+    icon: "venue",
   },
   {
-    title: 'Map',
-    href: 'https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111',
-    blurb: 'Open the route and plan the trip.',
-    icon: 'map',
+    title: "Map",
+    href: "https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111",
+    blurb: "Open the route and plan the trip.",
+    icon: "map",
   },
   {
-    title: 'YouTube',
-    href: 'https://www.youtube.com/playlist?list=PL0CdgOSSGlBYI7_e6Zs4kFSXL9LvOn8gM',
-    blurb: 'Revisit talks and get the tone of the event.',
-    icon: 'youtube',
+    title: "YouTube",
+    href: "https://www.youtube.com/playlist?list=PL0CdgOSSGlBYI7_e6Zs4kFSXL9LvOn8gM",
+    blurb: "Revisit talks and get the tone of the event.",
+    icon: "youtube",
   },
   {
-    title: 'X',
-    href: 'https://twitter.com/NodeConfEU',
-    blurb: 'Follow updates as the lineup lands.',
-    icon: 'x',
+    title: "X",
+    href: "https://twitter.com/NodeConfEU",
+    blurb: "Follow updates as the lineup lands.",
+    icon: "x",
   },
-]
+];
 
-const footerLinks = [
+const footerLinks: { title: string; href: string; icon: IconName }[] = [
   {
-    title: 'Open map',
-    href: 'https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111',
-    icon: 'map',
+    title: "Open map",
+    href: "https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111",
+    icon: "map",
   },
   {
-    title: 'X',
-    href: 'https://twitter.com/NodeConfEU',
-    icon: 'x',
+    title: "X",
+    href: "https://twitter.com/NodeConfEU",
+    icon: "x",
   },
   {
-    title: 'YouTube',
-    href: 'https://www.youtube.com/playlist?list=PL0CdgOSSGlBYI7_e6Zs4kFSXL9LvOn8gM',
-    icon: 'youtube',
+    title: "YouTube",
+    href: "https://www.youtube.com/playlist?list=PL0CdgOSSGlBYI7_e6Zs4kFSXL9LvOn8gM",
+    icon: "youtube",
   },
-]
+];
 
-const navLinks = [
-  { title: 'Experience', href: '#experience', icon: 'spark' },
-  { title: 'Links', href: '#links', icon: 'chain' },
-  { title: 'Partners', href: '#partners', icon: 'network' },
-]
+const navLinks: { title: string; href: string; icon: IconName }[] = [
+  { title: "Experience", href: "#experience", icon: "spark" },
+  { title: "Links", href: "#links", icon: "chain" },
+  { title: "Partners", href: "#partners", icon: "network" },
+];
 
-const sponsorTiers = [
+const sponsorTiers: {
+  tier: string;
+  note: string;
+  sponsors: {
+    name: string;
+    href: string;
+    logo: string;
+    logoClassName: string;
+    logoFrameClassName: string;
+  }[];
+}[] = [
   {
-    tier: 'Platinum',
-    note: 'Headline partner',
+    tier: "Platinum",
+    note: "Headline partner",
     sponsors: [
       {
-        name: 'Platformatic',
-        href: 'https://platformatic.dev/',
-        logo: 'https://platformatic.dev/img/platformatic-logo.svg',
-        logoClassName: 'sponsor-logo sponsor-logo-platformatic',
-        logoFrameClassName: 'sponsor-logo-frame',
+        name: "Platformatic",
+        href: "https://platformatic.dev/",
+        logo: "https://platformatic.dev/img/platformatic-logo.svg",
+        logoClassName: "sponsor-logo sponsor-logo-platformatic",
+        logoFrameClassName: "sponsor-logo-frame",
       },
     ],
   },
   {
-    tier: 'Gold',
-    note: 'Product and platform partners',
+    tier: "Gold",
+    note: "Product and platform partners",
     sponsors: [],
   },
   {
-    tier: 'Silver',
-    note: 'Event experience partners',
+    tier: "Silver",
+    note: "Event experience partners",
     sponsors: [],
   },
   {
-    tier: 'Supporting',
-    note: 'Ecosystem supporters',
+    tier: "Supporting",
+    note: "Ecosystem supporters",
     sponsors: [
       {
-        name: 'OpenJS Foundation',
-        href: 'https://openjsf.org/',
-        logo: 'https://openjsf.org/logo.svg',
-        logoClassName: 'sponsor-logo sponsor-logo-openjs',
-        logoFrameClassName: 'sponsor-logo-frame sponsor-logo-frame-quiet',
+        name: "OpenJS Foundation",
+        href: "https://openjsf.org/",
+        logo: "https://openjsf.org/logo.svg",
+        logoClassName: "sponsor-logo sponsor-logo-openjs",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
     ],
   },
   {
-    tier: 'Community',
-    note: 'Friends of the conference',
+    tier: "Community",
+    note: "Friends of the conference",
     sponsors: [
       {
-        name: 'CityJS London',
-        href: 'https://london.cityjsconf.org/',
-        logo: 'https://static.wixstatic.com/media/7f99d3_743fcaf8491a40b59263c7b46a53db9d~mv2.png/v1/fill/w_146,h_146,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GENERAL_LOGO_FINAL_23.png',
-        logoClassName: 'sponsor-logo sponsor-logo-cityjs',
-        logoFrameClassName: 'sponsor-logo-frame sponsor-logo-frame-contrast',
+        name: "CityJS London",
+        href: "https://london.cityjsconf.org/",
+        logo: "https://static.wixstatic.com/media/7f99d3_743fcaf8491a40b59263c7b46a53db9d~mv2.png/v1/fill/w_146,h_146,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GENERAL_LOGO_FINAL_23.png",
+        logoClassName: "sponsor-logo sponsor-logo-cityjs",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
       },
     ],
   },
-]
+];
 
-function getPreferredTheme() {
-  if (typeof window === 'undefined') {
-    return 'light'
+function getPreferredTheme(): Theme {
+  if (typeof window === "undefined") {
+    return "light";
   }
 
-  const savedTheme = window.localStorage.getItem(themeStorageKey)
+  const saved = window.localStorage.getItem(themeStorageKey);
 
-  if (savedTheme === 'light' || savedTheme === 'dark') {
-    return savedTheme
+  if (saved === "light" || saved === "dark") {
+    return saved;
   }
 
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
-function LinkIcon({ name }) {
-  const iconClassName = `link-icon link-icon-${name}`
+function LinkIcon({ name }: { name: IconName }) {
+  const iconClassName = `link-icon link-icon-${name}`;
 
   switch (name) {
-    case 'ticket':
+    case "ticket":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -188,8 +218,8 @@ function LinkIcon({ name }) {
             strokeLinecap="round"
           />
         </svg>
-      )
-    case 'mic':
+      );
+    case "mic":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -206,8 +236,8 @@ function LinkIcon({ name }) {
             strokeLinecap="round"
           />
         </svg>
-      )
-    case 'venue':
+      );
+    case "venue":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -225,8 +255,8 @@ function LinkIcon({ name }) {
             strokeLinecap="round"
           />
         </svg>
-      )
-    case 'map':
+      );
+    case "map":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -238,8 +268,8 @@ function LinkIcon({ name }) {
           />
           <circle cx="12" cy="11" r="1.9" fill="currentColor" />
         </svg>
-      )
-    case 'youtube':
+      );
+    case "youtube":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -251,8 +281,8 @@ function LinkIcon({ name }) {
           />
           <path d="m10 9.6 5 2.6-5 2.6V9.6Z" fill="currentColor" />
         </svg>
-      )
-    case 'x':
+      );
+    case "x":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -264,8 +294,8 @@ function LinkIcon({ name }) {
             strokeLinejoin="round"
           />
         </svg>
-      )
-    case 'spark':
+      );
+    case "spark":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -276,8 +306,8 @@ function LinkIcon({ name }) {
             strokeLinejoin="round"
           />
         </svg>
-      )
-    case 'chain':
+      );
+    case "chain":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <path
@@ -289,8 +319,8 @@ function LinkIcon({ name }) {
             strokeLinejoin="round"
           />
         </svg>
-      )
-    case 'network':
+      );
+    case "network":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="6" cy="12" r="2.1" fill="none" stroke="currentColor" strokeWidth="1.7" />
@@ -304,14 +334,14 @@ function LinkIcon({ name }) {
             strokeLinecap="round"
           />
         </svg>
-      )
+      );
     default:
-      return null
+      return null;
   }
 }
 
-function ThemeIcon({ theme }) {
-  if (theme === 'light') {
+function ThemeIcon({ theme }: { theme: Theme }) {
+  if (theme === "light") {
     return (
       <svg className="link-icon" viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="4.2" fill="currentColor" />
@@ -323,7 +353,7 @@ function ThemeIcon({ theme }) {
           strokeLinecap="round"
         />
       </svg>
-    )
+    );
   }
 
   return (
@@ -336,32 +366,47 @@ function ThemeIcon({ theme }) {
         strokeLinejoin="round"
       />
     </svg>
-  )
+  );
 }
 
-function newTabLabel(label) {
-  return `${label} (opens in new tab)`
+function newTabLabel(label: string) {
+  return `${label} (opens in new tab)`;
 }
 
-function externalLinkProps(label) {
+function externalLinkProps(label: string) {
   return {
-    target: '_blank',
-    rel: 'noopener noreferrer',
-    'aria-label': newTabLabel(label),
-  }
+    target: "_blank" as const,
+    rel: "noopener noreferrer",
+    "aria-label": newTabLabel(label),
+  };
 }
 
-function App() {
-  const [theme, setTheme] = useState(getPreferredTheme)
-  const themeOptions = [
-    { value: 'light', label: 'Light' },
-    { value: 'dark', label: 'Dark' },
-  ]
+export default function Page() {
+  const [theme, setTheme] = useState<Theme>("light");
+  const [daysUntil, setDaysUntil] = useState<number | null>(null);
+
+  const themeOptions: { value: Theme; label: string }[] = [
+    { value: "light", label: "Light" },
+    { value: "dark", label: "Dark" },
+  ];
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    window.localStorage.setItem(themeStorageKey, theme)
-  }, [theme])
+    setTheme(getPreferredTheme());
+    setDaysUntil(getDaysUntilEvent());
+
+    const id = window.setInterval(() => {
+      setDaysUntil(getDaysUntilEvent());
+    }, 60 * 60 * 1000);
+
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem(themeStorageKey, theme);
+  }, [theme]);
+
+  const pulseStats = buildPulseStats(daysUntil);
 
   return (
     <div className="page-shell">
@@ -387,7 +432,7 @@ function App() {
               <button
                 key={option.value}
                 type="button"
-                className={`theme-option${theme === option.value ? ' is-active' : ''}`}
+                className={`theme-option${theme === option.value ? " is-active" : ""}`}
                 aria-pressed={theme === option.value}
                 onClick={() => setTheme(option.value)}
               >
@@ -399,7 +444,7 @@ function App() {
         </div>
       </header>
 
-      <main id="main-content" tabIndex="-1">
+      <main id="main-content" tabIndex={-1}>
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="hero-copy">
             <p className="kicker">29-30 September · Bologna, Italy</p>
@@ -418,21 +463,21 @@ function App() {
               <a
                 className="button button-primary"
                 href="https://ti.to/apropos/nodeconf-eu-2026"
-                {...externalLinkProps('Get tickets')}
+                {...externalLinkProps("Get tickets")}
               >
                 Get tickets
               </a>
               <a
                 className="button button-secondary"
-                href="http://forms.gle/g2Pa2dAPPAnNcz1J7"
-                {...externalLinkProps('Submit a CFP')}
+                href="https://forms.gle/g2Pa2dAPPAnNcz1J7"
+                {...externalLinkProps("Submit a CFP")}
               >
                 Submit a CFP
               </a>
               <a
                 className="text-link"
                 href="https://www.youtube.com/watch?v=fqaJXVieDbQ&list=PLFVadYWYE9opLgYJ7i0j50oIgn6pqBOM7"
-                {...externalLinkProps('Watch the latest talk drop')}
+                {...externalLinkProps("Watch the latest talk drop")}
               >
                 <LinkIcon name="youtube" />
                 <span>Watch the latest talk drop</span>
@@ -451,7 +496,7 @@ function App() {
               <span>Hotel Savoia Regency</span>
               <a
                 href="https://www.savoia.eu/it/savoia-hotel-regency.html"
-                {...externalLinkProps('Venue details')}
+                {...externalLinkProps("Venue details")}
               >
                 Venue details
               </a>
@@ -595,7 +640,5 @@ function App() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
-
-export default App
