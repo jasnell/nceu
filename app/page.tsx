@@ -11,7 +11,7 @@ export default function Home() {
         color: "white",
       }}
     >
-      <h1 style={{ fontSize: "4rem", margin: 0 }}>Hello World!</h1>
+      <h1 style={{ fontSize: "4rem", margin: 0 }}>NCEU Hello World!</h1>
       <p style={{ fontSize: "1.5rem", marginTop: "1rem", opacity: 0.9 }}>
         Powered by vinext on Cloudflare Workers
       </p>
