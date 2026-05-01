@@ -1,84 +1,55 @@
-# Vinext Hello World
+# NodeConf EU 2026
 
-A simple hello world application built with [vinext](https://github.com/hi-ogawa/vite-plugins/tree/main/packages/vinext) - a Next.js reimplementation on Vite, deployed to Cloudflare Workers.
+This repository contains the website for NodeConf EU 2026.
 
-## Features
+The site is a single-page experience focused on the conference itself: event information, venue details, tickets, CFP, sponsors, and links to the wider NodeConf EU presence.
 
-- **React 19** with App Router
-- **Server Components** support via `@vitejs/plugin-rsc`
-- **Cloudflare Workers** deployment via `@cloudflare/vite-plugin`
-- **TypeScript** support
+## Stack
+
+- [vinext](https://github.com/hi-ogawa/vite-plugins/tree/main/packages/vinext) (Next.js App Router on Vite) with React 19
+- TypeScript
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/) for hosting (via `@cloudflare/vite-plugin` and `vinext deploy`)
 
 ## Getting Started
-
-### Development
 
 ```bash
 # Install dependencies
 npm install
 
-# Start development server
+# Start the dev server
 npm run dev
 ```
 
-The dev server will start at http://localhost:3000
+The dev server runs at http://localhost:3000.
 
-### Build
+## Build And Deploy
 
 ```bash
+# Production build
 npm run build
-```
 
-### Deploy to Cloudflare
-
-```bash
-# Deploy to production
+# Deploy to Cloudflare Workers
 npm run deploy
-
-# Or deploy to preview environment
-npx vinext deploy --preview
 ```
+
+`vinext deploy` reads `wrangler.jsonc` and deploys via `wrangler`.
 
 ## Project Structure
 
 ```
 .
-├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── package.json           # Dependencies and scripts
-├── tsconfig.json          # TypeScript configuration
-├── vite.config.ts         # Vite configuration with Cloudflare
-└── wrangler.jsonc         # Cloudflare Workers configuration
+├── app/
+│   ├── globals.css      # tokens, theming, typography, layout
+│   ├── layout.tsx       # root layout, metadata, theme bootstrap
+│   └── page.tsx         # home page (client component)
+├── public/
+│   └── favicon.svg
+├── worker/
+│   └── index.ts         # Cloudflare Worker entry (image optimization + handler)
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── wrangler.jsonc
 ```
 
-## Accessing Cloudflare Bindings
-
-To use Cloudflare bindings (D1, R2, KV, AI, etc.), import `env` from `cloudflare:workers`:
-
-```tsx
-import { env } from "cloudflare:workers";
-
-export default async function Page() {
-  const result = await env.DB.prepare("SELECT * FROM posts").all();
-  return <div>{JSON.stringify(result)}</div>;
-}
-```
-
-Then add your bindings to `wrangler.jsonc`:
-
-```jsonc
-{
-  "d1_databases": [{ "binding": "DB", "database_name": "my-db", "database_id": "..." }],
-  "kv_namespaces": [{ "binding": "CACHE", "id": "..." }],
-  "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "my-bucket" }]
-}
-```
-
-Run `wrangler types` to generate TypeScript types for the `env` object.
-
-## Learn More
-
-- [vinext documentation](https://github.com/hi-ogawa/vite-plugins/tree/main/packages/vinext)
-- [Vite documentation](https://vitejs.dev/)
-- [Cloudflare Workers documentation](https://developers.cloudflare.com/workers/)
+Technical and maintenance notes for coding agents live in `AGENTS.md`.
