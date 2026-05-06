@@ -782,10 +782,28 @@ img {
 }
 
 .sponsor-logo {
+  display: block;
   width: 100%;
   height: 52px;
   object-fit: contain;
   object-position: left center;
+}
+
+.platformatic-logo-variant {
+  width: 100%;
+  height: 100%;
+}
+
+.platformatic-logo-variant-dark {
+  display: none;
+}
+
+:root[data-theme='dark'] .platformatic-logo-variant-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .platformatic-logo-variant-dark {
+  display: block;
 }
 
 .sponsor-logo-openjs {

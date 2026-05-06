@@ -127,6 +127,7 @@ const sponsorTiers: {
     logo: string;
     logoClassName: string;
     logoFrameClassName: string;
+    logoVariant?: "platformatic-theme-aware";
   }[];
 }[] = [
   {
@@ -136,9 +137,10 @@ const sponsorTiers: {
       {
         name: "Platformatic",
         href: "https://platformatic.dev/",
-        logo: "https://platformatic.dev/img/platformatic-logo.svg",
+        logo: "",
         logoClassName: "sponsor-logo sponsor-logo-platformatic",
         logoFrameClassName: "sponsor-logo-frame",
+        logoVariant: "platformatic-theme-aware",
       },
     ],
   },
@@ -381,6 +383,147 @@ function externalLinkProps(label: string) {
   };
 }
 
+function PlatformaticLogo({ className }: { className: string }) {
+  return (
+    <span className={className} aria-hidden="true">
+      <svg
+        className="platformatic-logo-variant platformatic-logo-variant-light"
+        viewBox="0 0 568.18 568.18"
+        focusable="false"
+      >
+        <g>
+          <line
+            x1="144.97"
+            y1="318.27"
+            x2="144.97"
+            y2="392.48"
+            fill="none"
+            stroke="#00fe84"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="16.73"
+          />
+          <polyline
+            points="174.15 303.65 233.49 337.91 322.01 286.8 322.01 184.58 233.49 133.48 144.97 184.58 144.97 273.29"
+            fill="none"
+            stroke="#00fe84"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="16.73"
+          />
+          <polyline
+            points="174.15 336.1 174.15 303.66 203.24 285.96"
+            fill="none"
+            stroke="#00fe84"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="16.73"
+          />
+        </g>
+        <polyline
+          points="470.56 259.16 506.46 280.38 506.46 301.59 470.56 322.81"
+          fill="none"
+          stroke="#00050b"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.73"
+        />
+        <polyline
+          points="101.92 208.8 61.72 232.01 61.72 335.6 101.07 358.32"
+          fill="none"
+          stroke="#00050b"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.73"
+        />
+        <polyline
+          points="174.15 379.13 174.15 402.14 233.12 434.7 278.4 408.29 278.03 360.22"
+          fill="none"
+          stroke="#00050b"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.73"
+        />
+        <polyline
+          points="322.57 333.23 322.57 358.53 364.96 383.33 426.93 346.35 426.93 245.48 365.94 210.51"
+          fill="none"
+          stroke="#00050b"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.73"
+        />
+      </svg>
+      <svg
+        className="platformatic-logo-variant platformatic-logo-variant-dark"
+        viewBox="0 0 568.18 568.18"
+        focusable="false"
+      >
+        <g>
+          <line
+            x1="148.26"
+            y1="317.46"
+            x2="148.26"
+            y2="389.92"
+            fill="none"
+            stroke="#00fe84"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="16.34"
+          />
+          <polyline
+            points="176.75 303.19 234.68 336.63 321.11 286.74 321.11 186.94 234.68 137.04 148.26 186.94 148.26 273.55"
+            fill="none"
+            stroke="#00fe84"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="16.34"
+          />
+          <polyline
+            points="176.75 334.87 176.75 303.19 205.15 285.91"
+            fill="none"
+            stroke="#00fe84"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="16.34"
+          />
+        </g>
+        <polyline
+          points="466.14 259.75 501.19 280.47 501.19 301.18 466.14 321.89"
+          fill="none"
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.34"
+        />
+        <polyline
+          points="106.23 210.58 66.98 233.24 66.98 334.38 105.4 356.56"
+          fill="none"
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.34"
+        />
+        <polyline
+          points="176.75 376.88 176.75 399.34 234.33 431.14 278.53 405.35 278.17 358.41"
+          fill="none"
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.34"
+        />
+        <polyline
+          points="321.66 332.06 321.66 356.76 363.05 380.98 423.55 344.88 423.55 246.39 364.01 212.25"
+          fill="none"
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="16.34"
+        />
+      </svg>
+    </span>
+  );
+}
+
 export default function Page() {
   const [theme, setTheme] = useState<Theme>("light");
   const [daysUntil, setDaysUntil] = useState<number | null>(null);
@@ -595,12 +738,16 @@ export default function Page() {
                         {...externalLinkProps(sponsor.name)}
                       >
                         <span className={sponsor.logoFrameClassName}>
-                          <img
-                            className={sponsor.logoClassName}
-                            src={sponsor.logo}
-                            alt=""
-                            loading="lazy"
-                          />
+                          {sponsor.logoVariant === "platformatic-theme-aware" ? (
+                            <PlatformaticLogo className={sponsor.logoClassName} />
+                          ) : (
+                            <img
+                              className={sponsor.logoClassName}
+                              src={sponsor.logo}
+                              alt=""
+                              loading="lazy"
+                            />
+                          )}
                         </span>
                         <strong>{sponsor.name}</strong>
                       </a>
