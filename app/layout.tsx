@@ -6,8 +6,11 @@ export const metadata: Metadata = {
   description:
     "NodeConf EU 2026 returns to Bologna with tickets, CFP, venue info, and conference links in one fast single-page experience.",
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
+    icon: [
+      { url: "/hexagon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/hexagon.svg",
   },
 };
 
