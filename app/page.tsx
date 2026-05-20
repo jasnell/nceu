@@ -185,6 +185,13 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo community-partner-logo community-partner-logo-square",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
       },
+      {
+        name: "BolognaJS",
+        href: "https://www.bolognajs.com/",
+        logo: "https://www.bolognajs.com/android-chrome-512x512.png",
+        logoClassName: "sponsor-logo community-partner-logo community-partner-logo-square",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
+      },
     ],
   },
 ];
