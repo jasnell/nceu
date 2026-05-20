@@ -538,8 +538,8 @@ img {
 .poster-frame img {
   display: block;
   width: 100%;
-  aspect-ratio: 686 / 866;
-  object-fit: cover;
+  aspect-ratio: 478.47 / 552.5;
+  object-fit: contain;
   border: 1px solid var(--border);
 }
 

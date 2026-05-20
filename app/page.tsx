@@ -638,8 +638,8 @@ export default function Page() {
           <aside className="poster-card" aria-label="Event poster">
             <div className="poster-frame">
               <img
-                src="https://static.wixstatic.com/media/e89522_06d47063fdc4457c8fd5b4add7722b59~mv2.png/v1/fill/w_686,h_866,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/e89522_06d47063fdc4457c8fd5b4add7722b59~mv2.png"
-                alt="NodeConf EU 2026 poster art"
+                src="/hexagon.svg"
+                alt="NodeConf EU 2026 — Bologna hexagon mark"
               />
             </div>
             <div className="poster-caption">
