@@ -160,7 +160,19 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo sponsor-logo-socket",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-socket",
       },
+      {
+        name: "nxtedition",
+        href: "https://nxtedition.com/",
+        logo: "/nxtedition.gif",
+        logoClassName: "sponsor-logo sponsor-logo-nxtedition",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-nxtedition",
+      },
     ],
+  },
+  {
+    tier: "Silver",
+    note: "Supporting partners",
+    sponsors: [],
   },
   {
     tier: "Supporting",
