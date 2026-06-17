@@ -1133,6 +1133,21 @@ img {
   border-color: rgba(20, 28, 33, 0.14);
 }
 
+.sponsor-logo-nxtedition {
+  max-width: 180px;
+}
+
+.sponsor-logo-frame-nxtedition {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 16px;
+}
+
+:root[data-theme='dark'] .sponsor-logo-frame-nxtedition {
+  background: #ffffff;
+  border-color: rgba(20, 28, 33, 0.14);
+}
+
 
 .community-partner-logo {
   max-width: 72px;
