@@ -38,8 +38,9 @@ days:
       - start: "09:10"
         end: "09:40"
         type: talk
-        title: To be announced
-        speaker: To be announced
+        title: NodeJS Performance Tips & Tricks
+        speaker: Robert Nagy
+        speakerId: robert-nagy
       - start: "09:40"
         end: "10:10"
         type: talk

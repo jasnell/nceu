@@ -10,6 +10,7 @@ type Speaker = {
   id: string;
   name: string;
   role?: string;
+  talk?: string;
   photo?: string;
   order?: number;
   links?: SpeakerLinks;
@@ -111,6 +112,12 @@ export default function SpeakersPage() {
               <div className="cast-info">
                 <h2 className="cast-name">{speaker.name}</h2>
                 {speaker.role ? <p className="cast-role">{speaker.role}</p> : null}
+                {speaker.talk ? (
+                  <p className="cast-talk">
+                    <span className="cast-talk-label">Talk</span>
+                    {speaker.talk}
+                  </p>
+                ) : null}
                 <div
                   className="cast-bio"
                   dangerouslySetInnerHTML={{ __html: speaker.html }}
