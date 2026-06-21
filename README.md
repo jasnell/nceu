@@ -53,3 +53,7 @@ npm run deploy
 ```
 
 Technical and maintenance notes for coding agents live in `AGENTS.md`.
+
+## Code of Conduct
+
+This project follows the [Contributor Covenant](https://www.contributor-covenant.org/) Code of Conduct. Please read [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) before participating.
