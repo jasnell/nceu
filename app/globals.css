@@ -1992,22 +1992,6 @@ img {
   box-shadow: var(--shadow-hard);
 }
 
-.cast-index {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.85rem;
-  font-family: var(--display);
-  font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
-  font-size: 2.7rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  color: transparent;
-  -webkit-text-stroke: 1.2px var(--rule);
-  pointer-events: none;
-  user-select: none;
-}
-
 .cast-photo-frame {
   position: relative;
   align-self: start;
@@ -2059,7 +2043,6 @@ img {
   display: grid;
   gap: 0.4rem;
   align-content: start;
-  padding-right: 1.5rem;
 }
 
 .cast-name {
@@ -2180,10 +2163,6 @@ img {
   .ticket-stub::after { bottom: auto; top: -12px; left: -12px; }
 
   .cast-card { grid-template-columns: 6rem minmax(0, 1fr); }
-
-  .cast-info { padding-right: 0; }
-
-  .cast-index { font-size: 2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

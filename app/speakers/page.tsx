@@ -98,11 +98,8 @@ export default function SpeakersPage() {
         </section>
 
         <div className="cast-sheet">
-          {speakers.map((speaker, i) => (
+          {speakers.map((speaker) => (
             <article key={speaker.id} id={speaker.id} className="cast-card">
-              <span className="cast-index" aria-hidden="true">
-                {pad(i + 1)}
-              </span>
               <div className="cast-photo-frame">
                 <img
                   className="cast-photo"
