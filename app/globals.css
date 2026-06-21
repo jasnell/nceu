@@ -1230,8 +1230,23 @@ img {
   .hero-section,
   .content-grid,
   .link-panel,
-  .partners-section {
+  .partners-section,
+  .doc-section {
     grid-template-columns: 1fr;
+  }
+
+  .doc-section {
+    gap: 1.5rem;
+  }
+
+  .doc-heading {
+    position: static;
+  }
+
+  .doc-prose > h2:first-child {
+    margin-top: 1.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--rule);
   }
 
   .pulse-strip,
@@ -1340,4 +1355,120 @@ img {
   .hero-copy h1 {
     max-width: 9ch;
   }
+}
+
+/* Document pages (Code of Conduct and similar long-form content) */
+.doc-section {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+  padding: clamp(1.75rem, 3.4vw, 3.25rem);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow-hard);
+  animation: editorial-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 90ms;
+}
+
+.doc-heading {
+  position: sticky;
+  top: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--ink);
+}
+
+.doc-heading h1 {
+  margin: 0;
+  text-wrap: balance;
+  font-family: var(--display);
+  font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+  font-size: clamp(2.1rem, 3.4vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+
+.doc-lede {
+  margin: 0;
+  max-width: 36ch;
+  color: var(--ink-soft);
+}
+
+.doc-prose {
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+.doc-prose > h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.doc-prose h2 {
+  margin: 2.2rem 0 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--ink);
+  font-family: var(--display);
+  font-variation-settings: "opsz" 48, "SOFT" 50, "WONK" 0;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.doc-prose h3 {
+  margin: 1.6rem 0 0.4rem;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.doc-prose p {
+  margin: 0 0 1rem;
+}
+
+.doc-prose ul {
+  margin: 0 0 1rem;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.doc-prose li {
+  padding-left: 0.2rem;
+}
+
+.doc-prose li::marker {
+  color: var(--accent);
+}
+
+.doc-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.doc-prose a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+
+.doc-prose a:hover,
+.doc-prose a:focus-visible {
+  color: var(--ink);
+}
+
+:root[data-theme='dark'] .doc-prose a {
+  color: var(--accent);
 }
