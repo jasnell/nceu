@@ -21,6 +21,9 @@ Agent-facing notes for the NodeConf EU 2026 website.
 - `vite.config.ts`: vinext + RSC + Cloudflare plugin wiring.
 - `wrangler.jsonc`: Cloudflare Worker config.
 - `worker/index.ts`: Worker entry handling image optimization and delegating the rest to vinext.
+- `vite-content-plugin.ts`: build-time loader that inlines `*.yaml`/`*.yml` as data and renders `*.md` (YAML frontmatter + `marked` body) to `{ ...frontmatter, html }`. Runs during the build, so no YAML/Markdown parser ships to the worker.
+- `content/program.yaml`: the talk schedule, rendered by `app/program/page.tsx`.
+- `content/speakers/*.md`: one file per speaker (frontmatter + Markdown bio), rendered by `app/speakers/page.tsx`. Files starting with `_` (e.g. `_template.md`) are ignored; the filename is the speaker id used by `speakerId` in `program.yaml`.
 
 ## Commands
 

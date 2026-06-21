@@ -1,0 +1,201 @@
+# NodeConf EU 2026 — program
+#
+# This file is parsed at build time by `vite-content-plugin.ts` and rendered by
+# `app/program/page.tsx`. Edit the schedule here; no code changes are needed.
+#
+# Session `type` controls how a row is styled:
+#   talk   — a conference talk (optionally linked to a speaker)
+#   intro  — opening / welcome / closing remarks
+#   break  — coffee break, lunch, registration
+#   social — dinner and social events
+#
+# `speakerId` (optional) links a talk to a speaker file in content/speakers/
+# (the markdown filename without extension), turning the name into a link.
+
+title: Program
+tagline: Two days, one track, 24 talks.
+intro: >-
+  NodeConf EU 2026 is a single-track conference: everyone is in the same room
+  for every talk. Two days of sessions at Hotel Savoia Regency in Bologna, with
+  coffee breaks to recharge and a sit-down social dinner on the first evening.
+  Talk titles and speakers are announced on a rolling basis — check back as the
+  lineup fills in.
+
+days:
+  - date: "2026-09-29"
+    label: Day One
+    weekday: Tuesday
+    sessions:
+      - start: "08:30"
+        end: "09:00"
+        type: break
+        title: Registration & welcome coffee
+      - start: "09:00"
+        end: "09:10"
+        type: intro
+        title: Welcome to NodeConf EU 2026
+        speaker: NodeConf EU Staff
+      - start: "09:10"
+        end: "09:40"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "09:40"
+        end: "10:10"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "10:10"
+        end: "10:40"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "10:40"
+        end: "11:10"
+        type: break
+        title: Morning coffee break
+      - start: "11:10"
+        end: "11:40"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "11:40"
+        end: "12:10"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "12:10"
+        end: "12:40"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "12:40"
+        end: "14:00"
+        type: break
+        title: Lunch
+      - start: "14:00"
+        end: "14:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "14:30"
+        end: "15:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "15:00"
+        end: "15:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "15:30"
+        end: "16:00"
+        type: break
+        title: Afternoon coffee break
+      - start: "16:00"
+        end: "16:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "16:30"
+        end: "17:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "17:00"
+        end: "17:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "19:30"
+        end: "22:30"
+        type: social
+        title: Social dinner
+        location: Hotel Savoia Regency
+        description: A sit-down dinner at the venue — food, drinks, and the hallway track after hours.
+
+  - date: "2026-09-30"
+    label: Day Two
+    weekday: Wednesday
+    sessions:
+      - start: "08:30"
+        end: "09:00"
+        type: break
+        title: Welcome coffee
+      - start: "09:00"
+        end: "09:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "09:30"
+        end: "10:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "10:00"
+        end: "10:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "10:30"
+        end: "11:00"
+        type: break
+        title: Morning coffee break
+      - start: "11:00"
+        end: "11:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "11:30"
+        end: "12:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "12:00"
+        end: "12:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "12:30"
+        end: "14:00"
+        type: break
+        title: Lunch
+      - start: "14:00"
+        end: "14:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "14:30"
+        end: "15:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "15:00"
+        end: "15:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "15:30"
+        end: "16:00"
+        type: break
+        title: Afternoon coffee break
+      - start: "16:00"
+        end: "16:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "16:30"
+        end: "17:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "17:00"
+        end: "17:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "17:30"
+        end: "17:45"
+        type: intro
+        title: Closing remarks
+        speaker: NodeConf EU Staff
