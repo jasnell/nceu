@@ -27,10 +27,10 @@ export default function CodeOfConductPage() {
 
       <main id="main-content" tabIndex={-1}>
         <article className="doc-section" aria-labelledby="coc-title">
-          <div className="section-heading wide">
+          <div className="doc-heading">
             <p className="eyebrow">Community</p>
             <h1 id="coc-title">Contributor Covenant Code of Conduct</h1>
-            <p className="section-copy">
+            <p className="doc-lede">
               NodeConf EU is dedicated to a harassment-free, welcoming experience
               for everyone. This Code of Conduct applies to the conference, its
               community spaces, and this project.

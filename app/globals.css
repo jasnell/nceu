@@ -1230,8 +1230,23 @@ img {
   .hero-section,
   .content-grid,
   .link-panel,
-  .partners-section {
+  .partners-section,
+  .doc-section {
     grid-template-columns: 1fr;
+  }
+
+  .doc-section {
+    gap: 1.5rem;
+  }
+
+  .doc-heading {
+    position: static;
+  }
+
+  .doc-prose > h2:first-child {
+    margin-top: 1.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--rule);
   }
 
   .pulse-strip,
@@ -1347,8 +1362,10 @@ img {
   position: relative;
   overflow: hidden;
   display: grid;
-  gap: 1.6rem;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+  padding: clamp(1.75rem, 3.4vw, 3.25rem);
   border: 1px solid var(--border);
   background: var(--panel);
   box-shadow: var(--shadow-hard);
@@ -1356,20 +1373,41 @@ img {
   animation-delay: 90ms;
 }
 
-.doc-section .section-heading h1 {
+.doc-heading {
+  position: sticky;
+  top: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--ink);
+}
+
+.doc-heading h1 {
   margin: 0;
   text-wrap: balance;
   font-family: var(--display);
   font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
-  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-size: clamp(2.1rem, 3.4vw, 3.2rem);
   font-weight: 500;
   letter-spacing: -0.035em;
   line-height: 0.96;
 }
 
-.doc-prose {
-  max-width: 70ch;
+.doc-lede {
+  margin: 0;
+  max-width: 36ch;
   color: var(--ink-soft);
+}
+
+.doc-prose {
+  max-width: 68ch;
+  color: var(--ink-soft);
+}
+
+.doc-prose > h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .doc-prose h2 {
