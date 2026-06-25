@@ -11,6 +11,8 @@ export type IconName =
   | "map"
   | "youtube"
   | "x"
+  | "bluesky"
+  | "linkedin"
   | "spark"
   | "chain"
   | "network";
@@ -159,6 +161,38 @@ export function LinkIcon({ name }: { name: IconName }) {
           />
         </svg>
       );
+    case "bluesky":
+      return (
+        <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 10.8C10.9 8.5 8 4.9 5.3 3.5 4 2.8 3 3.1 3 4.7c0 1.6.9 6.5 1.4 7.3.5.8 1.4 1.2 2.9 1-1.5.2-2.8.8-1.1 2.8 1.9 2.1 2.7-.5 3.1-1.9.2-.6.3-1 .7-1 .4 0 .5.4.7 1 .4 1.4 1.2 4 3.1 1.9 1.7-2 .4-2.6-1.1-2.8 1.5.2 2.4-.2 2.9-1 .5-.8 1.4-5.7 1.4-7.3 0-1.6-1-1.9-2.3-1.2C16 4.9 13.1 8.5 12 10.8Z"
+            fill="currentColor"
+          />
+        </svg>
+      );
+    case "linkedin":
+      return (
+        <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
+          <rect
+            x="3.5"
+            y="3.5"
+            width="17"
+            height="17"
+            rx="2.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+          />
+          <path
+            d="M7.2 10v6.5M7.2 7.4v.01M11 16.5V10m0 2.4c0-1.3 1-2.4 2.5-2.4s2.5 1.1 2.5 2.4v4.1"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
     case "spark":
       return (
         <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
@@ -273,6 +307,16 @@ const footerLinks: { title: string; href: string; icon: IconName }[] = [
     title: "X",
     href: "https://twitter.com/NodeConfEU",
     icon: "x",
+  },
+  {
+    title: "Bluesky",
+    href: "https://bsky.app/profile/nodeconf.eu",
+    icon: "bluesky",
+  },
+  {
+    title: "LinkedIn",
+    href: "https://www.linkedin.com/company/nodeconf-eu/",
+    icon: "linkedin",
   },
   {
     title: "YouTube",
