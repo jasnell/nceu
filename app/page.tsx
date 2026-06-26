@@ -85,6 +85,18 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
     blurb: "Follow updates as the lineup lands.",
     icon: "x",
   },
+  {
+    title: "Bluesky",
+    href: "https://bsky.app/profile/nodeconf.eu",
+    blurb: "Follow along on the AT Protocol.",
+    icon: "bluesky",
+  },
+  {
+    title: "LinkedIn",
+    href: "https://www.linkedin.com/company/nodeconf-eu/",
+    blurb: "Connect with the NodeConf EU community.",
+    icon: "linkedin",
+  },
 ];
 
 const navLinks: { title: string; href: string; icon: IconName }[] = [
