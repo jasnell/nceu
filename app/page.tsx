@@ -100,8 +100,9 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
 ];
 
 const navLinks: { title: string; href: string; icon: IconName }[] = [
+  { title: "Program", href: "/program", icon: "calendar" },
+  { title: "Speakers", href: "/speakers", icon: "speakers" },
   { title: "Experience", href: "#experience", icon: "spark" },
-  { title: "Links", href: "#links", icon: "chain" },
   { title: "Partners", href: "#partners", icon: "network" },
 ];
 
