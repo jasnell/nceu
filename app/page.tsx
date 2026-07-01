@@ -199,6 +199,13 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo community-partner-logo community-partner-logo-square",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
       },
+      {
+        name: "GrUSP",
+        href: "https://www.grusp.org/conferenze/",
+        logo: "https://www.grusp.org/wp-content/uploads/2026/05/grusp-logo.png",
+        logoClassName: "sponsor-logo community-partner-logo community-partner-logo-square",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
+      },
     ],
   },
 ];
