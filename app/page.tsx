@@ -197,7 +197,7 @@ const sponsorTiers: {
         href: "https://london.cityjsconf.org/",
         logo: "https://static.wixstatic.com/media/7f99d3_743fcaf8491a40b59263c7b46a53db9d~mv2.png/v1/fill/w_146,h_146,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GENERAL_LOGO_FINAL_23.png",
         logoClassName: "sponsor-logo community-partner-logo community-partner-logo-circle",
-        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
       {
         name: "ZurichJS",
@@ -218,7 +218,7 @@ const sponsorTiers: {
         href: "https://www.grusp.org/conferenze/",
         logo: "https://www.grusp.org/wp-content/uploads/2026/05/grusp-logo.png",
         logoClassName: "sponsor-logo community-partner-logo community-partner-logo-square",
-        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
     ],
   },
