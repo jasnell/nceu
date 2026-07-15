@@ -26,7 +26,7 @@ function buildPulseStats(daysUntil: number | null) {
     { value: daysUntil === null ? "—" : `${daysUntil}d`, label: "until event" },
     { value: "2 days", label: "of talks and hallway track" },
     { value: "1 venue", label: "Hotel Savoia Regency" },
-    { value: "1 dinner", label: "social night on the 29th, included" },
+    { value: "∞", label: "side quests and conversations" },
   ];
 }
 
