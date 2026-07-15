@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import {
   type IconName,
   LinkIcon,
@@ -56,12 +56,6 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
     icon: "ticket",
   },
   {
-    title: "Call For Papers",
-    href: "https://forms.gle/g2Pa2dAPPAnNcz1J7",
-    blurb: "Send the talk you want developers to remember.",
-    icon: "mic",
-  },
-  {
     title: "Venue",
     href: "https://www.savoia.eu/it/savoia-hotel-regency.html",
     blurb: "Hotel Savoia Regency, Bologna.",
@@ -108,6 +102,7 @@ const navLinks: { title: string; href: string; icon: IconName }[] = [
 const sponsorTiers: {
   tier: string;
   note: string;
+  logoHeight: number;
   sponsors: {
     name: string;
     href: string;
@@ -120,6 +115,7 @@ const sponsorTiers: {
   {
     tier: "Platinum",
     note: "Headline partner",
+    logoHeight: 84,
     sponsors: [
       {
         name: "Platformatic",
@@ -134,11 +130,13 @@ const sponsorTiers: {
   {
     tier: "Diamond",
     note: "Premier partners",
+    logoHeight: 72,
     sponsors: [],
   },
   {
     tier: "Gold",
     note: "Product and platform partners",
+    logoHeight: 60,
     sponsors: [
       {
         name: "Socket",
@@ -159,11 +157,13 @@ const sponsorTiers: {
   {
     tier: "Silver",
     note: "Supporting partners",
+    logoHeight: 48,
     sponsors: [],
   },
   {
     tier: "Supporting",
     note: "Ecosystem supporters",
+    logoHeight: 40,
     sponsors: [
       {
         name: "OpenJS Foundation",
@@ -172,18 +172,40 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo sponsor-logo-openjs",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
+      {
+        name: "Sentry",
+        href: "https://sentry.io/",
+        logo: "https://sentry-brand.storage.googleapis.com/sentry-wordmark-dark-280x84.png",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
+      },
+      {
+        name: "Datadog",
+        href: "https://www.datadoghq.com/",
+        logo: "https://imgix.datadoghq.com/img/about/presskit/logo-h/dd_horizontal_purple.png",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
+      },
+      {
+        name: "HeroDevs",
+        href: "https://www.herodevs.com/",
+        logo: "https://cdn.prod.website-files.com/62865614b39c464b76d339aa/668c0ec8bc50d24d58a40475_Logo%20Gradient%20Darkmode.svg",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-herodevs",
+      },
     ],
   },
   {
     tier: "Community",
     note: "Friends of the conference",
+    logoHeight: 56,
     sponsors: [
       {
         name: "CityJS London",
         href: "https://london.cityjsconf.org/",
         logo: "https://static.wixstatic.com/media/7f99d3_743fcaf8491a40b59263c7b46a53db9d~mv2.png/v1/fill/w_146,h_146,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/GENERAL_LOGO_FINAL_23.png",
         logoClassName: "sponsor-logo community-partner-logo community-partner-logo-circle",
-        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
       {
         name: "ZurichJS",
@@ -204,7 +226,7 @@ const sponsorTiers: {
         href: "https://www.grusp.org/conferenze/",
         logo: "https://www.grusp.org/wp-content/uploads/2026/05/grusp-logo.png",
         logoClassName: "sponsor-logo community-partner-logo community-partner-logo-square",
-        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-contrast",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
     ],
   },
@@ -290,13 +312,6 @@ export default function Page() {
                 Get tickets
               </a>
               <a
-                className="button button-secondary"
-                href="https://forms.gle/g2Pa2dAPPAnNcz1J7"
-                {...externalLinkProps("Submit a CFP")}
-              >
-                Submit a CFP
-              </a>
-              <a
                 className="text-link"
                 href="https://www.youtube.com/watch?v=fqaJXVieDbQ&list=PLFVadYWYE9opLgYJ7i0j50oIgn6pqBOM7"
                 {...externalLinkProps("Watch the latest talk drop")}
@@ -335,6 +350,26 @@ export default function Page() {
           ))}
         </section>
 
+        <section className="dinner-banner" aria-labelledby="dinner-title">
+          <div className="dinner-copy">
+            <p className="eyebrow">Night of 29 September</p>
+            <h2 id="dinner-title">One amazing social dinner. Included.</h2>
+            <p>
+              When day one wraps, nobody scatters. The whole conference sits
+              down together for a proper Bolognese evening of food, wine, and
+              conversation — and it is already part of your ticket. No add-on,
+              no separate pass.
+            </p>
+          </div>
+          <a
+            className="button dinner-cta"
+            href="https://ti.to/apropos/nodeconf-eu-2026"
+            {...externalLinkProps("Get tickets")}
+          >
+            Get tickets
+          </a>
+        </section>
+
         <section
           id="experience"
           className="content-grid"
@@ -360,7 +395,7 @@ export default function Page() {
           <div className="section-heading wide">
             <p className="eyebrow">Plan your visit</p>
             <h2 id="links-title">
-              Tickets, CFP, venue details, and the links you will actually use.
+              Tickets, venue details, and the links you will actually use.
             </h2>
             <p className="section-copy">
               Everything important is one click away, whether you are booking,
@@ -402,7 +437,13 @@ export default function Page() {
           </div>
           <div className="sponsor-stack">
             {sponsorTiers.map((tier) => (
-              <article key={tier.tier} className="sponsor-tier">
+              <article
+                key={tier.tier}
+                className="sponsor-tier"
+                style={
+                  { "--logo-h": `${tier.logoHeight}px` } as CSSProperties
+                }
+              >
                 <div className="tier-intro">
                   <p className="tier-name">{tier.tier}</p>
                   <span>{tier.note}</span>
