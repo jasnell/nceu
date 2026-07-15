@@ -26,7 +26,7 @@ function buildPulseStats(daysUntil: number | null) {
     { value: daysUntil === null ? "—" : `${daysUntil}d`, label: "until event" },
     { value: "2 days", label: "of talks and hallway track" },
     { value: "1 venue", label: "Hotel Savoia Regency" },
-    { value: "∞", label: "side quests and conversations" },
+    { value: "1 dinner", label: "social night on the 29th, included" },
   ];
 }
 
@@ -361,6 +361,26 @@ export default function Page() {
               <span>{item.label}</span>
             </article>
           ))}
+        </section>
+
+        <section className="dinner-banner" aria-labelledby="dinner-title">
+          <div className="dinner-copy">
+            <p className="eyebrow">Night of 29 September</p>
+            <h2 id="dinner-title">One amazing social dinner. Included.</h2>
+            <p>
+              When day one wraps, nobody scatters. The whole conference sits
+              down together for a proper Bolognese evening of food, wine, and
+              conversation — and it is already part of your ticket. No add-on,
+              no separate pass.
+            </p>
+          </div>
+          <a
+            className="button dinner-cta"
+            href="https://ti.to/apropos/nodeconf-eu-2026"
+            {...externalLinkProps("Get tickets")}
+          >
+            Get tickets
+          </a>
         </section>
 
         <section

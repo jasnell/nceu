@@ -276,6 +276,7 @@ img {
 .site-header,
 .hero-section,
 .pulse-strip,
+.dinner-banner,
 .content-grid,
 .link-panel,
 .partners-section,
@@ -286,6 +287,7 @@ img {
 .site-header { animation-delay: 0ms; }
 .hero-section { animation-delay: 90ms; }
 .pulse-strip { animation-delay: 180ms; }
+.dinner-banner { animation-delay: 210ms; }
 .content-grid { animation-delay: 240ms; }
 .link-panel { animation-delay: 300ms; }
 .partners-section { animation-delay: 360ms; }
@@ -308,6 +310,7 @@ img {
 .site-footer,
 .hero-section,
 .pulse-strip,
+.dinner-banner,
 .content-grid,
 .link-panel,
 .partners-section {
@@ -788,6 +791,65 @@ img {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--pulse-copy);
+}
+
+.dinner-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(1.5rem, 2.5vw, 2.25rem);
+  padding: clamp(1.75rem, 3.2vw, 2.75rem);
+  background: var(--accent);
+  color: #14110c;
+}
+
+.dinner-copy {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 44rem;
+}
+
+.dinner-banner .eyebrow {
+  color: inherit;
+}
+
+.dinner-banner .eyebrow::before {
+  background: #14110c;
+}
+
+.dinner-banner h2 {
+  margin: 0;
+  text-wrap: balance;
+  font-family: var(--display);
+  font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+
+.dinner-copy p:not(.eyebrow) {
+  margin: 0;
+  max-width: 58ch;
+}
+
+.dinner-cta {
+  background: #14110c;
+  color: #f3ecdc;
+  border-color: #14110c;
+}
+
+.dinner-cta:hover,
+.dinner-cta:focus-visible {
+  background: #fdfaf2;
+  color: #14110c;
+}
+
+@media (max-width: 960px) {
+  .dinner-banner {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
 }
 
 .tier-card span {
