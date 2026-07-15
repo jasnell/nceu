@@ -178,6 +178,13 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo sponsor-logo-openjs",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
+      {
+        name: "Sentry",
+        href: "https://sentry.io/",
+        logo: "https://sentry-brand.storage.googleapis.com/sentry-wordmark-dark-280x84.png",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
+      },
     ],
   },
   {
