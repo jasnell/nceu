@@ -1057,7 +1057,7 @@ img {
 }
 
 .sponsor-logo-frame {
-  min-height: 52px;
+  min-height: var(--logo-h, 52px);
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
@@ -1085,7 +1085,8 @@ img {
 .sponsor-logo {
   display: block;
   width: 100%;
-  height: 52px;
+  height: var(--logo-h, 52px);
+  max-width: calc(var(--logo-h, 52px) * 4);
   object-fit: contain;
   object-position: left center;
 }
@@ -1094,6 +1095,7 @@ img {
   display: block;
   width: 100%;
   height: auto;
+  max-height: 100%;
   object-fit: contain;
   object-position: left center;
 }
@@ -1110,16 +1112,18 @@ img {
   display: block;
 }
 
+/* Per-sponsor multipliers are optical corrections for logo density;
+   the tier's --logo-h drives the actual hierarchy. */
 .sponsor-logo-openjs {
-  max-width: 168px;
+  max-width: calc(var(--logo-h, 52px) * 4);
 }
 
 .sponsor-logo-platformatic {
-  max-width: 220px;
+  max-width: calc(var(--logo-h, 52px) * 3.8);
 }
 
 .sponsor-logo-socket {
-  max-width: 180px;
+  max-width: calc(var(--logo-h, 52px) * 3.5);
 }
 
 .sponsor-logo-frame-socket {
@@ -1134,7 +1138,7 @@ img {
 }
 
 .sponsor-logo-nxtedition {
-  max-width: 180px;
+  max-width: calc(var(--logo-h, 52px) * 3.5);
 }
 
 .sponsor-logo-frame-nxtedition {
@@ -1150,8 +1154,8 @@ img {
 
 
 .community-partner-logo {
-  max-width: 72px;
-  height: 72px;
+  max-width: var(--logo-h, 72px);
+  height: var(--logo-h, 72px);
 }
 
 .community-partner-logo-circle {

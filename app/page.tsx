@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type CSSProperties, useEffect, useState } from "react";
 import {
   type IconName,
   LinkIcon,
@@ -108,6 +108,7 @@ const navLinks: { title: string; href: string; icon: IconName }[] = [
 const sponsorTiers: {
   tier: string;
   note: string;
+  logoHeight: number;
   sponsors: {
     name: string;
     href: string;
@@ -120,6 +121,7 @@ const sponsorTiers: {
   {
     tier: "Platinum",
     note: "Headline partner",
+    logoHeight: 84,
     sponsors: [
       {
         name: "Platformatic",
@@ -134,11 +136,13 @@ const sponsorTiers: {
   {
     tier: "Diamond",
     note: "Premier partners",
+    logoHeight: 72,
     sponsors: [],
   },
   {
     tier: "Gold",
     note: "Product and platform partners",
+    logoHeight: 60,
     sponsors: [
       {
         name: "Socket",
@@ -159,11 +163,13 @@ const sponsorTiers: {
   {
     tier: "Silver",
     note: "Supporting partners",
+    logoHeight: 48,
     sponsors: [],
   },
   {
     tier: "Supporting",
     note: "Ecosystem supporters",
+    logoHeight: 40,
     sponsors: [
       {
         name: "OpenJS Foundation",
@@ -177,6 +183,7 @@ const sponsorTiers: {
   {
     tier: "Community",
     note: "Friends of the conference",
+    logoHeight: 56,
     sponsors: [
       {
         name: "CityJS London",
@@ -402,7 +409,13 @@ export default function Page() {
           </div>
           <div className="sponsor-stack">
             {sponsorTiers.map((tier) => (
-              <article key={tier.tier} className="sponsor-tier">
+              <article
+                key={tier.tier}
+                className="sponsor-tier"
+                style={
+                  { "--logo-h": `${tier.logoHeight}px` } as CSSProperties
+                }
+              >
                 <div className="tier-intro">
                   <p className="tier-name">{tier.tier}</p>
                   <span>{tier.note}</span>
