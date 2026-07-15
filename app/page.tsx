@@ -56,12 +56,6 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
     icon: "ticket",
   },
   {
-    title: "Call For Papers",
-    href: "https://forms.gle/g2Pa2dAPPAnNcz1J7",
-    blurb: "Send the talk you want developers to remember.",
-    icon: "mic",
-  },
-  {
     title: "Venue",
     href: "https://www.savoia.eu/it/savoia-hotel-regency.html",
     blurb: "Hotel Savoia Regency, Bologna.",
@@ -318,13 +312,6 @@ export default function Page() {
                 Get tickets
               </a>
               <a
-                className="button button-secondary"
-                href="https://forms.gle/g2Pa2dAPPAnNcz1J7"
-                {...externalLinkProps("Submit a CFP")}
-              >
-                Submit a CFP
-              </a>
-              <a
                 className="text-link"
                 href="https://www.youtube.com/watch?v=fqaJXVieDbQ&list=PLFVadYWYE9opLgYJ7i0j50oIgn6pqBOM7"
                 {...externalLinkProps("Watch the latest talk drop")}
@@ -408,7 +395,7 @@ export default function Page() {
           <div className="section-heading wide">
             <p className="eyebrow">Plan your visit</p>
             <h2 id="links-title">
-              Tickets, CFP, venue details, and the links you will actually use.
+              Tickets, venue details, and the links you will actually use.
             </h2>
             <p className="section-copy">
               Everything important is one click away, whether you are booking,

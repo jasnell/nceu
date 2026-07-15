@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "NodeConf EU 2026 | Bologna, Italy",
   description:
-    "NodeConf EU 2026 returns to Bologna with tickets, CFP, venue info, and conference links in one fast single-page experience.",
+    "NodeConf EU 2026 returns to Bologna with tickets, venue info, and conference links in one fast single-page experience.",
   icons: {
     icon: [
       { url: "/hexagon.svg", type: "image/svg+xml" },
