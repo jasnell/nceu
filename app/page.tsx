@@ -192,6 +192,13 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
+      {
+        name: "HeroDevs",
+        href: "https://www.herodevs.com/",
+        logo: "https://cdn.prod.website-files.com/62865614b39c464b76d339aa/668c0ec8bc50d24d58a40475_Logo%20Gradient%20Darkmode.svg",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-herodevs",
+      },
     ],
   },
   {

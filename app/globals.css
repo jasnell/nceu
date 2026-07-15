@@ -1153,6 +1153,20 @@ img {
 }
 
 
+/* HeroDevs only publishes a white-text logo, so it gets a dark plate
+   in light mode and sits directly on the background in dark mode. */
+.sponsor-logo-frame-herodevs {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(20, 28, 33, 0.14);
+  border-radius: 16px;
+  background: #141c21;
+}
+
+:root[data-theme='dark'] .sponsor-logo-frame-herodevs {
+  background: transparent;
+  border-color: transparent;
+}
+
 .community-partner-logo {
   max-width: var(--logo-h, 72px);
   height: var(--logo-h, 72px);
