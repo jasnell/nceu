@@ -185,6 +185,13 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
+      {
+        name: "Datadog",
+        href: "https://www.datadoghq.com/",
+        logo: "https://imgix.datadoghq.com/img/about/presskit/logo-h/dd_horizontal_purple.png",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
+      },
     ],
   },
   {
