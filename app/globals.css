@@ -293,12 +293,6 @@ img {
 .partners-section { animation-delay: 360ms; }
 .site-footer { animation-delay: 420ms; }
 
-.sponsor-placeholder strong {
-  font-family: var(--display);
-  font-variation-settings: "opsz" 36, "SOFT" 50, "WONK" 0;
-  font-weight: 600;
-}
-
 .sponsor-placeholder span {
   font-family: var(--mono);
   font-size: 0.74rem;
@@ -1019,8 +1013,7 @@ img {
   font-weight: 600;
 }
 
-.sponsor-placeholder span,
-.tier-intro span {
+.sponsor-placeholder span {
   color: var(--ink-soft);
 }
 
@@ -1053,14 +1046,6 @@ img {
   gap: 0.4rem;
   padding-right: 1.25rem;
   border-right: 1px solid var(--rule);
-}
-
-.tier-intro span {
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
 }
 
 .tier-name {
@@ -1100,8 +1085,7 @@ img {
   color: inherit;
 }
 
-.sponsor-tile strong,
-.sponsor-placeholder strong {
+.sponsor-tile strong {
   font-size: 0.98rem;
 }
 
