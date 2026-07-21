@@ -15,7 +15,9 @@ export type IconName =
   | "linkedin"
   | "spark"
   | "chain"
-  | "network";
+  | "network"
+  | "calendar"
+  | "speakers";
 
 const themeStorageKey = "nodeconf-theme";
 
@@ -233,6 +235,42 @@ export function LinkIcon({ name }: { name: IconName }) {
           />
         </svg>
       );
+    case "calendar":
+      return (
+        <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
+          <rect
+            x="4"
+            y="5.5"
+            width="16"
+            height="14"
+            rx="1.6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+          />
+          <path
+            d="M4 9.5h16M8 3.5v3M16 3.5v3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+          />
+          <path d="M8 13h2.4M8 16h2.4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        </svg>
+      );
+    case "speakers":
+      return (
+        <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.7" />
+          <path
+            d="M5.5 19.5a6.5 6.5 0 0 1 13 0"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
     default:
       return null;
   }
@@ -325,6 +363,45 @@ const footerLinks: { title: string; href: string; icon: IconName }[] = [
   },
 ];
 
+const navLinks: { title: string; href: string; icon: IconName }[] = [
+  { title: "Program", href: "/program", icon: "calendar" },
+  { title: "Speakers", href: "/speakers", icon: "speakers" },
+  { title: "Experience", href: "/#experience", icon: "spark" },
+  { title: "Partners", href: "/#partners", icon: "network" },
+];
+
+/**
+ * The site-wide navbar. Shared by every page so the header stays identical
+ * across the site; the in-page links are root-relative so they also work
+ * from the subpages.
+ */
+export function SiteHeader({
+  theme,
+  setTheme,
+}: {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}) {
+  return (
+    <header className="site-header">
+      <a className="brand-mark" href="/">
+        NodeConf EU 2026
+      </a>
+      <div className="header-actions">
+        <nav className="top-links" aria-label="Primary">
+          {navLinks.map((link) => (
+            <a key={link.title} href={link.href}>
+              <LinkIcon name={link.icon} />
+              <span>{link.title}</span>
+            </a>
+          ))}
+        </nav>
+        <ThemeSwitch theme={theme} setTheme={setTheme} />
+      </div>
+    </header>
+  );
+}
+
 export function SiteFooter() {
   return (
     <footer className="site-footer">
@@ -335,6 +412,14 @@ export function SiteFooter() {
         </address>
       </div>
       <div className="footer-links">
+        <a className="footer-link" href="/program">
+          <LinkIcon name="calendar" />
+          <span>Program</span>
+        </a>
+        <a className="footer-link" href="/speakers">
+          <LinkIcon name="speakers" />
+          <span>Speakers</span>
+        </a>
         <a className="footer-link" href="/code-of-conduct">
           <span>Code of Conduct</span>
         </a>

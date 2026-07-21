@@ -5,7 +5,7 @@ import {
   type IconName,
   LinkIcon,
   SiteFooter,
-  ThemeSwitch,
+  SiteHeader,
   externalLinkProps,
   useTheme,
 } from "./shared";
@@ -91,12 +91,6 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
     blurb: "Connect with the NodeConf EU community.",
     icon: "linkedin",
   },
-];
-
-const navLinks: { title: string; href: string; icon: IconName }[] = [
-  { title: "Experience", href: "#experience", icon: "spark" },
-  { title: "Links", href: "#links", icon: "chain" },
-  { title: "Partners", href: "#partners", icon: "network" },
 ];
 
 const sponsorTiers: {
@@ -279,22 +273,7 @@ export default function Page() {
         Skip to content
       </a>
 
-      <header className="site-header">
-        <a className="brand-mark" href="#main-content">
-          NodeConf EU 2026
-        </a>
-        <div className="header-actions">
-          <nav className="top-links" aria-label="Primary">
-            {navLinks.map((link) => (
-              <a key={link.title} href={link.href}>
-                <LinkIcon name={link.icon} />
-                <span>{link.title}</span>
-              </a>
-            ))}
-          </nav>
-          <ThemeSwitch theme={theme} setTheme={setTheme} />
-        </div>
-      </header>
+      <SiteHeader theme={theme} setTheme={setTheme} />
 
       <main id="main-content" tabIndex={-1}>
         <section className="hero-section" aria-labelledby="hero-title">

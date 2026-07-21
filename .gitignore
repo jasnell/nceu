@@ -30,3 +30,6 @@ npm-debug.log*
 
 # Wrangler
 .wrangler
+
+# Local working data (speaker/CFP form exports)
+*.csv
