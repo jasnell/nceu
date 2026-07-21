@@ -101,7 +101,6 @@ const navLinks: { title: string; href: string; icon: IconName }[] = [
 
 const sponsorTiers: {
   tier: string;
-  note: string;
   logoHeight: number;
   sponsors: {
     name: string;
@@ -113,9 +112,13 @@ const sponsorTiers: {
   }[];
 }[] = [
   {
-    tier: "Platinum",
-    note: "Headline partner",
+    tier: "Diamond",
     logoHeight: 84,
+    sponsors: [],
+  },
+  {
+    tier: "Platinum",
+    logoHeight: 72,
     sponsors: [
       {
         name: "Platformatic",
@@ -128,14 +131,7 @@ const sponsorTiers: {
     ],
   },
   {
-    tier: "Diamond",
-    note: "Premier partners",
-    logoHeight: 72,
-    sponsors: [],
-  },
-  {
     tier: "Gold",
-    note: "Product and platform partners",
     logoHeight: 60,
     sponsors: [
       {
@@ -156,13 +152,19 @@ const sponsorTiers: {
   },
   {
     tier: "Silver",
-    note: "Supporting partners",
     logoHeight: 48,
-    sponsors: [],
+    sponsors: [
+      {
+        name: "Igalia",
+        href: "https://www.igalia.com/",
+        logo: "/igalia.png",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame",
+      },
+    ],
   },
   {
     tier: "Supporting",
-    note: "Ecosystem supporters",
     logoHeight: 40,
     sponsors: [
       {
@@ -204,7 +206,6 @@ const sponsorTiers: {
   },
   {
     tier: "Community",
-    note: "Friends of the conference",
     logoHeight: 56,
     sponsors: [
       {
@@ -453,7 +454,6 @@ export default function Page() {
               >
                 <div className="tier-intro">
                   <p className="tier-name">{tier.tier}</p>
-                  <span>{tier.note}</span>
                 </div>
                 <div className="sponsor-logo-grid">
                   {tier.sponsors.length > 0 ? (
@@ -481,8 +481,7 @@ export default function Page() {
                     ))
                   ) : (
                     <div className="sponsor-placeholder">
-                      <strong>{tier.tier} partners</strong>
-                      <span>Announcement coming soon</span>
+                      <span>To be announced soon</span>
                     </div>
                   )}
                 </div>
