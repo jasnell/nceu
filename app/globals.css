@@ -1160,6 +1160,13 @@ img {
 
 /* Per-sponsor multipliers are optical corrections for logo density;
    the tier's --logo-h drives the actual hierarchy. */
+/* Cloudflare ships a mark, not a wordmark, so it reads larger than the
+   wordmarks below it at the same height. */
+.sponsor-logo-cloudflare {
+  height: calc(var(--logo-h, 52px) * 0.8);
+  max-width: calc(var(--logo-h, 52px) * 2.2);
+}
+
 .sponsor-logo-openjs {
   max-width: calc(var(--logo-h, 52px) * 4);
 }
