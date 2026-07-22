@@ -1,0 +1,246 @@
+# NodeConf EU 2026 — program
+#
+# This file is parsed at build time by `vite-content-plugin.ts` and rendered by
+# `app/program/page.tsx`. Edit the schedule here; no code changes are needed.
+#
+# Session `type` controls how a row is styled:
+#   talk   — a conference talk (optionally linked to a speaker)
+#   intro  — opening / welcome / closing remarks
+#   break  — coffee break, lunch, registration
+#   social — dinner and social events
+#
+# `speakerId` (optional) links a talk to a speaker file in content/speakers/
+# (the markdown filename without extension), turning the name into a link.
+#
+# `talkId` (optional) attaches an abstract from content/talks/ (again, the
+# markdown filename without extension). Sessions with a talkId expand in place
+# on the program page to reveal the abstract.
+
+title: Program
+tagline: Two days, one track, 24 talks.
+intro: >-
+  NodeConf EU 2026 is a single-track conference: everyone is in the same room
+  for every talk. Two days of sessions at Hotel Savoia Regency in Bologna, with
+  coffee breaks to recharge and a sit-down social dinner on the first evening.
+  Talk titles and speakers are announced on a rolling basis. Check back as the
+  lineup fills in.
+
+# Shown as a callout under the intro on /program. Remove once the schedule is locked.
+note: >-
+  This program is not final. Talks, speakers, and times are still being
+  confirmed, and the running order may shift before the event.
+
+days:
+  - date: "2026-09-29"
+    label: Day One
+    weekday: Tuesday
+    sessions:
+      - start: "08:30"
+        end: "09:00"
+        type: break
+        title: Registration & welcome coffee
+      - start: "09:00"
+        end: "09:10"
+        type: intro
+        title: Welcome to NodeConf EU 2026
+        speaker: NodeConf EU Staff
+      - start: "09:10"
+        end: "09:40"
+        type: talk
+        title: A common minimum Node.js subset for all runtimes
+        speaker: James M Snell
+        speakerId: james-snell
+        talkId: common-minimum-nodejs-subset
+      - start: "09:40"
+        end: "10:10"
+        type: talk
+        title: A Leak in the Shell — How Refactoring Autocomplete Broke Us and How We Fixed It
+        speaker: Anna Henningsen
+        speakerId: anna-henningsen
+        talkId: leak-in-the-shell
+      - start: "10:10"
+        end: "10:40"
+        type: talk
+        title: NodeJS Performance Tips & Tricks
+        speaker: Robert Nagy
+        speakerId: robert-nagy
+        talkId: nodejs-performance-tips-and-tricks
+      - start: "10:40"
+        end: "11:10"
+        type: break
+        title: Morning coffee break
+      - start: "11:10"
+        end: "11:40"
+        type: talk
+        title: The Four Memory Layers Inside Node.js
+        speaker: Tamar Twena-Stern
+        speakerId: tamar-twena-stern
+        talkId: four-memory-layers
+      - start: "11:40"
+        end: "12:10"
+        type: talk
+        title: Rethinking HTTP in Node.js
+        speaker: Marco Ippolito
+        speakerId: marco-ippolito
+        talkId: rethinking-http
+      - start: "12:10"
+        end: "12:40"
+        type: talk
+        title: The Past, Present, and Future of Node.js Observability
+        speaker: Bryan English
+        speakerId: bryan-english
+        talkId: nodejs-observability
+      - start: "12:40"
+        end: "14:00"
+        type: break
+        title: Lunch
+      - start: "14:00"
+        end: "14:30"
+        type: talk
+        title: Tracing Without the Tax
+        speaker: Abdelrahman Awad
+        speakerId: abdelrahman-awad
+        talkId: tracing-without-the-tax
+      - start: "14:30"
+        end: "15:00"
+        type: talk
+        title: diagnostics_channel Deserves Better
+        speaker: Lois Zhao
+        speakerId: lois-zhao
+        talkId: diagnostics-channel
+      - start: "15:00"
+        end: "15:30"
+        type: talk
+        title: Cyber Resilience for Application Developers
+        speaker: Aki Rose Braun
+        speakerId: aki-rose-braun
+        talkId: cyber-resilience
+      - start: "15:30"
+        end: "16:00"
+        type: break
+        title: Afternoon coffee break
+      - start: "16:00"
+        end: "16:30"
+        type: talk
+        title: Post-Quantum Cryptography in Node.js
+        speaker: Filip Skokan
+        speakerId: filip-skokan
+        talkId: post-quantum-cryptography
+      - start: "16:30"
+        end: "17:00"
+        type: talk
+        title: Getting ahead of supply-chain attacks in 2026
+        speaker: Zbyszek Tenerowicz
+        speakerId: zbyszek-tenerowicz
+        talkId: supply-chain-attacks-2026
+      - start: "17:00"
+        end: "17:30"
+        type: talk
+        title: Delete all CVEs
+        speaker: Mikola Lysenko
+        speakerId: mikola-lysenko
+        talkId: delete-all-cves
+      - start: "19:30"
+        end: "22:30"
+        type: social
+        title: Social dinner
+        location: Hotel Savoia Regency
+        description: A sit-down dinner at the venue — food, drinks, and the hallway track after hours.
+
+  - date: "2026-09-30"
+    label: Day Two
+    weekday: Wednesday
+    sessions:
+      - start: "08:30"
+        end: "09:00"
+        type: break
+        title: Welcome coffee
+      - start: "09:00"
+        end: "09:30"
+        type: talk
+        title: "The New Node.js Release Model: Why Node 27 Changes Everything"
+        speaker: Rafael Gonzaga
+        speakerId: rafael-gonzaga
+        talkId: new-release-model
+      - start: "09:30"
+        end: "10:00"
+        type: talk
+        title: "FFI: Crossing the Native Boundary in Node.js"
+        speaker: Paolo Insogna
+        speakerId: paolo-insogna
+        talkId: ffi-native-boundary
+      - start: "10:00"
+        end: "10:30"
+        type: talk
+        title: Performant, Parallelizable, Framework Agnostic Node.js Integration Testing
+        speaker: Ethan Arrowood
+        speakerId: ethan-arrowood
+        talkId: integration-testing
+      - start: "10:30"
+        end: "11:00"
+        type: break
+        title: Morning coffee break
+      - start: "11:00"
+        end: "11:30"
+        type: talk
+        title: "Replacing What Works: doc-kit and the Next 10 Years of Node.js Documentation"
+        speaker: Brian Muenzenmeyer
+        speakerId: brian-muenzenmeyer
+        talkId: doc-kit
+      - start: "11:30"
+        end: "12:00"
+        type: talk
+        title: "Federated, but Contained: Exploring ShadowRealm and SES for Module Federation on Node.js"
+        speaker: Néstor López
+        speakerId: nestor-lopez
+        talkId: federated-but-contained
+      - start: "12:00"
+        end: "12:30"
+        type: talk
+        title: What if everything was JavaScript? An exploratory runtime experiment
+        speaker: Stephen Belanger
+        speakerId: stephen-belanger
+        talkId: everything-was-javascript
+      - start: "12:30"
+        end: "14:00"
+        type: break
+        title: Lunch
+      - start: "14:00"
+        end: "14:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "14:30"
+        end: "15:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "15:00"
+        end: "15:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "15:30"
+        end: "16:00"
+        type: break
+        title: Afternoon coffee break
+      - start: "16:00"
+        end: "16:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "16:30"
+        end: "17:00"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "17:00"
+        end: "17:30"
+        type: talk
+        title: To be announced
+        speaker: To be announced
+      - start: "17:30"
+        end: "17:45"
+        type: intro
+        title: Closing remarks
+        speaker: NodeConf EU Staff

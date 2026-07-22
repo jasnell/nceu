@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteFooter, ThemeSwitch, useTheme } from "../shared";
+import { SiteFooter, SiteHeader, useTheme } from "../shared";
 
 export default function CodeOfConductPage() {
   const { theme, setTheme } = useTheme();
@@ -11,19 +11,7 @@ export default function CodeOfConductPage() {
         Skip to content
       </a>
 
-      <header className="site-header">
-        <a className="brand-mark" href="/">
-          NodeConf EU 2026
-        </a>
-        <div className="header-actions">
-          <nav className="top-links" aria-label="Primary">
-            <a href="/">
-              <span>Back to home</span>
-            </a>
-          </nav>
-          <ThemeSwitch theme={theme} setTheme={setTheme} />
-        </div>
-      </header>
+      <SiteHeader theme={theme} setTheme={setTheme} />
 
       <main id="main-content" tabIndex={-1}>
         <article className="doc-section" aria-labelledby="coc-title">
