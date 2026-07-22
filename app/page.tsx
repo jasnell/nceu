@@ -108,7 +108,15 @@ const sponsorTiers: {
   {
     tier: "Diamond",
     logoHeight: 84,
-    sponsors: [],
+    sponsors: [
+      {
+        name: "Cloudflare",
+        href: "https://www.cloudflare.com/",
+        logo: "/cloudflare.svg",
+        logoClassName: "sponsor-logo sponsor-logo-cloudflare",
+        logoFrameClassName: "sponsor-logo-frame",
+      },
+    ],
   },
   {
     tier: "Platinum",
