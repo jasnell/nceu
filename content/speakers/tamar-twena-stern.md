@@ -1,6 +1,7 @@
 ---
 name: Tamar Twena-Stern
 role: Tech Lead & Architect
+photo: /speakers/tamar-twena-stern.jpg
 links:
   x: https://x.com/SternTwena
   linkedin: https://www.linkedin.com/in/tamarstern

@@ -1,6 +1,7 @@
 ---
 name: Paolo Insogna
 role: Principal Engineer, Platformatic
+photo: /speakers/paolo-insogna.jpg
 links:
   x: https://x.com/p_insogna
 ---

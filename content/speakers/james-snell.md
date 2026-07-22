@@ -1,6 +1,7 @@
 ---
 name: James M Snell
 role: Principal Engineer, Cloudflare
+photo: /speakers/james-snell.jpg
 links:
   github: https://github.com/jasnell
   bluesky: https://bsky.app/profile/jasnell.me

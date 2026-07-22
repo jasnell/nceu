@@ -1,6 +1,7 @@
 ---
 name: Filip Skokan
 role: Staff Engineer, Okta
+photo: /speakers/filip-skokan.jpg
 links:
   github: https://github.com/panva
 ---

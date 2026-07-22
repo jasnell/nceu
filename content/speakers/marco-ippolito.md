@@ -1,6 +1,7 @@
 ---
 name: Marco Ippolito
 role: Senior Security Engineer, HeroDevs
+photo: /speakers/marco-ippolito.jpg
 ---
 
 Marco is a Senior Security Engineer at HeroDevs. Active contributor, releaser,
