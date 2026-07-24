@@ -198,7 +198,7 @@ const sponsorTiers: {
       },
       {
         name: "HeroDevs",
-        href: "https://www.herodevs.com/",
+        href: "https://www.herodevs.com/support/node-nes?utm_source=event&utm_medium=speaker&utm_campaign=2026q3_node-v20-eol_emea",
         logo: "https://cdn.prod.website-files.com/62865614b39c464b76d339aa/668c0ec8bc50d24d58a40475_Logo%20Gradient%20Darkmode.svg",
         logoClassName: "sponsor-logo",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-herodevs",
