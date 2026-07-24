@@ -91,6 +91,12 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
     blurb: "Connect with the NodeConf EU community.",
     icon: "linkedin",
   },
+  {
+    title: "Keet",
+    href: "https://keet.io/chat/#gfo56pqko64awqxoiay79tf84hr6mczsgxemazka4npzmty9ud7kei76t7q4websj76zocrzbz6fwuc9kcema31cmds8b8fr4qofkaefr9ybnpzgy698d6xp63nsn1nck6ex88deh7qedkyzyg64mozmdnwhhyedsyrto9ozo6frjraebsbewtrubbtqyya&title=NodeConf.eu",
+    blurb: "Join the NodeConf EU group on Keet, peer-to-peer.",
+    icon: "keet",
+  },
 ];
 
 const sponsorTiers: {
