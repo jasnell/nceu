@@ -54,6 +54,7 @@ Agent-facing notes for the NodeConf EU 2026 website.
 
 - Sponsor tiers are data-driven from `sponsorTiers` in `app/page.tsx`.
 - Some sponsor logos need dark-mode support via logo frame treatments instead of blanket filters.
+- Single-color logos instead set `logoDark` alongside `logo`, which renders both assets and swaps them on the theme (`sponsor-logo-variant-light` / `-dark`).
 - Empty sponsor tiers should align visually with populated tiers.
 
 ## Validation Expectations

@@ -106,9 +106,11 @@ const sponsorTiers: {
     name: string;
     href: string;
     logo: string;
+    // Set when the sponsor only ships single-color art: `logo` is then the
+    // light-theme asset and this one is swapped in for dark.
+    logoDark?: string;
     logoClassName: string;
     logoFrameClassName: string;
-    logoVariant?: "platformatic-theme-aware";
   }[];
 }[] = [
   {
@@ -131,10 +133,10 @@ const sponsorTiers: {
       {
         name: "Platformatic",
         href: "https://platformatic.dev/",
-        logo: "",
+        logo: "/platformatic-text-light.svg",
+        logoDark: "/platformatic-text-dark.svg",
         logoClassName: "sponsor-logo sponsor-logo-platformatic",
         logoFrameClassName: "sponsor-logo-frame",
-        logoVariant: "platformatic-theme-aware",
       },
     ],
   },
@@ -155,6 +157,22 @@ const sponsorTiers: {
         logo: "/nxtedition.gif",
         logoClassName: "sponsor-logo sponsor-logo-nxtedition",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-nxtedition",
+      },
+      {
+        name: "Zephyr Cloud",
+        href: "https://zephyr-cloud.io/",
+        logo: "/zephyr-light.svg",
+        logoDark: "/zephyr-dark.svg",
+        logoClassName: "sponsor-logo sponsor-logo-zephyr",
+        logoFrameClassName: "sponsor-logo-frame",
+      },
+      {
+        name: "Tether",
+        href: "https://tether.io/data/",
+        logo: "/tether-light.svg",
+        logoDark: "/tether-dark.svg",
+        logoClassName: "sponsor-logo sponsor-logo-tether",
+        logoFrameClassName: "sponsor-logo-frame",
       },
     ],
   },
@@ -248,18 +266,28 @@ const sponsorTiers: {
   },
 ];
 
-function PlatformaticLogo({ className }: { className: string }) {
+function ThemeAwareSponsorLogo({
+  className,
+  light,
+  dark,
+}: {
+  className: string;
+  light: string;
+  dark: string;
+}) {
   return (
     <span className={className} aria-hidden="true">
       <img
-        className="platformatic-logo-variant platformatic-logo-variant-light"
-        src="/platformatic-text-light.svg"
+        className="sponsor-logo-variant sponsor-logo-variant-light"
+        src={light}
         alt=""
+        loading="lazy"
       />
       <img
-        className="platformatic-logo-variant platformatic-logo-variant-dark"
-        src="/platformatic-text-dark.svg"
+        className="sponsor-logo-variant sponsor-logo-variant-dark"
+        src={dark}
         alt=""
+        loading="lazy"
       />
     </span>
   );
@@ -458,8 +486,12 @@ export default function Page() {
                         {...externalLinkProps(sponsor.name)}
                       >
                         <span className={sponsor.logoFrameClassName}>
-                          {sponsor.logoVariant === "platformatic-theme-aware" ? (
-                            <PlatformaticLogo className={sponsor.logoClassName} />
+                          {sponsor.logoDark ? (
+                            <ThemeAwareSponsorLogo
+                              className={sponsor.logoClassName}
+                              light={sponsor.logo}
+                              dark={sponsor.logoDark}
+                            />
                           ) : (
                             <img
                               className={sponsor.logoClassName}
