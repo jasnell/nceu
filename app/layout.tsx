@@ -1,16 +1,43 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const title = "NodeConf EU 2026 | Bologna, Italy";
+const description =
+  "NodeConf EU 2026 returns to Bologna with tickets, venue info, and conference links in one fast single-page experience.";
+
 export const metadata: Metadata = {
-  title: "NodeConf EU 2026 | Bologna, Italy",
-  description:
-    "NodeConf EU 2026 returns to Bologna with tickets, venue info, and conference links in one fast single-page experience.",
+  metadataBase: new URL("https://nodeconf.eu"),
+  title,
+  description,
   icons: {
     icon: [
       { url: "/hexagon.svg", type: "image/svg+xml" },
       { url: "/favicon.png", type: "image/png" },
     ],
     shortcut: "/hexagon.svg",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "NodeConf EU 2026",
+    url: "/",
+    title,
+    description,
+    locale: "en_US",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 621,
+        type: "image/png",
+        alt: "NodeConf EU 2026 — a sharper, warmer Node.js gathering for Europe. 29-30 September, Bologna, Italy, Hotel Savoia Regency.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og.png"],
   },
 };
 
