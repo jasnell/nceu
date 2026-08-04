@@ -233,8 +233,10 @@ days:
       - start: "16:00"
         end: "16:30"
         type: talk
-        title: To be announced
-        speaker: To be announced
+        title: Improving the capabilities of Emscripten, WebAssembly and Rust
+        speaker: Guy Bedford
+        speakerId: guy-bedford
+        talkId: emscripten-wasm-rust
       - start: "16:30"
         end: "17:00"
         type: talk
