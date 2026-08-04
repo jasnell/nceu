@@ -240,8 +240,10 @@ days:
       - start: "16:30"
         end: "17:00"
         type: talk
-        title: To be announced
-        speaker: To be announced
+        title: Eliminate Infrastructure with Pear CLI & Bare JS Runtime
+        speaker: David Mark Clements
+        speakerId: david-mark-clements
+        talkId: eliminate-infrastructure
       - start: "17:00"
         end: "17:30"
         type: talk
