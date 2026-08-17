@@ -15,7 +15,12 @@ type Speaker = {
   html: string;
 };
 
-type Talk = { id: string; title: string; speakerId?: string };
+type Talk = {
+  id: string;
+  title: string;
+  speakerId?: string;
+  coSpeakerIds?: string[];
+};
 
 // Loaded and parsed at build time by `vite-content-plugin.ts`.
 const modules = import.meta.glob<{ default: Omit<Speaker, "id"> }>(
@@ -38,10 +43,13 @@ const contentFiles = <T,>(mods: Record<string, { default: T }>) =>
 
 // A speaker's talks come from content/talks/, so the title shown here is
 // always the one on the program and the anchor is guaranteed to resolve.
+// A co-presented talk appears on every one of its speakers' cards.
 const talksBySpeaker = contentFiles<Omit<Talk, "id">>(talkModules).reduce<
   Record<string, Talk[]>
 >((acc, talk) => {
-  if (talk.speakerId) (acc[talk.speakerId] ??= []).push(talk);
+  for (const id of [talk.speakerId, ...(talk.coSpeakerIds ?? [])]) {
+    if (id) (acc[id] ??= []).push(talk);
+  }
   return acc;
 }, {});
 

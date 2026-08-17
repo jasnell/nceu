@@ -12,6 +12,10 @@
 # `speakerId` (optional) links a talk to a speaker file in content/speakers/
 # (the markdown filename without extension), turning the name into a link.
 #
+# `coSpeakerIds` (optional) lists further speaker ids for a co-presented talk.
+# Their names are read from their speaker files, so only the ids go here, and
+# the same list must be repeated in the talk file.
+#
 # `talkId` (optional) attaches an abstract from content/talks/ (again, the
 # markdown filename without extension). Sessions with a talkId expand in place
 # on the program page to reveal the abstract.
@@ -161,6 +165,8 @@ days:
         title: "The New Node.js Release Model: Why Node 27 Changes Everything"
         speaker: Rafael Gonzaga
         speakerId: rafael-gonzaga
+        coSpeakerIds:
+          - antoine-du-hamel
         talkId: new-release-model
       - start: "09:30"
         end: "10:00"
