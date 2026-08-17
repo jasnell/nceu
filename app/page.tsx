@@ -224,13 +224,6 @@ const sponsorTiers: {
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-herodevs",
       },
       {
-        name: "Harper",
-        href: "https://www.harpersystems.dev/",
-        logo: "/harper.png",
-        logoClassName: "sponsor-logo",
-        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-harper",
-      },
-      {
         name: "Nearform",
         href: "https://nearform.com/",
         logo: "/nearform.svg",
