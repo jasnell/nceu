@@ -1070,6 +1070,10 @@ img {
   align-items: center;
 }
 
+.sponsor-logo-grid-4cols {
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+}
+
 .sponsor-tile,
 .sponsor-placeholder {
   display: grid;

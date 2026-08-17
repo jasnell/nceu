@@ -102,6 +102,7 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
 const sponsorTiers: {
   tier: string;
   logoHeight: number;
+  layoutCols?: '4cols';
   sponsors: {
     name: string;
     href: string;
@@ -192,6 +193,7 @@ const sponsorTiers: {
   {
     tier: "Supporting",
     logoHeight: 40,
+    layoutCols: '4cols',
     sponsors: [
       {
         name: "OpenJS Foundation",
@@ -227,6 +229,13 @@ const sponsorTiers: {
         logo: "/harper.png",
         logoClassName: "sponsor-logo",
         logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-harper",
+      },
+      {
+        name: "Nearform",
+        href: "https://nearform.com/",
+        logo: "/nearform.svg",
+        logoClassName: "sponsor-logo",
+        logoFrameClassName: "sponsor-logo-frame sponsor-logo-frame-quiet",
       },
     ],
   },
@@ -476,7 +485,13 @@ export default function Page() {
                 <div className="tier-intro">
                   <p className="tier-name">{tier.tier}</p>
                 </div>
-                <div className="sponsor-logo-grid">
+                <div
+                  className={`sponsor-logo-grid${
+                    tier.layoutCols
+                      ? ` sponsor-logo-grid-${tier.layoutCols}`
+                      : ""
+                  }`}
+                >
                   {tier.sponsors.length > 0 ? (
                     tier.sponsors.map((sponsor) => (
                       <a
