@@ -26,6 +26,7 @@ Agent-facing notes for the NodeConf EU 2026 website.
 - `vite-content-plugin.ts`: build-time loader that inlines `*.yaml`/`*.yml` as data and renders `*.md` (YAML frontmatter + `marked` body) to `{ ...frontmatter, html }`. Runs during the build, so no YAML/Markdown parser ships to the worker.
 - `content/program.yaml`: the talk schedule, rendered by `app/program/page.tsx`.
 - `content/speakers/*.md`: one file per speaker (frontmatter + Markdown bio), rendered by `app/speakers/page.tsx`. Files starting with `_` (e.g. `_template.md`) are ignored; the filename is the speaker id used by `speakerId` in `program.yaml` and in `content/talks/*.md`. Speakers are listed alphabetically by name, and each card links its talks to `/program#<talkId>`.
+- Co-presented talks: the extra speakers go in `coSpeakerIds` on both the talk file and its session in `program.yaml` (the checker fails if the two lists differ). The program page reads their names from their speaker files and joins them with `&`; the talk shows up on every listed speaker's card.
 - `content/talks/*.md`: one file per talk (frontmatter + Markdown abstract). The filename is the talk id used by `talkId` in `program.yaml`; sessions with a `talkId` expand in place on the program page to reveal the abstract. Abstracts live here only — speaker bios stay biographical so the text is not duplicated across the two pages.
 
 ## Commands

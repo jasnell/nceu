@@ -13,6 +13,8 @@ type Session = {
   title: string;
   speaker?: string;
   speakerId?: string;
+  /** Further speakers of a co-presented talk; names come from their files. */
+  coSpeakerIds?: string[];
   talkId?: string;
   location?: string;
   description?: string;
@@ -24,6 +26,18 @@ type Talk = { title: string; speaker?: string; speakerId?: string; html: string 
 const talkModules = import.meta.glob<{ default: Talk }>(
   "../../content/talks/*.md",
   { eager: true },
+);
+
+const speakerModules = import.meta.glob<{ default: { name: string } }>(
+  "../../content/speakers/*.md",
+  { eager: true },
+);
+
+const speakerNames: Record<string, string> = Object.fromEntries(
+  Object.entries(speakerModules).map(([path, mod]) => [
+    (path.split("/").pop() ?? "").replace(/\.md$/, ""),
+    mod.default.name,
+  ]),
 );
 
 const talks: Record<string, Talk> = Object.fromEntries(
@@ -50,6 +64,23 @@ const typeLabels: Record<SessionType, string> = {
 };
 
 const pad = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * The people credited on a session: the `speaker` string first (which may be
+ * something with no speaker file, like "To be announced"), then any
+ * `coSpeakerIds`, named from their speaker files so the two cannot drift.
+ */
+function sessionPeople(session: Session): { name: string; id?: string }[] {
+  const people = session.speaker
+    ? [{ name: session.speaker, id: session.speakerId }]
+    : [];
+
+  for (const id of session.coSpeakerIds ?? []) {
+    people.push({ name: speakerNames[id] ?? id, id });
+  }
+
+  return people;
+}
 
 function formatDate(date: string): string {
   return new Date(`${date}T00:00:00`).toLocaleDateString("en-GB", {
@@ -183,6 +214,7 @@ export default function ProgramPage() {
                 }
 
                 const talk = session.talkId ? talks[session.talkId] : undefined;
+                const people = sessionPeople(session);
                 const isOpen = talk != null && openTalk === session.talkId;
                 const panelId = talk ? `abstract-${session.talkId}` : undefined;
 
@@ -219,15 +251,18 @@ export default function ProgramPage() {
                       ) : (
                         <p className="run-name">{session.title}</p>
                       )}
-                      {session.speaker ? (
+                      {people.length > 0 ? (
                         <p className="run-people">
-                          {session.speakerId ? (
-                            <a href={`/speakers#${session.speakerId}`}>
-                              {session.speaker}
-                            </a>
-                          ) : (
-                            session.speaker
-                          )}
+                          {people.map((person, pi) => (
+                            <span key={`${person.name}-${pi}`}>
+                              {pi > 0 ? " & " : null}
+                              {person.id ? (
+                                <a href={`/speakers#${person.id}`}>{person.name}</a>
+                              ) : (
+                                person.name
+                              )}
+                            </span>
+                          ))}
                         </p>
                       ) : null}
                       {talk ? (

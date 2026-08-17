@@ -47,6 +47,24 @@ function readMarkdownDir(dir: string): Doc[] {
     });
 }
 
+/**
+ * `coSpeakerIds` lists the additional speakers of a co-presented talk. Returns
+ * the ids, or an error message when the field is malformed.
+ */
+function coSpeakerIds(
+  data: Record<string, unknown>,
+  where: string,
+  errors: string[],
+): string[] {
+  const value = data.coSpeakerIds;
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.some((id) => typeof id !== "string" || !id)) {
+    errors.push(`${where}: "coSpeakerIds" must be a list of speaker ids`);
+    return [];
+  }
+  return value as string[];
+}
+
 function minutes(time: string): number {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
@@ -125,6 +143,14 @@ export function validateContent(root: string = REPO_ROOT): Report {
     } else if (!speakerIds.has(speakerId)) {
       errors.push(`${t.file}: speakerId "${speakerId}" has no content/speakers/${speakerId}.md`);
     }
+
+    for (const id of coSpeakerIds(t.data, t.file, errors)) {
+      if (!speakerIds.has(id)) {
+        errors.push(`${t.file}: coSpeakerIds entry "${id}" has no content/speakers/${id}.md`);
+      } else if (id === speakerId) {
+        errors.push(`${t.file}: coSpeakerIds repeats "${id}", which is already the speaker`);
+      }
+    }
   }
 
   // --- program -------------------------------------------------------------
@@ -190,6 +216,15 @@ export function validateContent(root: string = REPO_ROOT): Report {
         errors.push(`${label}: speakerId "${speakerId}" has no content/speakers/${speakerId}.md`);
       }
 
+      const sessionCoSpeakers = coSpeakerIds(session, label, errors);
+      for (const id of sessionCoSpeakers) {
+        if (!speakerIds.has(id)) {
+          errors.push(`${label}: coSpeakerIds entry "${id}" has no content/speakers/${id}.md`);
+        } else if (id === speakerId) {
+          errors.push(`${label}: coSpeakerIds repeats "${id}", which is already the speaker`);
+        }
+      }
+
       const talkId = session.talkId as string | undefined;
       if (talkId === undefined) continue;
 
@@ -219,6 +254,17 @@ export function validateContent(root: string = REPO_ROOT): Report {
             `("${talk.data.speakerId}")`,
         );
       }
+
+      // Both pages read their own file, so a co-speaker listed in only one of
+      // them would appear on the program but not on the speaker card, or vice
+      // versa.
+      const talkCoSpeakers = coSpeakerIds(talk.data, talk.file, []);
+      if (sessionCoSpeakers.join(",") !== talkCoSpeakers.join(",")) {
+        errors.push(
+          `${label}: coSpeakerIds [${sessionCoSpeakers.join(", ")}] differs from ` +
+            `content/talks/${talkId}.md [${talkCoSpeakers.join(", ")}]`,
+        );
+      }
     }
   }
 
@@ -229,7 +275,12 @@ export function validateContent(root: string = REPO_ROOT): Report {
     }
   }
 
-  const speakersWithTalks = new Set(talks.map((t) => t.data.speakerId as string));
+  const speakersWithTalks = new Set(
+    talks.flatMap((t) => [
+      t.data.speakerId as string,
+      ...coSpeakerIds(t.data, t.file, []),
+    ]),
+  );
   for (const s of speakers) {
     if (!speakersWithTalks.has(s.id)) {
       warnings.push(`${s.file}: no talk in content/talks/ points at "${s.id}" — the card will show no talk`);

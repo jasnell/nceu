@@ -148,6 +148,64 @@ describe("content drift is caught", () => {
   });
 });
 
+describe("co-presented talks", () => {
+  const twoSpeakers = {
+    "ada-lovelace": `---\nname: Ada Lovelace\n---\n\nA bio.\n`,
+    "charles-babbage": `---\nname: Charles Babbage\n---\n\nA bio.\n`,
+  };
+
+  test("a talk and session listing the same co-speaker passes", () => {
+    const errors = errorsFor({
+      speakers: twoSpeakers,
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\ncoSpeakerIds:\n  - charles-babbage\n---\n\nAn abstract.\n`,
+      },
+      program: `title: Program\ndays:\n  - date: "2026-09-29"\n    label: Day One\n    sessions:\n      - start: "09:00"\n        type: talk\n        title: The Analytical Engine\n        speakerId: ada-lovelace\n        coSpeakerIds:\n          - charles-babbage\n        talkId: analytical-engine\n`,
+    });
+    assert.deepEqual(errors, []);
+  });
+
+  test("a co-speaker with no speaker file", () => {
+    const errors = errorsFor({
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\ncoSpeakerIds:\n  - ghost\n---\n\nAn abstract.\n`,
+      },
+      program: `title: Program\ndays:\n  - date: "2026-09-29"\n    label: Day One\n    sessions:\n      - start: "09:00"\n        type: talk\n        title: The Analytical Engine\n        speakerId: ada-lovelace\n        coSpeakerIds:\n          - ghost\n        talkId: analytical-engine\n`,
+    });
+    assert.ok(matching(errors, 'coSpeakerIds entry "ghost"').length > 0, errors.join("\n"));
+  });
+
+  test("a co-speaker listed on the talk but not on the session", () => {
+    const errors = errorsFor({
+      speakers: twoSpeakers,
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\ncoSpeakerIds:\n  - charles-babbage\n---\n\nAn abstract.\n`,
+      },
+    });
+    assert.ok(matching(errors, "coSpeakerIds []").length > 0, errors.join("\n"));
+  });
+
+  test("a co-speaker who is also the speaker", () => {
+    const errors = errorsFor({
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\ncoSpeakerIds:\n  - ada-lovelace\n---\n\nAn abstract.\n`,
+      },
+      program: `title: Program\ndays:\n  - date: "2026-09-29"\n    label: Day One\n    sessions:\n      - start: "09:00"\n        type: talk\n        title: The Analytical Engine\n        speakerId: ada-lovelace\n        coSpeakerIds:\n          - ada-lovelace\n        talkId: analytical-engine\n`,
+    });
+    assert.ok(matching(errors, "already the speaker").length > 0, errors.join("\n"));
+  });
+
+  test("coSpeakerIds that is not a list", () => {
+    const errors = errorsFor({
+      speakers: twoSpeakers,
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\ncoSpeakerIds: charles-babbage\n---\n\nAn abstract.\n`,
+      },
+    });
+    assert.ok(matching(errors, "must be a list of speaker ids").length > 0, errors.join("\n"));
+  });
+});
+
 describe("schedule mistakes are caught", () => {
   test("a session that ends before it starts", () => {
     const errors = errorsFor({

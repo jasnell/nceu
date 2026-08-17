@@ -5,6 +5,10 @@
 title: Talk Title
 speaker: Full Name
 speakerId: speaker-file-name   # matches content/speakers/<id>.md
+# For a co-presented talk, list the other speakers here (same ids as above);
+# the session in content/program.yaml needs the same list.
+# coSpeakerIds:
+#   - other-speaker-file-name
 ---
 
 The talk abstract, written in **Markdown**. This is what attendees see when

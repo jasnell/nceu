@@ -2,6 +2,8 @@
 title: "The New Node.js Release Model: Why Node 27 Changes Everything"
 speaker: Rafael Gonzaga
 speakerId: rafael-gonzaga
+coSpeakerIds:
+  - antoine-du-hamel
 ---
 
 Release schedules sound boring until you realize how much of the ecosystem
