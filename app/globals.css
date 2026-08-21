@@ -1216,6 +1216,14 @@ img {
   max-width: none;
 }
 
+/* Typesense is a wide 275:56 lockup, so width drives the size and the height
+   follows, like Tether above. */
+.sponsor-logo-typesense {
+  width: calc(var(--logo-h, 52px) * 4.2);
+  height: calc(var(--logo-h, 52px) * 0.86);
+  max-width: none;
+}
+
 .sponsor-logo-frame-nxtedition {
   padding: 0.55rem 0.75rem;
   border: 1px solid transparent;

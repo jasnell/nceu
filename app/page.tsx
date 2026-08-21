@@ -188,6 +188,14 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo",
         logoFrameClassName: "sponsor-logo-frame",
       },
+      {
+        name: "Typesense",
+        href: "https://typesense.org/",
+        logo: "/typesense-light.svg",
+        logoDark: "/typesense-dark.svg",
+        logoClassName: "sponsor-logo sponsor-logo-typesense",
+        logoFrameClassName: "sponsor-logo-frame",
+      },
     ],
   },
   {
