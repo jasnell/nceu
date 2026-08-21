@@ -1216,9 +1216,10 @@ img {
   max-width: none;
 }
 
-/* Typesense is a wide 275:56 lockup, so width drives the size and the height
-   follows, like Tether above. */
-.sponsor-logo-typesense {
+/* Typesense (275:56) and vlt (859:175) are wide lockups, so width drives the
+   size and the height follows, like Tether above. */
+.sponsor-logo-typesense,
+.sponsor-logo-vlt {
   width: calc(var(--logo-h, 52px) * 4.2);
   height: calc(var(--logo-h, 52px) * 0.86);
   max-width: none;

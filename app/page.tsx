@@ -196,6 +196,14 @@ const sponsorTiers: {
         logoClassName: "sponsor-logo sponsor-logo-typesense",
         logoFrameClassName: "sponsor-logo-frame",
       },
+      {
+        name: "vlt",
+        href: "https://www.vlt.io/",
+        logo: "/vlt-light.svg",
+        logoDark: "/vlt-dark.svg",
+        logoClassName: "sponsor-logo sponsor-logo-vlt",
+        logoFrameClassName: "sponsor-logo-frame",
+      },
     ],
   },
   {
