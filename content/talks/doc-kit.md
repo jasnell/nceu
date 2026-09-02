@@ -2,6 +2,8 @@
 title: "Replacing What Works: doc-kit and the Next 10 Years of Node.js Documentation"
 speaker: Brian Muenzenmeyer
 speakerId: brian-muenzenmeyer
+coSpeakerIds:
+  - claudio-wunder
 ---
 
 The toolchain generating Node.js API documentation dates back to 2012 and
