@@ -144,6 +144,12 @@ days:
         speaker: Mikola Lysenko
         speakerId: mikola-lysenko
         talkId: delete-all-cves
+      - start: "18:00"
+        end: "19:30"
+        type: social
+        title: Happy hour
+        location: Hotel Savoia Regency
+        description: Drinks and conversation after the last talk, sponsored by Typesense.
       - start: "19:30"
         end: "22:30"
         type: social
