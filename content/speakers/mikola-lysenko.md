@@ -1,6 +1,7 @@
 ---
 name: Mikola Lysenko
 role: Principal Software Engineer, Socket
+photo: /speakers/mikola-lysenko.jpg
 links:
   website: https://0fps.net
   github: https://github.com/mikolalysenko

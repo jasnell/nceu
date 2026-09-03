@@ -1,5 +1,6 @@
 ---
 name: David Mark Clements
+photo: /speakers/david-mark-clements.jpg
 ---
 
 David Mark Clements has been writing JavaScript since 1996. A Node.js

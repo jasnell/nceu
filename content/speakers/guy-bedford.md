@@ -1,6 +1,7 @@
 ---
 name: Guy Bedford
 role: Systems Engineer, Cloudflare
+photo: /speakers/guy-bedford.jpg
 links:
   github: https://github.com/guybedford
 ---

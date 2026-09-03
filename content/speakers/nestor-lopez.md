@@ -1,6 +1,7 @@
 ---
 name: Néstor López
 role: Platform Engineer, Zephyr Cloud
+photo: /speakers/nestor-lopez.jpg
 links:
   website: https://nstlopez.com
   x: https://x.com/nstlopez
