@@ -1,6 +1,7 @@
 ---
 name: Marina Ionel
 role: Frontend Tech Lead, UNIwise
+photo: /speakers/marina-ionel.jpg
 links:
   linkedin: https://www.linkedin.com/in/ionelmarina/
 ---

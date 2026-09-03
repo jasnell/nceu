@@ -261,8 +261,10 @@ days:
       - start: "17:00"
         end: "17:30"
         type: talk
-        title: To be announced
-        speaker: To be announced
+        title: Overview of V8 heap management
+        speaker: Caio Lima
+        speakerId: caio-lima
+        talkId: v8-heap-management
       - start: "17:30"
         end: "17:45"
         type: intro

@@ -1,6 +1,7 @@
 ---
 name: Yagiz Nizipli
 role: Member of Technical Staff, xAI
+photo: /speakers/yagiz-nizipli.jpg
 links:
   website: https://yagiz.co
   x: https://x.com/yagiznizipli

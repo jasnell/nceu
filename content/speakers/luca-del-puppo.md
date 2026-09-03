@@ -1,6 +1,7 @@
 ---
 name: Luca Del Puppo
 role: Senior Software Engineer, Nearform
+photo: /speakers/luca-del-puppo.jpg
 links:
   linkedin: https://www.linkedin.com/in/lucadelpuppo/
 ---
