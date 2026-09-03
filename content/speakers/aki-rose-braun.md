@@ -1,6 +1,7 @@
 ---
 name: Aki Rose Braun
 role: Engineer & Consultant
+photo: /speakers/aki-rose-braun.jpg
 ---
 
 Aki Rose is an engineer and consultant frequently shepherding technical
