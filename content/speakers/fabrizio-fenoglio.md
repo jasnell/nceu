@@ -1,6 +1,7 @@
 ---
 name: Fabrizio Fenoglio
 role: Lead Storage Engineer, Supabase
+photo: /speakers/fabrizio-fenoglio.jpg
 links:
   github: https://github.com/fenos
 ---
