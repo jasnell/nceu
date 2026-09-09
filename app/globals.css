@@ -1581,14 +1581,16 @@ img {
    ============================================================================ */
 
 .program-page main,
-.cast-page main {
+.cast-page main,
+.photos-page main {
   display: grid;
   gap: clamp(1.75rem, 3.6vw, 3.25rem);
 }
 
 /* ---- Shared masthead ----------------------------------------------------- */
 .run-masthead,
-.cast-masthead {
+.cast-masthead,
+.photos-masthead {
   position: relative;
   overflow: hidden;
   display: grid;
@@ -1602,7 +1604,8 @@ img {
 
 /* oversized ghost numerals bleeding off the right edge */
 .run-masthead::before,
-.cast-masthead::before {
+.cast-masthead::before,
+.photos-masthead::before {
   position: absolute;
   right: -0.06em;
   bottom: -0.18em;
@@ -1621,15 +1624,18 @@ img {
 
 .run-masthead::before { content: "EU26"; }
 .cast-masthead::before { content: "NCEU"; }
+.photos-masthead::before { content: "2026"; }
 
 .run-masthead > *,
-.cast-masthead > * {
+.cast-masthead > *,
+.photos-masthead > * {
   position: relative;
   z-index: 1;
 }
 
 .run-title,
-.cast-title {
+.cast-title,
+.photos-title {
   margin: 0;
   text-wrap: balance;
   font-family: var(--display);
@@ -1654,7 +1660,8 @@ img {
 :root[data-theme='dark'] .run-tagline { color: var(--accent); }
 
 .run-lede,
-.cast-lede {
+.cast-lede,
+.photos-lede {
   margin: 0;
   max-width: 56ch;
   color: var(--ink-soft);
@@ -1726,14 +1733,16 @@ img {
   color: var(--muted);
 }
 
-.run-jump {
+.run-jump,
+.photos-jump {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
   margin-top: 0.3rem;
 }
 
-.run-jump a {
+.run-jump a,
+.photos-jump a {
   font-family: var(--mono);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
@@ -1747,7 +1756,9 @@ img {
 }
 
 .run-jump a:hover,
-.run-jump a:focus-visible {
+.run-jump a:focus-visible,
+.photos-jump a:hover,
+.photos-jump a:focus-visible {
   border-color: var(--accent-strong);
   color: var(--ink);
   transform: translate(-2px, -2px);
@@ -1755,12 +1766,15 @@ img {
 }
 
 :root[data-theme='dark'] .run-jump a:hover,
-:root[data-theme='dark'] .run-jump a:focus-visible {
+:root[data-theme='dark'] .run-jump a:focus-visible,
+:root[data-theme='dark'] .photos-jump a:hover,
+:root[data-theme='dark'] .photos-jump a:focus-visible {
   border-color: var(--accent);
 }
 
 /* ---- Day card + timeline ------------------------------------------------- */
-.run-day {
+.run-day,
+.photos-album {
   display: grid;
   gap: clamp(1rem, 2.4vw, 1.6rem);
   padding: clamp(1.3rem, 3vw, 2.4rem);
@@ -1772,8 +1786,10 @@ img {
 
 .program-page .run-day:nth-of-type(2) { animation-delay: 120ms; }
 .program-page .run-day:nth-of-type(3) { animation-delay: 200ms; }
+.photos-page .photos-album:nth-of-type(2) { animation-delay: 120ms; }
 
-.run-day-head {
+.run-day-head,
+.photos-album-head {
   display: flex;
   align-items: flex-end;
   gap: clamp(0.9rem, 2.4vw, 1.6rem);
@@ -1781,7 +1797,8 @@ img {
   border-bottom: 2px solid var(--ink);
 }
 
-.run-day-index {
+.run-day-index,
+.photos-album-index {
   font-family: var(--display);
   font-variation-settings: "opsz" 144, "SOFT" 30, "WONK" 1;
   font-size: clamp(3rem, 8.5vw, 5.6rem);
@@ -1791,9 +1808,11 @@ img {
   color: var(--accent-strong);
 }
 
-:root[data-theme='dark'] .run-day-index { color: var(--accent); }
+:root[data-theme='dark'] .run-day-index,
+:root[data-theme='dark'] .photos-album-index { color: var(--accent); }
 
-.run-day-name {
+.run-day-name,
+.photos-album-name {
   margin: 0;
   font-family: var(--display);
   font-variation-settings: "opsz" 48, "SOFT" 50, "WONK" 0;
@@ -1804,13 +1823,39 @@ img {
   color: var(--ink);
 }
 
-.run-day-date {
+.run-day-date,
+.photos-album-date {
   margin: 0.3rem 0 0;
   font-family: var(--mono);
   font-size: 0.74rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.photos-gallery {
+  display: grid;
+  gap: clamp(1.75rem, 3.6vw, 3.25rem);
+}
+
+.photo-grid {
+  position: relative;
+  width: 100%;
+}
+
+.photo-item {
+  position: absolute;
+  display: block;
+  border: 1px solid var(--border);
+  background: var(--paper-deep);
+  overflow: hidden;
+}
+
+.photo-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .run-list {
@@ -2407,7 +2452,9 @@ img {
 @media (prefers-reduced-motion: reduce) {
   .run-masthead,
   .cast-masthead,
+  .photos-masthead,
   .run-day,
+  .photos-album,
   .cast-card {
     animation: none;
   }

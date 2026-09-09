@@ -2,11 +2,15 @@ import { defineConfig } from "vite";
 import vinext from "vinext";
 import rsc from "@vitejs/plugin-rsc";
 import { cloudflare } from "@cloudflare/vite-plugin";
+import { imagetools } from "vite-imagetools";
 import { contentPlugin } from "./vite-content-plugin";
+import { imageDimensionsPlugin } from "./vite-image-dimensions-plugin";
 
 export default defineConfig({
   plugins: [
     contentPlugin(),
+    imageDimensionsPlugin(),
+    imagetools(),
     vinext({ rsc: false }),
     rsc({
       entries: {

@@ -13,6 +13,8 @@
     "deploy": "vinext deploy"
   },
   "dependencies": {
+    "image-size": "^2.0.2",
+    "photoswipe": "^5.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "vinext": "latest"
@@ -26,6 +28,7 @@
     "react-server-dom-webpack": "^19.2.5",
     "typescript": "^5.0.0",
     "vite": "^8.0.0",
+    "vite-imagetools": "^12.0.1",
     "yaml": "^2.9.0"
   }
 }
