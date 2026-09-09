@@ -18,7 +18,8 @@ export type IconName =
   | "chain"
   | "network"
   | "calendar"
-  | "speakers";
+  | "speakers"
+  | "camera";
 
 const themeStorageKey = "nodeconf-theme";
 
@@ -287,6 +288,19 @@ export function LinkIcon({ name }: { name: IconName }) {
           />
         </svg>
       );
+    case "camera":
+      return (
+        <svg className={iconClassName} viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2L9 5h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinejoin="round"
+          />
+          <circle cx="12" cy="13" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -388,6 +402,7 @@ const navLinks: { title: string; href: string; icon: IconName }[] = [
   { title: "Program", href: "/program", icon: "calendar" },
   { title: "Speakers", href: "/speakers", icon: "speakers" },
   { title: "Experience", href: "/#experience", icon: "spark" },
+  { title: "Photos", href: "/photos", icon: "camera" },
   { title: "Partners", href: "/#partners", icon: "network" },
 ];
 
