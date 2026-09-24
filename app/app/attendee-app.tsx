@@ -3,7 +3,7 @@
 import { type CSSProperties, useCallback, useEffect, useMemo, useState } from "react";
 import { TIME_ZONE, days, speakerNames, talkText, type Day, type Session } from "../program-data";
 import { liveCta, liveSwitchDate } from "../event";
-import { LinkIcon, ThemeIcon, externalLinkProps, useTheme } from "../shared";
+import { LinkIcon, ThemeIcon, externalLinkProps, socialLinks, useTheme } from "../shared";
 import { SponsorLogo, sponsorLogoUrls, sponsorTiers } from "../sponsors";
 import {
   type SessionRef,
@@ -20,6 +20,9 @@ import {
 const STARS_KEY = "nodeconf-app-stars";
 const IOS_HINT_KEY = "nodeconf-app-ios-hint-dismissed";
 const TICK_MS = 30_000;
+// Shared links point at the public program, where #<talkId> opens the abstract.
+const SITE_URL = "https://nodeconf.eu";
+const HASHTAG = "#NodeConfEU";
 
 type Tab = number | "starred" | "sponsors";
 
@@ -318,6 +321,101 @@ function NowNext({
   );
 }
 
+function ShareIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="pocket-share-icon">
+      <path
+        d="M12 3v12M7.5 7.5 12 3l4.5 4.5M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * "Share a shoutout": the native share sheet where there is one (phones),
+ * otherwise Bluesky / X / LinkedIn links and a copy button.
+ */
+function ShareSession({ session, names }: { session: Session; names: string[] }) {
+  const [canShare, setCanShare] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  useEffect(() => setCanShare(typeof navigator.share === "function"), []);
+
+  const url = session.talkId ? `${SITE_URL}/program#${session.talkId}` : `${SITE_URL}/program`;
+  const by = names.length > 0 ? ` by ${names.join(" & ")}` : "";
+  const text = `Enjoying “${session.title}”${by} at ${HASHTAG} 2026 in Bologna!`;
+  const enc = encodeURIComponent;
+
+  const share = async () => {
+    if (canShare) {
+      try {
+        await navigator.share({ title: session.title, text, url });
+        return;
+      } catch (error) {
+        // Dismissing the sheet is not an error; anything else falls through.
+        if ((error as DOMException).name === "AbortError") return;
+      }
+    }
+    setOpen((value) => !value);
+  };
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(`${text} ${url}`);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard blocked: the share links still work.
+    }
+  };
+
+  return (
+    <div className="pocket-share">
+      <button
+        type="button"
+        className="pocket-share-button"
+        aria-expanded={canShare ? undefined : open}
+        onClick={share}
+      >
+        <ShareIcon />
+        Share a shoutout
+      </button>
+      {open ? (
+        <div className="pocket-share-targets" role="group" aria-label="Share on">
+          <a
+            href={`https://bsky.app/intent/compose?text=${enc(`${text} ${url}`)}`}
+            {...externalLinkProps("Share on Bluesky")}
+          >
+            <LinkIcon name="bluesky" />
+            Bluesky
+          </a>
+          <a href={`https://x.com/intent/post?text=${enc(text)}&url=${enc(url)}`} {...externalLinkProps("Share on X")}>
+            <LinkIcon name="x" />X
+          </a>
+          <a
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}`}
+            {...externalLinkProps("Share on LinkedIn")}
+          >
+            <LinkIcon name="linkedin" />
+            LinkedIn
+          </a>
+          <button type="button" onClick={copy}>
+            {copied ? "Copied!" : "Copy text"}
+          </button>
+        </div>
+      ) : null}
+      <span className="visually-hidden" role="status">
+        {copied ? "Shoutout copied to clipboard" : ""}
+      </span>
+    </div>
+  );
+}
+
 function SessionRow({
   day,
   session,
@@ -394,6 +492,9 @@ function SessionRow({
                     </a>
                   ))}
               </p>
+            ) : null}
+            {isStarrable(session) ? (
+              <ShareSession session={session} names={people.map((p) => p.name)} />
             ) : null}
           </div>
         ) : null}
@@ -647,12 +748,21 @@ export default function AttendeeApp() {
       </main>
 
       <footer className="pocket-footer">
-        <a href="/program.ics">
-          <LinkIcon name="calendar" />
-          <span>Add to calendar</span>
-        </a>
-        <a href="/">Full site</a>
-        <a href="/code-of-conduct">Code of Conduct</a>
+        <nav className="pocket-social" aria-label="NodeConf EU on social media">
+          {socialLinks.map((link) => (
+            <a key={link.title} href={link.href} {...externalLinkProps(link.title)}>
+              <LinkIcon name={link.icon} />
+            </a>
+          ))}
+        </nav>
+        <div className="pocket-footer-links">
+          <a href="/program.ics">
+            <LinkIcon name="calendar" />
+            <span>Add to calendar</span>
+          </a>
+          <a href="/">Full site</a>
+          <a href="/code-of-conduct">Code of Conduct</a>
+        </div>
       </footer>
     </div>
   );
