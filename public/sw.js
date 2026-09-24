@@ -8,8 +8,14 @@
  * - /assets/*: content-hashed build output, so cache first, forever.
  * - Icons/manifest: served from cache, refreshed in the background.
  * - Google Fonts: the stylesheet is served from cache and refreshed in the
- *   background; font files (immutable URLs) are cache first. Needs the two
- *   font hosts in the CSP's connect-src (next.config.ts, middleware.ts).
+ *   background; font files (immutable URLs) are cache first.
+ * - Images: sponsor logos, listed by the app in a "cache-images" message
+ *   (they aren't in the page HTML, and several are on other sites), are
+ *   saved once and then served cache first.
+ *
+ * This file is served as a static asset without a Content-Security-Policy,
+ * which is what lets it fetch fonts and logos from other hosts. If a CSP is
+ * ever applied to it, its connect-src must allow those hosts.
  *
  * Every time /app is fetched from the network, the JS/CSS it references is
  * cached too, so the saved page always has matching assets. The Google Fonts
@@ -17,10 +23,12 @@
  * Latin font files, so typography works offline right after the first visit.
  */
 
-const VERSION = "v2";
+const VERSION = "v3";
 const PAGE_CACHE = `nceu-app-page-${VERSION}`;
 const ASSET_CACHE = `nceu-app-assets-${VERSION}`;
 const FONT_CACHE = `nceu-app-fonts-${VERSION}`;
+const IMAGE_CACHE = `nceu-app-images-${VERSION}`;
+const MAX_IMAGES = 100;
 const APP_URL = "/app";
 const NETWORK_TIMEOUT_MS = 3500;
 const FONT_CSS_HOST = "fonts.googleapis.com";
@@ -37,6 +45,42 @@ const STATIC_FILES = [
 // Font requests are refetched in CORS mode: a stylesheet @import is a no-cors
 // request, and caching its opaque response would cost megabytes of quota.
 const fetchCors = (url) => fetch(url, { mode: "cors", credentials: "omit" });
+
+/**
+ * Fetches an image for the cache. Cross-origin logos are tried with CORS first;
+ * hosts that don't send CORS headers get a no-cors request, whose opaque
+ * response still displays in an <img> (at the cost of padded quota usage).
+ */
+async function fetchImage(url) {
+  if (new URL(url).origin === self.location.origin) return fetch(url);
+  try {
+    return await fetchCors(url);
+  } catch {
+    return fetch(url, { mode: "no-cors", credentials: "omit" });
+  }
+}
+
+async function cacheImages(urls) {
+  const cache = await caches.open(IMAGE_CACHE);
+  const wanted = urls.filter((url) => typeof url === "string" && /^https?:\/\//.test(url)).slice(0, MAX_IMAGES);
+  await Promise.all(
+    wanted.map(async (url) => {
+      if (await cache.match(url)) return;
+      try {
+        const response = await fetchImage(url);
+        if (response.ok || response.type === "opaque") await cache.put(url, response);
+      } catch {
+        // Offline or host down: try again on the next visit.
+      }
+    }),
+  );
+}
+
+/** Serves a saved image, falling back to the network for anything else. */
+async function imageFirst(request) {
+  const cached = await caches.match(request.url, { cacheName: IMAGE_CACHE });
+  return cached ?? fetch(request);
+}
 
 /**
  * Caches a Google Fonts stylesheet and the Latin font files it references
@@ -112,7 +156,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
-      const keep = new Set([PAGE_CACHE, ASSET_CACHE, FONT_CACHE]);
+      const keep = new Set([PAGE_CACHE, ASSET_CACHE, FONT_CACHE, IMAGE_CACHE]);
       for (const name of await caches.keys()) {
         if (name.startsWith("nceu-app-") && !keep.has(name)) await caches.delete(name);
       }
@@ -157,6 +201,11 @@ async function staleWhileRevalidate(event, cacheName, { load = fetch, ignoreSear
   return cached ?? network;
 }
 
+self.addEventListener("message", (event) => {
+  if (event.data?.type !== "cache-images" || !Array.isArray(event.data.urls)) return;
+  event.waitUntil(cacheImages(event.data.urls));
+});
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
@@ -167,6 +216,8 @@ self.addEventListener("fetch", (event) => {
       event.respondWith(staleWhileRevalidate(event, FONT_CACHE, { load: fetchCors }));
     } else if (url.hostname === FONT_FILE_HOST) {
       event.respondWith(cacheFirst(request, FONT_CACHE, (req) => fetchCors(req.url)));
+    } else if (request.destination === "image") {
+      event.respondWith(imageFirst(request));
     }
     return;
   }
@@ -177,5 +228,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(cacheFirst(request, ASSET_CACHE));
   } else if (STATIC_FILES.includes(url.pathname)) {
     event.respondWith(staleWhileRevalidate(event, ASSET_CACHE, { ignoreSearch: true }));
+  } else if (request.destination === "image") {
+    event.respondWith(imageFirst(request));
   }
 });

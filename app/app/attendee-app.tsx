@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { type CSSProperties, useCallback, useEffect, useMemo, useState } from "react";
 import { TIME_ZONE, days, speakerNames, talkText, type Day, type Session } from "../program-data";
 import { liveCta, liveSwitchDate } from "../event";
 import { LinkIcon, ThemeIcon, externalLinkProps, useTheme } from "../shared";
+import { SponsorLogo, sponsorLogoUrls, sponsorTiers } from "../sponsors";
 import {
   type SessionRef,
   type Timeline,
@@ -20,7 +21,10 @@ const STARS_KEY = "nodeconf-app-stars";
 const IOS_HINT_KEY = "nodeconf-app-ios-hint-dismissed";
 const TICK_MS = 30_000;
 
-type Tab = number | "starred";
+type Tab = number | "starred" | "sponsors";
+
+// Logos render at this fraction of their home-page tier height.
+const SPONSOR_LOGO_SCALE = 0.6;
 
 const typeLabels: Record<Session["type"], string> = {
   talk: "Talk",
@@ -164,9 +168,19 @@ function useServiceWorker() {
   useEffect(() => {
     // Dev assets aren't content-hashed, so caching them would serve stale code.
     if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("/sw.js", { scope: "/app" }).catch((error) => {
-      console.warn("Offline support unavailable:", error);
-    });
+    navigator.serviceWorker
+      .register("/sw.js", { scope: "/app" })
+      .then(() => navigator.serviceWorker.ready)
+      .then((registration) => {
+        // Sponsor logos aren't in the page HTML (the tab renders on demand) and
+        // several live on other sites, so hand the worker the list to save.
+        // It skips any it already has.
+        const urls = sponsorLogoUrls.map((url) => new URL(url, window.location.href).href);
+        registration.active?.postMessage({ type: "cache-images", urls });
+      })
+      .catch((error) => {
+        console.warn("Offline support unavailable:", error);
+      });
   }, []);
 }
 
@@ -399,6 +413,38 @@ function SessionRow({
   );
 }
 
+function Sponsors() {
+  const tiers = sponsorTiers.filter((tier) => tier.sponsors.length > 0);
+  return (
+    <section className="pocket-sponsors" aria-label="Sponsors and partners">
+      <p className="pocket-sponsors-intro">
+        Thank you to the sponsors and community partners who make NodeConf EU 2026 possible.
+      </p>
+      {tiers.map((tier) => (
+        <div
+          key={tier.tier}
+          className="pocket-tier"
+          style={{ "--logo-h": `${Math.round(tier.logoHeight * SPONSOR_LOGO_SCALE)}px` } as CSSProperties}
+        >
+          <h2 className="pocket-day-heading">{tier.tier}</h2>
+          <ul className={`pocket-sponsor-grid${tier.sponsors.length === 1 ? " is-single" : ""}`}>
+            {tier.sponsors.map((sponsor) => (
+              <li key={sponsor.name}>
+                <a className="pocket-sponsor" href={sponsor.href} {...externalLinkProps(sponsor.name)}>
+                  <span className={sponsor.logoFrameClassName}>
+                    <SponsorLogo sponsor={sponsor} />
+                  </span>
+                  <span className="pocket-sponsor-name">{sponsor.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 // ---- App ----------------------------------------------------------------------
 
 export default function AttendeeApp() {
@@ -531,7 +577,7 @@ export default function AttendeeApp() {
           </div>
         ) : null}
 
-        <nav className="pocket-tabs" aria-label="Program days">
+        <nav className="pocket-tabs" aria-label="Sections">
           {days.map((day, i) => (
             <button
               key={day.date}
@@ -552,14 +598,25 @@ export default function AttendeeApp() {
             aria-pressed={activeTab === "starred"}
             onClick={() => setTab("starred")}
           >
-            <span className="pocket-tab-name">
-              <StarIcon filled={activeTab === "starred"} /> Starred
-            </span>
+            <span className="pocket-tab-name">Starred</span>
             <span className="pocket-tab-date">{stars.size || "none"}</span>
+          </button>
+          <button
+            type="button"
+            className="pocket-tab"
+            aria-pressed={activeTab === "sponsors"}
+            onClick={() => setTab("sponsors")}
+          >
+            <span className="pocket-tab-name">Sponsors</span>
+            <span className="pocket-tab-date">
+              {sponsorTiers.reduce((n, tier) => n + tier.sponsors.length, 0)}
+            </span>
           </button>
         </nav>
 
-        {activeTab === "starred" ? (
+        {activeTab === "sponsors" ? (
+          <Sponsors />
+        ) : activeTab === "starred" ? (
           starredDays.length === 0 ? (
             <p className="pocket-empty">
               Tap the <StarIcon filled={false} /> next to a session to add it here. Stars are saved on this
@@ -584,7 +641,9 @@ export default function AttendeeApp() {
           </section>
         )}
 
-        <p className="pocket-footnote">All times are Bologna time (CEST). The program may still change.</p>
+        {activeTab !== "sponsors" ? (
+          <p className="pocket-footnote">All times are Bologna time (CEST). The program may still change.</p>
+        ) : null}
       </main>
 
       <footer className="pocket-footer">
