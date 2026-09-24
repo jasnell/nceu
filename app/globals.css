@@ -1748,8 +1748,14 @@ img {
   gap: 0.55rem;
 }
 
-.run-jump-ics {
+.run-jump-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
   margin-left: auto;
+}
+
+.run-jump-ics {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -2493,4 +2499,467 @@ img {
   .cast-card {
     animation: none;
   }
+}
+
+/* ============================================================================
+   Attendee app (/app) — phone-sized, installable program
+   ============================================================================ */
+
+.pocket {
+  --pocket-bar: 3.75rem;
+  --pocket-star: #c98a00;
+  display: flex;
+  flex-direction: column;
+  max-width: 38rem;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+}
+
+:root[data-theme='dark'] .pocket { --pocket-star: #f5c542; }
+
+.pocket button {
+  font: inherit;
+  color: inherit;
+}
+
+.pocket :is(a, button):focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.pocket-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--pocket-bar) + env(safe-area-inset-top));
+  padding: env(safe-area-inset-top) 1rem 0;
+  border-bottom: 2px solid var(--ink);
+  background: color-mix(in srgb, var(--paper) 90%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.pocket-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--display);
+  font-variation-settings: "opsz" 48, "SOFT" 50, "WONK" 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pocket-brand b { color: var(--accent-strong); font-weight: 600; }
+
+.pocket-icon-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.pocket-icon-button .link-icon { width: 1.1rem; height: 1.1rem; }
+
+.pocket-offline {
+  margin: 0;
+  padding: 0.45rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.pocket-main {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1rem;
+}
+
+.pocket-card {
+  border: 2px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-hard-sm);
+  padding: 0.9rem 1rem;
+}
+
+/* ---- Now / next ------------------------------------------------------------ */
+.pocket-nn { display: grid; gap: 0.75rem; }
+
+.pocket-nn-item {
+  display: grid;
+  gap: 0.2rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pocket-nn-item + .pocket-nn-item {
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--rule);
+}
+
+.pocket-nn-label {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pocket-nn > :first-child .pocket-nn-label,
+.pocket-nn > .pocket-nn-label { color: var(--accent-strong); }
+
+.pocket-nn-title {
+  margin: 0;
+  font-family: var(--display);
+  font-variation-settings: "opsz" 48, "SOFT" 50, "WONK" 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.pocket-nn-star {
+  display: inline-block;
+  margin-right: 0.3rem;
+  color: var(--pocket-star);
+  vertical-align: -0.1em;
+}
+
+.pocket-nn-people { font-size: 0.9rem; color: var(--ink-soft); }
+
+.pocket-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+/* ---- Actions --------------------------------------------------------------- */
+.pocket-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+.pocket-action {
+  flex: 1 1 10rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 48px;
+  padding: 0 1rem;
+  border: 2px solid var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-hard-sm);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.pocket .pocket-action-live { background: var(--ink); color: var(--paper); }
+
+.pocket-live-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: #e5484d;
+  animation: pocket-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pocket-pulse {
+  50% { opacity: 0.35; }
+}
+
+.pocket-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.pocket-hint p { margin: 0; flex: 1; }
+
+.pocket-hint-close {
+  min-height: 44px;
+  padding: 0 0.8rem;
+  border: 1px solid var(--rule);
+  background: none;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* ---- Day tabs -------------------------------------------------------------- */
+.pocket-tabs {
+  position: sticky;
+  top: calc(var(--pocket-bar) + env(safe-area-inset-top));
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin: 0 -1rem;
+  padding: 0.6rem 1rem;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.pocket-tab {
+  display: grid;
+  gap: 0.1rem;
+  min-height: 48px;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid var(--rule);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+}
+
+.pocket .pocket-tab[aria-pressed='true'] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pocket-tab-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.pocket-tab-name .pocket-star-icon { width: 0.95rem; height: 0.95rem; }
+
+.pocket-tab-date {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.pocket-day-heading {
+  margin: 0 0 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---- Session list ---------------------------------------------------------- */
+.pocket-list {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+
+.pocket-row {
+  display: grid;
+  grid-template-columns: 3.1rem minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--divider);
+  /* keep the current row clear of the sticky bar + tabs when scrolled to */
+  scroll-margin-top: calc(var(--pocket-bar) + env(safe-area-inset-top) + 5rem);
+}
+
+.pocket-row.is-past { opacity: 0.55; }
+
+.pocket-row.is-now {
+  margin-inline: -0.75rem;
+  padding-inline: 0.75rem;
+  background: var(--accent-soft);
+  box-shadow: inset 4px 0 0 var(--accent-strong);
+}
+
+.pocket-time {
+  display: grid;
+  font-family: var(--mono);
+  line-height: 1.3;
+}
+
+.pocket-start { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+.pocket-end { font-size: 0.72rem; color: var(--muted); }
+
+.pocket-body { min-width: 0; }
+
+.pocket-kind {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.15rem;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pocket-now {
+  padding: 0.05rem 0.35rem;
+  background: var(--accent-strong);
+  color: var(--paper);
+  font-weight: 500;
+}
+
+.pocket-title {
+  margin: 0;
+  font-weight: 650;
+  font-size: 1rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.pocket-row-break .pocket-title { font-weight: 500; color: var(--ink-soft); }
+
+.pocket-title-button {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pocket-chevron {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.3rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.18s ease;
+  opacity: 0.6;
+}
+
+.pocket-row.is-open .pocket-chevron { transform: translateY(0.2rem) rotate(-135deg); }
+
+.pocket-people { margin: 0.15rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
+
+.pocket-details {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.pocket-details p { margin: 0 0 0.6rem; overflow-wrap: anywhere; }
+
+.pocket-details-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+
+.pocket-details-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+.pocket-star {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -0.55rem -0.5rem 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.pocket .pocket-star.is-starred { color: var(--pocket-star); }
+
+.pocket-star-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.pocket-empty .pocket-star-icon {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: -0.2em;
+}
+
+.pocket-empty {
+  margin: 0;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--rule);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.pocket-footnote {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.pocket-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.25rem;
+  margin-top: auto;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  border-top: 2px solid var(--ink);
+}
+
+.pocket-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-soft);
+}
+
+.pocket-footer .link-icon { width: 0.9rem; height: 0.9rem; color: var(--accent-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pocket-live-dot { animation: none; }
+  .pocket-chevron { transition: none; }
 }

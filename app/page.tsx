@@ -9,20 +9,13 @@ import {
   externalLinkProps,
   useTheme,
 } from "./shared";
+import { liveCta, liveSwitchDate } from "./event";
 
 const eventDate = new Date("2026-09-29T09:00:00+02:00");
-
-// From this moment (midnight in Bologna) the ticket CTAs become livestream CTAs.
-const liveSwitchDate = new Date("2026-09-27T00:00:00+02:00");
 
 const ticketsCta = {
   href: "https://ti.to/apropos/nodeconf-eu-2026",
   label: "Get tickets",
-};
-
-const liveCta = {
-  href: "https://live.nodeconf.eu",
-  label: "Watch Live!",
 };
 
 function isLive(): boolean {

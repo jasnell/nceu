@@ -11,7 +11,9 @@ const contentSecurityPolicy = [
   // data: covers the inline SVG hero pattern in globals.css; https: keeps the
   // sponsor list editable without CSP churn (every sponsor logo is HTTPS).
   "img-src 'self' data: https:",
-  "connect-src 'self'",
+  // The attendee app's service worker (public/sw.js) fetches Google Fonts so
+  // /app keeps its typography offline.
+  "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
