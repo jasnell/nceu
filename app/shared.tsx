@@ -365,12 +365,16 @@ export function ThemeSwitch({
   );
 }
 
-const footerLinks: { title: string; href: string; icon: IconName }[] = [
-  {
-    title: "Open map",
-    href: "https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111",
-    icon: "map",
-  },
+type FooterLink = { title: string; href: string; icon: IconName };
+
+const mapLink: FooterLink = {
+  title: "Open map",
+  href: "https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111",
+  icon: "map",
+};
+
+/** NodeConf EU's social channels, shared by the site footer and the attendee app. */
+export const socialLinks: FooterLink[] = [
   {
     title: "X",
     href: "https://twitter.com/NodeConfEU",
@@ -397,6 +401,8 @@ const footerLinks: { title: string; href: string; icon: IconName }[] = [
     icon: "keet",
   },
 ];
+
+const footerLinks: FooterLink[] = [mapLink, ...socialLinks];
 
 const navLinks: { title: string; href: string; icon: IconName }[] = [
   { title: "Program", href: "/program", icon: "calendar" },

@@ -2518,7 +2518,8 @@ img {
 
 :root[data-theme='dark'] .pocket { --pocket-star: #f5c542; }
 
-.pocket button {
+/* :where() keeps this reset below the component classes in specificity */
+.pocket :where(button) {
   font: inherit;
   color: inherit;
 }
@@ -2972,16 +2973,39 @@ img {
 }
 
 .pocket-footer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.25rem 1.25rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
   margin-top: auto;
   padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
   border-top: 2px solid var(--ink);
 }
 
-.pocket-footer a {
+.pocket-social { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+
+.pocket-social a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.pocket-social a:hover,
+.pocket-social a:focus-visible { border-color: var(--ink); color: var(--accent-strong); }
+
+.pocket-social .link-icon { width: 1.15rem; height: 1.15rem; }
+
+.pocket-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 1.25rem;
+}
+
+.pocket-footer-links a {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -2994,7 +3018,50 @@ img {
   color: var(--ink-soft);
 }
 
-.pocket-footer .link-icon { width: 0.9rem; height: 0.9rem; color: var(--accent-strong); }
+.pocket-footer-links .link-icon { width: 0.9rem; height: 0.9rem; color: var(--accent-strong); }
+
+/* ---- Share a shoutout ------------------------------------------------------ */
+.pocket-share { display: grid; gap: 0.5rem; margin-top: 0.25rem; }
+
+.pocket-share-button {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 2px solid var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-hard-sm);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.pocket-share-icon { width: 1rem; height: 1rem; }
+
+.pocket-share-targets { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.pocket-share-targets > * {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.pocket-share-targets .link-icon { width: 0.95rem; height: 0.95rem; }
 
 @media (prefers-reduced-motion: reduce) {
   .pocket-live-dot { animation: none; }
