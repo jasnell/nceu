@@ -1,27 +1,4 @@
-import program from "@/content/program.yaml";
-
-type Speaker = { name: string };
-
-const speakerModules = import.meta.glob<{ default: Speaker }>(
-  "../../content/speakers/*.md",
-  { eager: true },
-);
-
-const speakerNames: Record<string, string> = Object.fromEntries(
-  Object.entries(speakerModules)
-    .filter(([path]) => !(path.split("/").pop() ?? "").startsWith("_"))
-    .map(([path, mod]) => [
-      (path.split("/").pop() ?? "").replace(/\.md$/, ""),
-      mod.default.name,
-    ]),
-);
-
-const publicProgram = {
-  ...program,
-  schemaVersion: 1,
-  timeZone: "Europe/Rome",
-  speakerNames,
-};
+import { publicProgram } from "../program-data";
 
 export function GET(): Response {
   return Response.json(publicProgram, {

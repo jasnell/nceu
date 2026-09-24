@@ -157,13 +157,18 @@ export default function ProgramPage() {
             </li>
           </ul>
 
-          <nav className="run-jump" aria-label="Jump to day">
-            {days.map((day, i) => (
-              <a key={day.date} href={`#day-${i + 1}`}>
-                {pad(i + 1)} / {day.label}
-              </a>
-            ))}
-          </nav>
+          <div className="run-jump">
+            <nav className="run-jump-days" aria-label="Jump to day">
+              {days.map((day, i) => (
+                <a key={day.date} href={`#day-${i + 1}`}>
+                  {pad(i + 1)} / {day.label}
+                </a>
+              ))}
+            </nav>
+            <a className="run-jump-ics" href="/program.ics">
+              <span>Add to calendar (.ics)</span>
+            </a>
+          </div>
         </section>
 
         {days.map((day, di) => (
