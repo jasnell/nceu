@@ -12,6 +12,23 @@ import {
 
 const eventDate = new Date("2026-09-29T09:00:00+02:00");
 
+// From this moment (midnight in Bologna) the ticket CTAs become livestream CTAs.
+const liveSwitchDate = new Date("2026-09-27T00:00:00+02:00");
+
+const ticketsCta = {
+  href: "https://ti.to/apropos/nodeconf-eu-2026",
+  label: "Get tickets",
+};
+
+const liveCta = {
+  href: "https://live.nodeconf.eu",
+  label: "Watch Live!",
+};
+
+function isLive(): boolean {
+  return Date.now() >= liveSwitchDate.getTime();
+}
+
 function getDaysUntilEvent(): number {
   return Math.max(
     0,
@@ -325,6 +342,25 @@ export default function Page() {
     return () => window.clearInterval(id);
   }, []);
 
+  // Resolved after hydration so server and client markup always match.
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    if (isLive()) {
+      setLive(true);
+      return;
+    }
+
+    // Flip exactly at the cutoff for tabs left open. setTimeout caps at
+    // ~24.8 days, so only schedule when the switch is within range.
+    const delay = liveSwitchDate.getTime() - Date.now();
+    if (delay > 2 ** 31 - 1) return;
+
+    const id = window.setTimeout(() => setLive(true), delay);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  const cta = live ? liveCta : ticketsCta;
   const pulseStats = buildPulseStats(daysUntil);
 
   return (
@@ -353,10 +389,10 @@ export default function Page() {
             <div className="hero-actions">
               <a
                 className="button button-primary"
-                href="https://ti.to/apropos/nodeconf-eu-2026"
-                {...externalLinkProps("Get tickets")}
+                href={cta.href}
+                {...externalLinkProps(cta.label)}
               >
-                Get tickets
+                {cta.label}
               </a>
               <a
                 className="text-link"
@@ -410,10 +446,10 @@ export default function Page() {
           </div>
           <a
             className="button dinner-cta"
-            href="https://ti.to/apropos/nodeconf-eu-2026"
-            {...externalLinkProps("Get tickets")}
+            href={cta.href}
+            {...externalLinkProps(cta.label)}
           >
-            Get tickets
+            {cta.label}
           </a>
         </section>
 
