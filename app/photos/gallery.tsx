@@ -109,7 +109,9 @@ export default function PhotosGallery({ albums }: { albums: Album[] }) {
   useEffect(() => {
     const lightbox = new PhotoSwipeLightbox({
       gallery: ".photos-gallery",
-      children: "a",
+      // Only the grid's photo links: the gallery also holds album headers
+      // (e.g. the photographer credit link), which must stay normal links.
+      children: "a.photo-item",
       bgOpacity: 1,
       zoom: false,
       showHideAnimationType: "zoom",
