@@ -165,9 +165,14 @@ export default function ProgramPage() {
                 </a>
               ))}
             </nav>
-            <a className="run-jump-ics" href="/program.ics">
-              <span>Add to calendar (.ics)</span>
-            </a>
+            <div className="run-jump-links">
+              <a className="run-jump-ics" href="/app">
+                <span>Pocket program app</span>
+              </a>
+              <a className="run-jump-ics" href="/program.ics">
+                <span>Add to calendar (.ics)</span>
+              </a>
+            </div>
           </div>
         </section>
 

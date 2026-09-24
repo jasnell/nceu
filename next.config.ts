@@ -7,7 +7,9 @@ const CSP = [
   "font-src 'self' https://fonts.gstatic.com",
   // Sponsor and partner logos load from third-party CDNs; allow any HTTPS host.
   "img-src 'self' data: blob: https:",
-  "connect-src 'self'",
+  // The attendee app's service worker (public/sw.js) fetches Google Fonts so
+  // /app keeps its typography offline.
+  "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
