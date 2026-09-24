@@ -76,10 +76,10 @@ days:
       - start: "11:10"
         end: "11:40"
         type: talk
-        title: The Four Memory Layers Inside Node.js
-        speaker: Tamar Twena-Stern
-        speakerId: tamar-twena-stern
-        talkId: four-memory-layers
+        title: What's the Tea?
+        speaker: Jacob Smith
+        speakerId: jacob-smith
+        talkId: whats-the-tea
       - start: "11:40"
         end: "12:10"
         type: talk
