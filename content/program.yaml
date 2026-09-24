@@ -44,42 +44,42 @@ days:
         type: break
         title: Registration & welcome coffee
       - start: "09:00"
-        end: "09:10"
+        end: "09:15"
         type: intro
         title: Welcome to NodeConf EU 2026
         speaker: NodeConf EU Staff
-      - start: "09:10"
-        end: "09:40"
+      - start: "09:15"
+        end: "09:45"
         type: talk
         title: A common minimum Node.js subset for all runtimes
         speaker: James M Snell
         speakerId: james-snell
         talkId: common-minimum-nodejs-subset
-      - start: "09:40"
-        end: "10:10"
+      - start: "09:45"
+        end: "10:15"
         type: talk
         title: A Leak in the Shell — How Refactoring Autocomplete Broke Us and How We Fixed It
         speaker: Anna Henningsen
         speakerId: anna-henningsen
         talkId: leak-in-the-shell
-      - start: "10:10"
-        end: "10:40"
+      - start: "10:15"
+        end: "10:45"
         type: talk
         title: NodeJS Performance Tips & Tricks
         speaker: Robert Nagy
         speakerId: robert-nagy
         talkId: nodejs-performance-tips-and-tricks
-      - start: "10:40"
+      - start: "10:45"
         end: "11:10"
         type: break
         title: Morning coffee break
       - start: "11:10"
         end: "11:40"
         type: talk
-        title: The Four Memory Layers Inside Node.js
-        speaker: Tamar Twena-Stern
-        speakerId: tamar-twena-stern
-        talkId: four-memory-layers
+        title: What's the Tea?
+        speaker: Jacob Smith
+        speakerId: jacob-smith
+        talkId: whats-the-tea
       - start: "11:40"
         end: "12:10"
         type: talk
@@ -144,13 +144,22 @@ days:
         speaker: Mikola Lysenko
         speakerId: mikola-lysenko
         talkId: delete-all-cves
-      - start: "18:00"
-        end: "19:30"
+      - start: "17:30"
+        end: "17:45"
+        type: intro
+        title: Closing remarks
+        speaker: NodeConf EU Staff
+      - start: "17:45"
+        end: "18:00"
+        type: intro
+        title: Group photo
+      - start: "18:30"
+        end: "20:00"
         type: social
         title: Happy hour
         location: Hotel Savoia Regency
         description: Drinks and conversation after the last talk, sponsored by Typesense.
-      - start: "19:30"
+      - start: "20:00"
         end: "22:30"
         type: social
         title: Social dinner
