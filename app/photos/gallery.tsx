@@ -3,18 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 import "photoswipe/style.css";
-import { SiteFooter, SiteHeader, useTheme } from "../shared";
+import { SiteFooter, SiteHeader, externalLinkProps, useTheme } from "../shared";
 import justifiedLayout from "./justified-layout";
+import type { AlbumMeta } from "./albums";
 import type { Photo } from "./photo-store";
 
-export type Album = {
-  folder: string;
-  date: string;
-  title: string;
-  weekday?: string;
-  index: string;
-  photos: Photo[];
-};
+export type Album = AlbumMeta & { photos: Photo[] };
 
 // Scales from 130px at a 300px-wide container up to 200px at 1100px, clamped
 // outside that range.
@@ -31,7 +25,7 @@ function formatDate(date: string): string {
   });
 }
 
-function PhotoGrid({ photos, albumTitle }: { photos: Photo[]; albumTitle: string }) {
+function PhotoGrid({ photos, album }: { photos: Photo[]; album: AlbumMeta }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [spacing, setSpacing] = useState(0);
@@ -83,6 +77,8 @@ function PhotoGrid({ photos, albumTitle }: { photos: Photo[]; albumTitle: string
             href={full.src}
             data-pswp-width={full.width}
             data-pswp-height={full.height}
+            data-credit-name={album.photographer}
+            data-credit-url={album.photographerUrl}
             style={{
               top: box.top,
               left: box.left,
@@ -95,7 +91,7 @@ function PhotoGrid({ photos, albumTitle }: { photos: Photo[]; albumTitle: string
               src={thumb.src}
               width={thumb.width}
               height={thumb.height}
-              alt={`${albumTitle} photo ${i + 1}`}
+              alt={`${album.title} photo ${i + 1}`}
               loading="lazy"
               decoding="async"
             />
@@ -125,6 +121,39 @@ export default function PhotosGallery({ albums }: { albums: Album[] }) {
         left: viewportSize.x > 1024 ? 75 : 0,
         right: viewportSize.x > 1024 ? 75 : 0
       })
+    });
+    // Credits the photographer of the photo on screen (from the grid link's
+    // data-credit-* attributes), so a shared screenshot carries the name.
+    lightbox.on("uiRegister", () => {
+      lightbox.pswp?.ui?.registerElement({
+        name: "credit",
+        order: 9,
+        isButton: false,
+        appendTo: "root",
+        onInit: (el, pswp) => {
+          const update = () => {
+            const link = pswp.currSlide?.data.element as HTMLElement | undefined;
+            const name = link?.dataset.creditName;
+            const url = link?.dataset.creditUrl;
+            el.replaceChildren();
+            el.hidden = !name;
+            if (!name) return;
+            el.append("Photo: ");
+            if (url) {
+              const a = document.createElement("a");
+              a.href = url;
+              a.target = "_blank";
+              a.rel = "noopener noreferrer";
+              a.textContent = name;
+              el.appendChild(a);
+            } else {
+              el.append(name);
+            }
+          };
+          pswp.on("change", update);
+          update();
+        },
+      });
     });
     lightbox.init();
     return () => lightbox.destroy();
@@ -176,10 +205,25 @@ export default function PhotosGallery({ albums }: { albums: Album[] }) {
                   <p className="photos-album-date">
                     {album.weekday} · {formatDate(album.date)}
                   </p>
+                  {album.photographer ? (
+                    <p className="photos-album-credit">
+                      Photos by{" "}
+                      {album.photographerUrl ? (
+                        <a
+                          href={album.photographerUrl}
+                          {...externalLinkProps(`${album.photographer}, photographer`)}
+                        >
+                          {album.photographer}
+                        </a>
+                      ) : (
+                        album.photographer
+                      )}
+                    </p>
+                  ) : null}
                 </div>
               </header>
 
-              <PhotoGrid photos={album.photos} albumTitle={album.title} />
+              <PhotoGrid photos={album.photos} album={album} />
             </section>
           ))}
         </div>

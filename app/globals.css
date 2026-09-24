@@ -1874,6 +1874,35 @@ img {
   color: var(--muted);
 }
 
+.photos-album-credit {
+  margin: 0.2rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.photos-album-credit a { color: var(--accent-strong); }
+
+/* Photographer credit inside the PhotoSwipe lightbox (registered in gallery.tsx). */
+.pswp__credit {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  max-width: calc(100% - 2rem);
+  padding: 0.3rem 0.7rem;
+  background: rgba(0, 0, 0, 0.55);
+  color: #f3ecdc;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: auto;
+}
+
+.pswp__credit a { color: #6ad975; }
+
 .photos-gallery {
   display: grid;
   gap: clamp(1.75rem, 3.6vw, 3.25rem);
@@ -2713,6 +2742,106 @@ img {
   text-transform: uppercase;
   cursor: pointer;
 }
+
+/* ---- Photo wall ------------------------------------------------------------ */
+.pocket-photo {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.pocket-photo-thumb {
+  padding: 0;
+  border: 2px solid var(--ink);
+  background: var(--paper-deep);
+  line-height: 0;
+  cursor: zoom-in;
+}
+
+.pocket-photo-thumb img {
+  display: block;
+  width: auto;
+  height: 88px;
+  max-width: 132px;
+  object-fit: cover;
+}
+
+.pocket-photo-meta { display: grid; gap: 0.3rem; min-width: 0; }
+
+.pocket-photo-credit { font-size: 0.85rem; color: var(--ink-soft); }
+
+.pocket-photo-credit a { color: var(--accent-strong); }
+
+.pocket-photo-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.pocket-photo-actions > * {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.7rem;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.pocket-viewer {
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: env(safe-area-inset-top) 0 0;
+  border: 0;
+  background: #000;
+  color: #f3ecdc;
+}
+
+.pocket-viewer[open] { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+
+.pocket-viewer::backdrop { background: rgba(0, 0, 0, 0.92); }
+
+.pocket-viewer-img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  background: center / contain no-repeat;
+  cursor: zoom-out;
+}
+
+.pocket-viewer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom));
+}
+
+.pocket-viewer .pocket-photo-credit { color: rgba(243, 236, 220, 0.8); }
+.pocket-viewer .pocket-photo-credit a { color: #6ad975; }
+
+.pocket-viewer-bar button {
+  min-height: 44px;
+  margin-left: auto;
+  padding: 0 1rem;
+  border: 1px solid rgba(243, 236, 220, 0.4);
+  background: none;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: inherit;
+  cursor: pointer;
+}
+
+html:has(.pocket-viewer[open]) { overflow: hidden; }
 
 /* ---- Day tabs -------------------------------------------------------------- */
 .pocket-tabs {

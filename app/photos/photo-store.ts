@@ -15,7 +15,12 @@ import { imageSize } from "image-size";
 import { after } from "next/server";
 
 export type ImageVariant = { src: string; width: number; height: number };
-export type Photo = { thumb: ImageVariant; full: ImageVariant };
+export type Photo = {
+  thumb: ImageVariant;
+  full: ImageVariant;
+  /** When the original landed in R2 (ISO 8601); used to find the latest photo. */
+  uploaded?: string;
+};
 
 /** Longest edge of the grid thumbnails, in pixels. */
 export const THUMB_SIZE = 600;
@@ -76,7 +81,7 @@ function versioned(path: string, etag: string): string {
   return `${path}?v=${encodeURIComponent(etag)}`;
 }
 
-function toPhoto(key: string, { etag, width, height }: Dimensions): Photo {
+function toPhoto(key: string, { etag, width, height }: Dimensions, uploaded: string): Photo {
   const scale = Math.min(1, THUMB_SIZE / Math.max(width, height));
   return {
     thumb: {
@@ -85,16 +90,17 @@ function toPhoto(key: string, { etag, width, height }: Dimensions): Photo {
       height: Math.round(height * scale),
     },
     full: { src: versioned(`/photos/full/${key}`, etag), width, height },
+    uploaded,
   };
 }
 
 async function listAlbumFromBucket(album: string): Promise<Photo[]> {
-  const keys: { key: string; etag: string }[] = [];
+  const keys: { key: string; etag: string; uploaded: string }[] = [];
   let cursor: string | undefined;
   do {
     const page = await env.PHOTOS.list({ prefix: `${album}/`, cursor });
-    for (const { key, etag } of page.objects) {
-      if (isPhotoKey(key)) keys.push({ key, etag });
+    for (const { key, etag, uploaded } of page.objects) {
+      if (isPhotoKey(key)) keys.push({ key, etag, uploaded: uploaded.toISOString() });
     }
     cursor = page.truncated ? page.cursor : undefined;
   } while (cursor);
@@ -121,11 +127,11 @@ async function listAlbumFromBucket(album: string): Promise<Photo[]> {
 
   const updated: DimensionIndex = {};
   const photos: Photo[] = [];
-  for (const { key, etag } of keys) {
+  for (const { key, etag, uploaded } of keys) {
     const dimensions = measured[key] ?? (index[key]?.etag === etag ? index[key] : undefined);
     if (!dimensions) continue;
     updated[key] = dimensions;
-    photos.push(toPhoto(key, dimensions));
+    photos.push(toPhoto(key, dimensions, uploaded));
   }
 
   // Rewrite the index when photos were measured, replaced or deleted. Two

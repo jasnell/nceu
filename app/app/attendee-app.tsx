@@ -1,10 +1,11 @@
 "use client";
 
-import { type CSSProperties, useCallback, useEffect, useMemo, useState } from "react";
+import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TIME_ZONE, days, speakerNames, talkText, type Day, type Session } from "../program-data";
 import { liveCta, liveSwitchDate } from "../event";
 import { LinkIcon, ThemeIcon, externalLinkProps, socialLinks, useTheme } from "../shared";
 import { SponsorLogo, sponsorLogoUrls, sponsorTiers } from "../sponsors";
+import type { PickedPhoto } from "../photos/pick.json/route";
 import {
   type SessionRef,
   type Timeline,
@@ -20,6 +21,7 @@ import {
 const STARS_KEY = "nodeconf-app-stars";
 const IOS_HINT_KEY = "nodeconf-app-ios-hint-dismissed";
 const TICK_MS = 30_000;
+const PHOTO_REFRESH_MS = 5 * 60_000;
 // Shared links point at the public program, where #<talkId> opens the abstract.
 const SITE_URL = "https://nodeconf.eu";
 const HASHTAG = "#NodeConfEU";
@@ -165,6 +167,52 @@ function useInstall() {
       }
     },
   };
+}
+
+type PhotoMode = "latest" | "random";
+
+/**
+ * The photo wall card's photo. Follows the latest upload (refreshed when the
+ * app is reopened and every few minutes) until the user shuffles.
+ */
+function usePhotoWall() {
+  const [picked, setPicked] = useState<PickedPhoto | null>(null);
+  const [mode, setMode] = useState<PhotoMode>("latest");
+  const modeRef = useRef<PhotoMode>("latest");
+
+  const load = useCallback(async (next: PhotoMode) => {
+    try {
+      const response = await fetch(`/photos/pick.json?mode=${next}`, {
+        cache: next === "random" ? "no-store" : "default",
+      });
+      if (!response.ok) return;
+      const data = (await response.json()) as PickedPhoto | { photo: null };
+      if (data.photo) {
+        setPicked(data as PickedPhoto);
+        setMode(next);
+        modeRef.current = next;
+      } else if (next === "latest") {
+        setPicked(null);
+      }
+    } catch {
+      // Offline: keep showing whatever we had (or nothing).
+    }
+  }, []);
+
+  useEffect(() => {
+    load("latest");
+    const refresh = () => {
+      if (document.visibilityState === "visible" && modeRef.current === "latest") load("latest");
+    };
+    const id = window.setInterval(refresh, PHOTO_REFRESH_MS);
+    document.addEventListener("visibilitychange", refresh);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", refresh);
+    };
+  }, [load]);
+
+  return { picked, mode, shuffle: () => load("random"), latest: () => load("latest") };
 }
 
 function useServiceWorker() {
@@ -514,6 +562,101 @@ function SessionRow({
   );
 }
 
+function PhotoCredit({ album }: { album: PickedPhoto["album"] }) {
+  if (!album.photographer) return null;
+  return (
+    <span className="pocket-photo-credit">
+      Photo:{" "}
+      {album.photographerUrl ? (
+        <a href={album.photographerUrl} {...externalLinkProps(`${album.photographer}, photographer`)}>
+          {album.photographer}
+        </a>
+      ) : (
+        album.photographer
+      )}
+    </span>
+  );
+}
+
+/** "From the photo wall": a thumbnail that opens the full photo in a viewer. */
+function PhotoWall({
+  picked,
+  mode,
+  onShuffle,
+  onLatest,
+}: {
+  picked: PickedPhoto;
+  mode: PhotoMode;
+  onShuffle: () => void;
+  onLatest: () => void;
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  // The full-size image is only in the DOM while the viewer is open, so it is
+  // never downloaded unless someone asks for it.
+  const [viewing, setViewing] = useState(false);
+  const { photo, album } = picked;
+  const description = `Photo from ${album.title}${album.photographer ? ` by ${album.photographer}` : ""}`;
+
+  const open = () => {
+    setViewing(true);
+    dialogRef.current?.showModal();
+  };
+
+  return (
+    <section className="pocket-card pocket-photo" aria-label="From the photo wall">
+      <button type="button" className="pocket-photo-thumb" onClick={open} aria-label={`View ${description}`}>
+        <img src={photo.thumb.src} width={photo.thumb.width} height={photo.thumb.height} alt="" />
+      </button>
+      <div className="pocket-photo-meta">
+        <p className="pocket-nn-label">
+          {mode === "latest" ? "Latest photo" : "Random photo"} · {album.weekday ?? album.title}
+        </p>
+        <PhotoCredit album={album} />
+        <div className="pocket-photo-actions">
+          <button type="button" onClick={onShuffle}>
+            Shuffle
+          </button>
+          {mode === "random" ? (
+            <button type="button" onClick={onLatest}>
+              Latest
+            </button>
+          ) : null}
+          <a href="/photos">All photos</a>
+        </div>
+      </div>
+
+      <dialog
+        ref={dialogRef}
+        className="pocket-viewer"
+        aria-label={description}
+        onClose={() => setViewing(false)}
+        onClick={(event) => {
+          // Tap anywhere to close, except on the credit link or buttons.
+          if (!(event.target as HTMLElement).closest("a, button")) dialogRef.current?.close();
+        }}
+      >
+        {viewing ? (
+          <img
+            className="pocket-viewer-img"
+            src={photo.full.src}
+            width={photo.full.width}
+            height={photo.full.height}
+            alt={description}
+            // The thumbnail stands in while the full image loads.
+            style={{ backgroundImage: `url("${photo.thumb.src}")` }}
+          />
+        ) : null}
+        <div className="pocket-viewer-bar">
+          <PhotoCredit album={album} />
+          <button type="button" onClick={() => dialogRef.current?.close()}>
+            Close
+          </button>
+        </div>
+      </dialog>
+    </section>
+  );
+}
+
 function Sponsors() {
   const tiers = sponsorTiers.filter((tier) => tier.sponsors.length > 0);
   return (
@@ -554,6 +697,7 @@ export default function AttendeeApp() {
   const { stars, toggle } = useStars();
   const online = useOnline();
   const install = useInstall();
+  const photoWall = usePhotoWall();
   useServiceWorker();
 
   const [tab, setTab] = useState<Tab | null>(null);
@@ -664,6 +808,15 @@ export default function AttendeeApp() {
               </button>
             ) : null}
           </div>
+        ) : null}
+
+        {photoWall.picked ? (
+          <PhotoWall
+            picked={photoWall.picked}
+            mode={photoWall.mode}
+            onShuffle={photoWall.shuffle}
+            onLatest={photoWall.latest}
+          />
         ) : null}
 
         {install.iosHint ? (
