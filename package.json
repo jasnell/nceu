@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vinext dev",
     "check": "node scripts/check-content.ts",
+    "photos:upload": "node scripts/upload-photos.ts",
     "test": "node --test \"test/**/*.test.ts\"",
     "prebuild": "npm run check",
     "build": "vinext build",
@@ -13,6 +14,8 @@
     "deploy": "vinext deploy"
   },
   "dependencies": {
+    "image-size": "^2.0.2",
+    "photoswipe": "^5.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "vinext": "latest"

@@ -7,5 +7,19 @@
   "assets": {
     "not_found_handling": "none"
   },
+  // Conference photos, keyed `<album date>/<file>.jpg` (e.g. 2026-09-29/0001.jpg).
+  // Listed at request time by app/photos/photo-store.ts, so new uploads show
+  // up without a redeploy.
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "nodeconf-eu-photos"
+    }
+  ],
+  // Resizes the grid thumbnails on first request; results are stored back
+  // into the PHOTOS bucket under `_thumbs/`.
+  "images": {
+    "binding": "IMAGES"
+  },
   "account_id": "c90070fbe9f928f17c328c65fb3781ab"
 }
