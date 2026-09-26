@@ -193,10 +193,10 @@ days:
       - start: "10:00"
         end: "10:30"
         type: talk
-        title: "50% More Requests for Free: Speeding Up Node.js HTTP From the Inside"
-        speaker: Yagiz Nizipli
-        speakerId: yagiz-nizipli
-        talkId: speeding-up-nodejs-http
+        title: "Next-Gen Flame Graphs: Making Node.js Performance Profiling Actually Work"
+        speaker: Matteo Collina
+        speakerId: matteo-collina
+        talkId: next-gen-flame-graphs
       - start: "10:30"
         end: "11:00"
         type: break
