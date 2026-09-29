@@ -29,11 +29,6 @@ intro: >-
   Talk titles and speakers are announced on a rolling basis. Check back as the
   lineup fills in.
 
-# Shown as a callout under the intro on /program. Remove once the schedule is locked.
-note: >-
-  This program is not final. Talks, speakers, and times are still being
-  confirmed, and the running order may shift before the event.
-
 days:
   - date: "2026-09-29"
     label: Day One
