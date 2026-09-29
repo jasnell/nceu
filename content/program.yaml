@@ -126,10 +126,10 @@ days:
       - start: "16:00"
         end: "16:30"
         type: talk
-        title: Post-Quantum Cryptography in Node.js
-        speaker: Filip Skokan
-        speakerId: filip-skokan
-        talkId: post-quantum-cryptography
+        title: Ship the Tree
+        speaker: Philipp Dunkel
+        speakerId: philipp-dunkel
+        talkId: ship-the-tree
       - start: "16:30"
         end: "17:00"
         type: talk
