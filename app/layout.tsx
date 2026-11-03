@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const title = "NodeConf EU 2026 | Bologna, Italy";
+const title = "NodeConf EU 2027 | Bologna, Italy";
 const description =
-  "NodeConf EU 2026 returns to Bologna with tickets, venue info, and conference links in one fast single-page experience.";
+  "NodeConf EU 2027 returns to Bologna and Hotel Savoia Regency. Dates and tickets coming soon; every 2026 talk is on YouTube.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nodeconf.eu"),
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    siteName: "NodeConf EU 2026",
+    siteName: "NodeConf EU 2027",
     url: "/",
     title,
     description,
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 621,
         type: "image/png",
-        alt: "NodeConf EU 2026 — a sharper, warmer Node.js gathering for Europe. 29-30 September, Bologna, Italy, Hotel Savoia Regency.",
+        alt: "NodeConf EU 2027 — a sharper, warmer Node.js gathering for Europe. Bologna, Italy, Hotel Savoia Regency.",
       },
     ],
   },

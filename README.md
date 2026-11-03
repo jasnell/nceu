@@ -1,8 +1,8 @@
-# NodeConf EU 2026
+# NodeConf EU
 
-This repository contains the website for NodeConf EU 2026.
+This repository contains the website for NodeConf EU. The current edition (2027) lives at the site root; past editions are archived under `/<year>` (the 2026 program, speakers, photos and attendee app are at `/2026`).
 
-The site is a single-page experience focused on the conference itself: event information, venue details, tickets, CFP, sponsors, and links to the wider NodeConf EU presence.
+The home page is a single-page experience focused on the conference itself: event information, venue details, tickets, sponsors, and links to the wider NodeConf EU presence.
 
 ## Stack
 
@@ -36,7 +36,7 @@ npm run deploy
 
 ## Photos
 
-Conference photos are stored in the `nodeconf-eu-photos` R2 bucket and appear on `/photos` within about a minute of upload, with no deploy. Each day's album needs a `content/photos/<date>/_album.md`.
+Conference photos are stored in the `nodeconf-eu-photos` R2 bucket and appear on `/<year>/photos` (e.g. `/2026/photos`) within about a minute of upload, with no deploy. Each day's album needs a `content/<year>/photos/<date>/_album.md`.
 
 One-time setup (bucket owner):
 
@@ -58,11 +58,15 @@ node scripts/upload-photos.ts --delete 2026-09-29 DSC_0042.jpg  # remove a photo
 ```
 .
 ├── app/
+│   ├── 2026/            # archived 2026 edition: home, program, speakers, photos, attendee app
+│   ├── event.ts         # 2027 settings: ticket link, dates, venue
 │   ├── globals.css      # tokens, theming, typography, layout
 │   ├── layout.tsx       # root layout, metadata, theme bootstrap
-│   └── page.tsx         # home page (client component)
+│   └── page.tsx         # 2027 home page (client component)
+├── content/
+│   └── 2026/            # program, speakers, talks (with YouTube ids), photo albums
 ├── public/
-│   └── favicon.svg
+│   └── 2026/            # speaker photos, app icons and service worker for 2026
 ├── worker/
 │   └── index.ts         # Cloudflare Worker entry (image optimization + handler)
 ├── package.json

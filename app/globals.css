@@ -703,6 +703,14 @@ img {
   border: 1px solid var(--ink);
 }
 
+.hero-section-2027::before {
+  content: 'DUE / TORRI / MMXXVII';
+}
+
+.poster-frame-2027::before {
+  content: 'ITALY / NODE / MMXXVII';
+}
+
 .poster-frame img {
   display: block;
   width: 100%;
@@ -824,6 +832,7 @@ img {
 
 .dinner-copy p:not(.eyebrow) {
   margin: 0;
+  color: inherit;
   max-width: 58ch;
 }
 
@@ -837,6 +846,29 @@ img {
 .dinner-cta:focus-visible {
   background: #fdfaf2;
   color: #14110c;
+}
+
+.dinner-copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+/* "Tickets coming soon": reads like the text link next to the CTA, but is not one. */
+.text-link-pending {
+  margin: 0;
+  color: var(--ink-soft);
+  border-bottom-style: dashed;
+  border-bottom-color: var(--ink-soft);
+}
+
+.text-link-pending .link-icon {
+  color: inherit;
+}
+
+.section-copy a {
+  color: inherit;
+  text-underline-offset: 0.18em;
 }
 
 @media (max-width: 960px) {
@@ -1448,6 +1480,11 @@ img {
   .experience-card,
   .sponsor-tier {
     padding: 1rem;
+  }
+
+  /* keep room for the card number above the photo */
+  .experience-card {
+    padding-top: 2.4rem;
   }
 
   .sponsor-tier {
@@ -2115,6 +2152,37 @@ img {
 
 :root[data-theme='dark'] .run-people a { color: var(--accent); }
 
+/* "Watch the talk": the YouTube recording of a 2026 talk */
+.run-watch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  min-height: 44px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.run-watch span {
+  border-bottom: 1px solid currentColor;
+}
+
+.run-watch .link-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #e62117;
+}
+
+.run-watch:hover,
+.run-watch:focus-visible { color: var(--accent-strong); }
+
+:root[data-theme='dark'] .run-watch:hover,
+:root[data-theme='dark'] .run-watch:focus-visible { color: var(--accent); }
+
 /* talk rows: the main event */
 .run-row-talk .run-kind {
   color: var(--accent-strong);
@@ -2394,6 +2462,14 @@ img {
 :root[data-theme='dark'] .cast-talk a { border-bottom-color: var(--accent); }
 :root[data-theme='dark'] .cast-talk a:hover,
 :root[data-theme='dark'] .cast-talk a:focus-visible { color: var(--accent); }
+
+.cast-talk a.cast-talk-video {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
 
 .cast-talk-label {
   font-family: var(--mono);
@@ -3195,4 +3271,102 @@ html:has(.pocket-viewer[open]) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .pocket-live-dot { animation: none; }
   .pocket-chevron { transition: none; }
+}
+
+.button .link-icon {
+  color: currentColor;
+}
+
+/* ---- 2027 home: photos from 2026 ----------------------------------------- */
+
+.experience-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border: 1px solid var(--ink);
+}
+
+.venue-feature {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow-hard);
+  overflow: hidden;
+  animation: editorial-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 270ms;
+}
+
+.venue-photo {
+  margin: 0;
+  min-height: 100%;
+  border-right: 1px solid var(--ink);
+}
+
+.venue-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+}
+
+.venue-copy {
+  display: grid;
+  align-content: center;
+  gap: 0.9rem;
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+}
+
+.venue-copy h2 {
+  margin: 0;
+  text-wrap: balance;
+  font-family: var(--display);
+  font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 1;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+.venue-copy address {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.venue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+.photo-credit {
+  font-size: 0.85rem;
+}
+
+.photo-credit a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+
+@media (max-width: 960px) {
+  .venue-feature {
+    grid-template-columns: 1fr;
+  }
+
+  .venue-photo {
+    border-right: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .venue-photo img {
+    min-height: 0;
+    aspect-ratio: 3 / 2;
+  }
 }

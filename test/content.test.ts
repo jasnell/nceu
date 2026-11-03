@@ -11,7 +11,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { validateContent } from "../scripts/check-content.ts";
+import { editions, validateContent } from "../scripts/check-content.ts";
 
 /** A minimal but valid content tree: one speaker, one talk, one program day. */
 function makeFixture(overrides: {
@@ -21,8 +21,8 @@ function makeFixture(overrides: {
   photos?: string[];
 } = {}) {
   const dir = mkdtempSync(join(tmpdir(), "nceu-content-"));
-  mkdirSync(join(dir, "content/speakers"), { recursive: true });
-  mkdirSync(join(dir, "content/talks"), { recursive: true });
+  mkdirSync(join(dir, "content/2026/speakers"), { recursive: true });
+  mkdirSync(join(dir, "content/2026/talks"), { recursive: true });
   mkdirSync(join(dir, "public/speakers"), { recursive: true });
 
   const speakers = overrides.speakers ?? {
@@ -36,15 +36,15 @@ function makeFixture(overrides: {
     `title: Program\ndays:\n  - date: "2026-09-29"\n    label: Day One\n    sessions:\n      - start: "09:00"\n        end: "09:30"\n        type: talk\n        title: The Analytical Engine\n        speakerId: ada-lovelace\n        talkId: analytical-engine\n`;
 
   for (const [id, body] of Object.entries(speakers)) {
-    writeFileSync(join(dir, `content/speakers/${id}.md`), body);
+    writeFileSync(join(dir, `content/2026/speakers/${id}.md`), body);
   }
   for (const [id, body] of Object.entries(talks)) {
-    writeFileSync(join(dir, `content/talks/${id}.md`), body);
+    writeFileSync(join(dir, `content/2026/talks/${id}.md`), body);
   }
   for (const photo of overrides.photos ?? []) {
     writeFileSync(join(dir, "public", photo), "");
   }
-  writeFileSync(join(dir, "content/program.yaml"), program);
+  writeFileSync(join(dir, "content/2026/program.yaml"), program);
 
   return dir;
 }
@@ -62,10 +62,16 @@ const matching = (errors: string[], fragment: string) =>
   errors.filter((e) => e.includes(fragment));
 
 describe("the real site content", () => {
-  test("has no errors", () => {
-    const { errors } = validateContent();
-    assert.deepEqual(errors, []);
+  test("includes the 2026 edition", () => {
+    assert.ok(editions().includes("2026"));
   });
+
+  for (const edition of editions()) {
+    test(`${edition} has no errors`, () => {
+      const { errors } = validateContent(undefined, edition);
+      assert.deepEqual(errors, []);
+    });
+  }
 });
 
 describe("a valid fixture", () => {
@@ -137,7 +143,7 @@ describe("content drift is caught", () => {
       },
       program: `title: Program\ndays:\n  - date: "2026-09-29"\n    label: Day One\n    sessions:\n      - start: "09:00"\n        type: talk\n        title: The Analytical Engine\n        speakerId: charles-babbage\n        talkId: analytical-engine\n`,
     });
-    assert.ok(matching(errors, "differs from content/talks").length > 0, errors.join("\n"));
+    assert.ok(matching(errors, "differs from content/2026/talks").length > 0, errors.join("\n"));
   });
 
   test("the same talk used twice, which would duplicate an anchor", () => {
@@ -259,5 +265,23 @@ describe("silently-dropped fields are caught", () => {
       program: `title: Program\ndays:\n  - date: "2026-09-29"\n    label: Day One\n    sessions:\n      - start: "09:00"\n        type: talk\n        title: The Analytical Engine\n        speakerId: Ada_Lovelace\n        talkId: analytical-engine\n`,
     });
     assert.ok(matching(errors, "must be kebab-case").length > 0, errors.join("\n"));
+  });
+
+  test("a video that is not a YouTube id", () => {
+    const errors = errorsFor({
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\nvideo: https://www.youtube.com/watch?v=abc\n---\n\nAn abstract.\n`,
+      },
+    });
+    assert.ok(matching(errors, "must be a YouTube video id").length > 0, errors.join("\n"));
+  });
+
+  test("a valid video id", () => {
+    const errors = errorsFor({
+      talks: {
+        "analytical-engine": `---\ntitle: The Analytical Engine\nspeakerId: ada-lovelace\nvideo: "-7_DhDxqKog"\n---\n\nAn abstract.\n`,
+      },
+    });
+    assert.deepEqual(errors, []);
   });
 });

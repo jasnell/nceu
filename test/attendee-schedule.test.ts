@@ -12,7 +12,7 @@ import {
   sessionKey,
   timeline,
   wallClock,
-} from "../app/app/schedule.ts";
+} from "../app/2026/app/schedule.ts";
 
 const TZ = "Europe/Rome";
 
