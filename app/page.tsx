@@ -1,6 +1,5 @@
 "use client";
 
-import { type CSSProperties, useEffect, useState } from "react";
 import {
   type IconName,
   LinkIcon,
@@ -9,37 +8,20 @@ import {
   externalLinkProps,
   useTheme,
 } from "./shared";
-import { liveCta, liveSwitchDate } from "./event";
-import { SponsorLogo, sponsorTiers } from "./sponsors";
+import { eventDates, sponsorTiers2027, ticketsUrl, venue } from "./event";
+import { playlistUrl } from "./2026/event";
 
-const eventDate = new Date("2026-09-29T09:00:00+02:00");
-
-const ticketsCta = {
-  href: "https://ti.to/apropos/nodeconf-eu-2026",
-  label: "Get tickets",
+const watchCta = {
+  href: playlistUrl,
+  label: "Watch the 2026 talks",
 };
 
-function isLive(): boolean {
-  return Date.now() >= liveSwitchDate.getTime();
-}
-
-function getDaysUntilEvent(): number {
-  return Math.max(
-    0,
-    Math.ceil(
-      (eventDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24),
-    ),
-  );
-}
-
-function buildPulseStats(daysUntil: number | null) {
-  return [
-    { value: daysUntil === null ? "—" : `${daysUntil}d`, label: "until event" },
-    { value: "2 days", label: "of talks and hallway track" },
-    { value: "1 venue", label: "Hotel Savoia Regency" },
-    { value: "∞", label: "side quests and conversations" },
-  ];
-}
+const pulseStats = [
+  { value: eventDates ?? "TBD", label: eventDates ? "2027" : "dates to be announced" },
+  { value: "1 venue", label: venue.name },
+  { value: "24", label: "talks from 2026, on YouTube" },
+  { value: "∞", label: "side quests and conversations" },
+];
 
 const highlights = [
   {
@@ -60,34 +42,44 @@ const highlights = [
 ];
 
 const links: { title: string; href: string; blurb: string; icon: IconName }[] = [
+  ...(ticketsUrl
+    ? [
+        {
+          title: "Tickets",
+          href: ticketsUrl,
+          blurb: "Reserve your spot for the 2027 edition.",
+          icon: "ticket" as const,
+        },
+      ]
+    : []),
   {
-    title: "Tickets",
-    href: "https://ti.to/apropos/nodeconf-eu-2026",
-    blurb: "Reserve your spot for the 2026 edition.",
-    icon: "ticket",
+    title: "2026 talks",
+    href: playlistUrl,
+    blurb: "Every talk from NodeConf EU 2026, in one playlist.",
+    icon: "youtube",
   },
   {
     title: "Venue",
-    href: "https://www.savoia.eu/it/savoia-hotel-regency.html",
-    blurb: "Hotel Savoia Regency, Bologna.",
+    href: venue.href,
+    blurb: `${venue.name}, Bologna. Same place as 2026.`,
     icon: "venue",
   },
   {
     title: "Map",
-    href: "https://www.google.com/maps/place//data=!4m2!3m1!1s0x477e2ca643db29ab:0x19c877e26a7b7526?sa=X&ved=1t:8290&ictx=111",
+    href: venue.map,
     blurb: "Open the route and plan the trip.",
     icon: "map",
   },
   {
     title: "YouTube",
     href: "https://www.youtube.com/@nodeconfeu",
-    blurb: "Revisit talks and get the tone of the event.",
+    blurb: "Talks from every edition of NodeConf EU.",
     icon: "youtube",
   },
   {
     title: "X",
     href: "https://twitter.com/NodeConfEU",
-    blurb: "Follow updates as the lineup lands.",
+    blurb: "Follow along for dates and ticket news.",
     icon: "x",
   },
   {
@@ -112,38 +104,6 @@ const links: { title: string; href: string; blurb: string; icon: IconName }[] = 
 
 export default function Page() {
   const { theme, setTheme } = useTheme();
-  const [daysUntil, setDaysUntil] = useState<number | null>(null);
-
-  useEffect(() => {
-    setDaysUntil(getDaysUntilEvent());
-
-    const id = window.setInterval(() => {
-      setDaysUntil(getDaysUntilEvent());
-    }, 60 * 60 * 1000);
-
-    return () => window.clearInterval(id);
-  }, []);
-
-  // Resolved after hydration so server and client markup always match.
-  const [live, setLive] = useState(false);
-
-  useEffect(() => {
-    if (isLive()) {
-      setLive(true);
-      return;
-    }
-
-    // Flip exactly at the cutoff for tabs left open. setTimeout caps at
-    // ~24.8 days, so only schedule when the switch is within range.
-    const delay = liveSwitchDate.getTime() - Date.now();
-    if (delay > 2 ** 31 - 1) return;
-
-    const id = window.setTimeout(() => setLive(true), delay);
-    return () => window.clearTimeout(id);
-  }, []);
-
-  const cta = live ? liveCta : ticketsCta;
-  const pulseStats = buildPulseStats(daysUntil);
 
   return (
     <div className="page-shell">
@@ -154,52 +114,73 @@ export default function Page() {
       <SiteHeader theme={theme} setTheme={setTheme} />
 
       <main id="main-content" tabIndex={-1}>
-        <section className="hero-section" aria-labelledby="hero-title">
+        <section
+          className="hero-section hero-section-2027"
+          aria-labelledby="hero-title"
+        >
           <div className="hero-copy">
-            <p className="kicker">29-30 September · Bologna, Italy</p>
+            <p className="kicker">
+              {eventDates ?? "Dates to be announced"} · Bologna, Italy
+            </p>
             <h1 id="hero-title">
               A sharper, warmer
               <span>Node.js gathering</span>
               for Europe.
             </h1>
             <p className="hero-text">
-              NodeConf EU returns with two days of talks, conversations, and
-              late-evening energy in Bologna. Come for the technical depth,
-              stay for the people, the city, and the hallway track that makes
-              the trip worth it.
+              NodeConf EU 2027 is coming back to Bologna, at the same venue as
+              2026. Dates and tickets are on their way. Until then, catch up on
+              every talk from last year and get a feel for the technical depth,
+              the people, and the hallway track that make the trip worth it.
             </p>
             <div className="hero-actions">
-              <a
-                className="button button-primary"
-                href={cta.href}
-                {...externalLinkProps(cta.label)}
-              >
-                {cta.label}
-              </a>
-              <a
-                className="text-link"
-                href="https://www.youtube.com/watch?v=fqaJXVieDbQ&list=PLFVadYWYE9opLgYJ7i0j50oIgn6pqBOM7"
-                {...externalLinkProps("Watch the latest talk drop")}
-              >
-                <LinkIcon name="youtube" />
-                <span>Watch the latest talk drop</span>
-              </a>
+              {ticketsUrl ? (
+                <>
+                  <a
+                    className="button button-primary"
+                    href={ticketsUrl}
+                    {...externalLinkProps("Get tickets")}
+                  >
+                    Get tickets
+                  </a>
+                  <a
+                    className="text-link"
+                    href={watchCta.href}
+                    {...externalLinkProps(watchCta.label)}
+                  >
+                    <LinkIcon name="youtube" />
+                    <span>{watchCta.label}</span>
+                  </a>
+                </>
+              ) : (
+                <>
+                  <a
+                    className="button button-primary"
+                    href={watchCta.href}
+                    {...externalLinkProps(watchCta.label)}
+                  >
+                    <LinkIcon name="youtube" />
+                    <span>{watchCta.label}</span>
+                  </a>
+                  <p className="text-link text-link-pending">
+                    <LinkIcon name="ticket" />
+                    <span>Tickets coming soon</span>
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
           <aside className="poster-card" aria-label="Event poster">
-            <div className="poster-frame">
+            <div className="poster-frame poster-frame-2027">
               <img
                 src="/hexagon.svg"
-                alt="NodeConf EU 2026 — Bologna hexagon mark"
+                alt="NodeConf EU 2027 — Bologna hexagon mark"
               />
             </div>
             <div className="poster-caption">
-              <span>Hotel Savoia Regency</span>
-              <a
-                href="https://www.savoia.eu/it/savoia-hotel-regency.html"
-                {...externalLinkProps("Venue details")}
-              >
+              <span>{venue.name}</span>
+              <a href={venue.href} {...externalLinkProps("Venue details")}>
                 Venue details
               </a>
             </div>
@@ -215,23 +196,28 @@ export default function Page() {
           ))}
         </section>
 
-        <section className="dinner-banner" aria-labelledby="dinner-title">
+        <section
+          id="recordings"
+          className="dinner-banner"
+          aria-labelledby="recordings-title"
+        >
           <div className="dinner-copy">
-            <p className="eyebrow">Night of 29 September</p>
-            <h2 id="dinner-title">One amazing social dinner. Included.</h2>
+            <p className="eyebrow">NodeConf EU 2026 · Now on YouTube</p>
+            <h2 id="recordings-title">All 24 talks from 2026. One playlist.</h2>
             <p>
-              When day one wraps, nobody scatters. The whole conference sits
-              down together for a proper Bolognese evening of food, wine, and
-              conversation — and it is already part of your ticket. No add-on,
-              no separate pass.
+              Runtimes, observability, security, performance, and the future of
+              Node.js itself: every session from the main stage in Bologna,
+              recorded and ready to watch. Browse the{" "}
+              <a href="/2026/program">2026 program</a> to find a talk, or
+              start from the top.
             </p>
           </div>
           <a
             className="button dinner-cta"
-            href={cta.href}
-            {...externalLinkProps(cta.label)}
+            href={watchCta.href}
+            {...externalLinkProps("Watch the 2026 playlist")}
           >
-            {cta.label}
+            Watch the playlist
           </a>
         </section>
 
@@ -260,11 +246,11 @@ export default function Page() {
           <div className="section-heading wide">
             <p className="eyebrow">Plan your visit</p>
             <h2 id="links-title">
-              Tickets, venue details, and the links you will actually use.
+              Venue details, recordings, and where to follow along.
             </h2>
             <p className="section-copy">
-              Everything important is one click away, whether you are booking,
-              planning the trip, or catching up on previous talks.
+              Everything important is one click away, whether you are planning
+              the trip, catching up on the 2026 talks, or waiting for tickets.
             </p>
           </div>
           <div className="link-grid">
@@ -296,48 +282,20 @@ export default function Page() {
               Supported by teams investing in the JavaScript ecosystem.
             </h2>
             <p className="section-copy">
-              These partners help make the conference happen, from the main
-              event experience to the broader ecosystem around it.
+              Partners for 2027 will be announced here. See who made{" "}
+              <a href="/2026#partners">the 2026 edition</a> happen.
             </p>
           </div>
           <div className="sponsor-stack">
-            {sponsorTiers.map((tier) => (
-              <article
-                key={tier.tier}
-                className="sponsor-tier"
-                style={
-                  { "--logo-h": `${tier.logoHeight}px` } as CSSProperties
-                }
-              >
+            {sponsorTiers2027.map((tier) => (
+              <article key={tier} className="sponsor-tier">
                 <div className="tier-intro">
-                  <p className="tier-name">{tier.tier}</p>
+                  <p className="tier-name">{tier}</p>
                 </div>
-                <div
-                  className={`sponsor-logo-grid${
-                    tier.layoutCols
-                      ? ` sponsor-logo-grid-${tier.layoutCols}`
-                      : ""
-                  }`}
-                >
-                  {tier.sponsors.length > 0 ? (
-                    tier.sponsors.map((sponsor) => (
-                      <a
-                        key={sponsor.name}
-                        className="sponsor-tile"
-                        href={sponsor.href}
-                        {...externalLinkProps(sponsor.name)}
-                      >
-                        <span className={sponsor.logoFrameClassName}>
-                          <SponsorLogo sponsor={sponsor} />
-                        </span>
-                        <strong>{sponsor.name}</strong>
-                      </a>
-                    ))
-                  ) : (
-                    <div className="sponsor-placeholder">
-                      <span>To be announced soon</span>
-                    </div>
-                  )}
+                <div className="sponsor-logo-grid">
+                  <div className="sponsor-placeholder">
+                    <span>To be announced soon</span>
+                  </div>
                 </div>
               </article>
             ))}

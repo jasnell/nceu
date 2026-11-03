@@ -404,34 +404,71 @@ export const socialLinks: FooterLink[] = [
 
 const footerLinks: FooterLink[] = [mapLink, ...socialLinks];
 
-const navLinks: { title: string; href: string; icon: IconName }[] = [
-  { title: "Program", href: "/program", icon: "calendar" },
-  { title: "Speakers", href: "/speakers", icon: "speakers" },
-  { title: "Experience", href: "/#experience", icon: "spark" },
-  { title: "Photos", href: "/photos", icon: "camera" },
-  { title: "Partners", href: "/#partners", icon: "network" },
-];
+/**
+ * Editions with their own section of the site. The current one lives at the
+ * root; past ones are archived under /<year>.
+ */
+export type Edition = "2026" | "2027";
+
+export const currentEdition: Edition = "2027";
+
+type NavLink = { title: string; href: string; icon: IconName };
+
+const editionNav: Record<
+  Edition,
+  { home: string; nav: NavLink[]; footer: NavLink[] }
+> = {
+  "2027": {
+    home: "/",
+    nav: [
+      { title: "Experience", href: "/#experience", icon: "spark" },
+      { title: "2026 talks", href: "/#recordings", icon: "youtube" },
+      { title: "Partners", href: "/#partners", icon: "network" },
+      { title: "2026 edition", href: "/2026", icon: "calendar" },
+    ],
+    footer: [{ title: "NodeConf EU 2026", href: "/2026", icon: "calendar" }],
+  },
+  "2026": {
+    home: "/2026",
+    nav: [
+      { title: "Program", href: "/2026/program", icon: "calendar" },
+      { title: "Speakers", href: "/2026/speakers", icon: "speakers" },
+      { title: "Photos", href: "/2026/photos", icon: "camera" },
+      { title: "Partners", href: "/2026#partners", icon: "network" },
+      { title: "2027", href: "/", icon: "spark" },
+    ],
+    footer: [
+      { title: "Program", href: "/2026/program", icon: "calendar" },
+      { title: "Speakers", href: "/2026/speakers", icon: "speakers" },
+      { title: "NodeConf EU 2027", href: "/", icon: "spark" },
+    ],
+  },
+};
 
 /**
  * The site-wide navbar. Shared by every page so the header stays identical
- * across the site; the in-page links are root-relative so they also work
- * from the subpages.
+ * within an edition; the in-page links are root-relative so they also work
+ * from the subpages. Archived pages pass their `edition`.
  */
 export function SiteHeader({
+  edition = currentEdition,
   theme,
   setTheme,
 }: {
+  edition?: Edition;
   theme: Theme;
   setTheme: (theme: Theme) => void;
 }) {
+  const { home, nav } = editionNav[edition];
+
   return (
     <header className="site-header">
-      <a className="brand-mark" href="/">
-        NodeConf EU 2026
+      <a className="brand-mark" href={home}>
+        NodeConf EU {edition}
       </a>
       <div className="header-actions">
         <nav className="top-links" aria-label="Primary">
-          {navLinks.map((link) => (
+          {nav.map((link) => (
             <a key={link.title} href={link.href}>
               <LinkIcon name={link.icon} />
               <span>{link.title}</span>
@@ -444,24 +481,26 @@ export function SiteHeader({
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({
+  edition = currentEdition,
+}: {
+  edition?: Edition;
+} = {}) {
   return (
     <footer className="site-footer">
       <div>
-        <p className="eyebrow">NodeConf EU 2026</p>
+        <p className="eyebrow">NodeConf EU {edition}</p>
         <address className="footer-copy">
           Hotel Savoia Regency, Via del Pilastro 2, 40127 Bologna BO.
         </address>
       </div>
       <div className="footer-links">
-        <a className="footer-link" href="/program">
-          <LinkIcon name="calendar" />
-          <span>Program</span>
-        </a>
-        <a className="footer-link" href="/speakers">
-          <LinkIcon name="speakers" />
-          <span>Speakers</span>
-        </a>
+        {editionNav[edition].footer.map((link) => (
+          <a key={link.href} className="footer-link" href={link.href}>
+            <LinkIcon name={link.icon} />
+            <span>{link.title}</span>
+          </a>
+        ))}
         <a className="footer-link" href="/code-of-conduct">
           <span>Code of Conduct</span>
         </a>

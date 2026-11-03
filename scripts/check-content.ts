@@ -1,16 +1,17 @@
 /**
  * Content integrity checks.
  *
- * The site is stitched together from three files that reference each other by
- * id: `content/program.yaml` points at `content/speakers/*.md` (via
- * `speakerId`) and `content/talks/*.md` (via `talkId`), and each talk points
- * back at its speaker. Nothing in the build fails when one of those ids is
+ * Each edition's content lives in `content/<year>/` and is stitched together
+ * from three files that reference each other by id: `program.yaml` points at
+ * `speakers/*.md` (via `speakerId`) and `talks/*.md` (via `talkId`), and each
+ * talk points back at its speaker. Nothing in the build fails when one of those ids is
  * wrong — a bad `talkId` just renders a session with no abstract, and a bad
  * `speakerId` renders a link to an anchor that does not exist. Both look fine
  * until someone clicks.
  *
- * `validateContent()` walks that graph and reports what is broken. Run via
- * `npm run check` (and automatically before `npm run build`).
+ * `validateContent()` walks that graph for one edition and reports what is
+ * broken. `npm run check` (and so every build) checks every edition that has a
+ * `program.yaml`.
  */
 
 import { readFileSync, readdirSync, existsSync } from "node:fs";
@@ -25,13 +26,14 @@ const SUPPORTED_LINKS = ["website", "github", "x", "bluesky", "linkedin"];
 const SESSION_TYPES = ["talk", "intro", "break", "social"];
 const ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
+const VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;
 const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/;
 
 export type Report = { errors: string[]; warnings: string[] };
 
 type Doc = { id: string; file: string; data: Record<string, unknown>; body: string };
 
-function readMarkdownDir(dir: string): Doc[] {
+function readMarkdownDir(dir: string, label: string): Doc[] {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
@@ -40,7 +42,7 @@ function readMarkdownDir(dir: string): Doc[] {
       const match = raw.match(FRONTMATTER);
       return {
         id: f.replace(/\.md$/, ""),
-        file: `${dir.split("/").slice(-2).join("/")}/${f}`,
+        file: `${label}/${f}`,
         data: (match ? (parseYaml(match[1]) ?? {}) : {}) as Record<string, unknown>,
         body: (match ? match[2] : raw).trim(),
       };
@@ -70,23 +72,33 @@ function minutes(time: string): number {
   return h * 60 + m;
 }
 
+/** Editions with a program, i.e. the `content/<year>/` folders to check. */
+export function editions(root: string = REPO_ROOT): string[] {
+  const dir = join(root, "content");
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir)
+    .filter((name) => /^\d{4}$/.test(name) && existsSync(join(dir, name, "program.yaml")))
+    .sort();
+}
+
 /** `root` is the repo root by default; tests point it at fixture directories. */
-export function validateContent(root: string = REPO_ROOT): Report {
-  const SPEAKER_DIR = join(root, "content/speakers");
-  const TALK_DIR = join(root, "content/talks");
-  const PROGRAM_FILE = join(root, "content/program.yaml");
+export function validateContent(root: string = REPO_ROOT, edition = "2026"): Report {
+  const C = `content/${edition}`;
+  const SPEAKER_DIR = join(root, C, "speakers");
+  const TALK_DIR = join(root, C, "talks");
+  const PROGRAM_FILE = join(root, C, "program.yaml");
   const PUBLIC_DIR = join(root, "public");
 
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  const speakers = readMarkdownDir(SPEAKER_DIR);
-  const talks = readMarkdownDir(TALK_DIR);
+  const speakers = readMarkdownDir(SPEAKER_DIR, `${C}/speakers`);
+  const talks = readMarkdownDir(TALK_DIR, `${C}/talks`);
   const speakerIds = new Set(speakers.map((s) => s.id));
   const talkIds = new Set(talks.map((t) => t.id));
 
-  if (speakers.length === 0) errors.push("content/speakers/ has no speaker files");
-  if (talks.length === 0) errors.push("content/talks/ has no talk files");
+  if (speakers.length === 0) errors.push(`${C}/speakers/ has no speaker files`);
+  if (talks.length === 0) errors.push(`${C}/talks/ has no talk files`);
 
   // --- speakers ------------------------------------------------------------
   for (const s of speakers) {
@@ -101,7 +113,7 @@ export function validateContent(root: string = REPO_ROOT): Report {
     const photo = s.data.photo;
     if (photo !== undefined) {
       if (typeof photo !== "string" || !photo.startsWith("/")) {
-        errors.push(`${s.file}: "photo" must be a root-relative path like /speakers/name.jpg`);
+        errors.push(`${s.file}: "photo" must be a root-relative path like /${edition}/speakers/name.jpg`);
       } else if (!existsSync(join(PUBLIC_DIR, photo))) {
         errors.push(`${s.file}: photo "${photo}" does not exist in public/`);
       }
@@ -141,12 +153,20 @@ export function validateContent(root: string = REPO_ROOT): Report {
     if (typeof speakerId !== "string" || !speakerId) {
       errors.push(`${t.file}: missing required "speakerId"`);
     } else if (!speakerIds.has(speakerId)) {
-      errors.push(`${t.file}: speakerId "${speakerId}" has no content/speakers/${speakerId}.md`);
+      errors.push(`${t.file}: speakerId "${speakerId}" has no ${C}/speakers/${speakerId}.md`);
+    }
+
+    const video = t.data.video;
+    if (video !== undefined && (typeof video !== "string" || !VIDEO_ID.test(video))) {
+      errors.push(
+        `${t.file}: "video" must be a YouTube video id (the 11-character v= part of the URL), ` +
+          "quoted so YAML keeps it a string",
+      );
     }
 
     for (const id of coSpeakerIds(t.data, t.file, errors)) {
       if (!speakerIds.has(id)) {
-        errors.push(`${t.file}: coSpeakerIds entry "${id}" has no content/speakers/${id}.md`);
+        errors.push(`${t.file}: coSpeakerIds entry "${id}" has no ${C}/speakers/${id}.md`);
       } else if (id === speakerId) {
         errors.push(`${t.file}: coSpeakerIds repeats "${id}", which is already the speaker`);
       }
@@ -155,7 +175,7 @@ export function validateContent(root: string = REPO_ROOT): Report {
 
   // --- program -------------------------------------------------------------
   if (!existsSync(PROGRAM_FILE)) {
-    errors.push("content/program.yaml is missing");
+    errors.push(`${C}/program.yaml is missing`);
     return { errors, warnings };
   }
 
@@ -167,7 +187,7 @@ export function validateContent(root: string = REPO_ROOT): Report {
   const seenTalkAnchors = new Map<string, string>();
 
   if (!Array.isArray(program.days) || program.days.length === 0) {
-    errors.push("content/program.yaml: no days defined");
+    errors.push(`${C}/program.yaml: no days defined`);
   }
 
   for (const day of program.days ?? []) {
@@ -213,13 +233,13 @@ export function validateContent(root: string = REPO_ROOT): Report {
 
       const speakerId = session.speakerId as string | undefined;
       if (speakerId !== undefined && !speakerIds.has(speakerId)) {
-        errors.push(`${label}: speakerId "${speakerId}" has no content/speakers/${speakerId}.md`);
+        errors.push(`${label}: speakerId "${speakerId}" has no ${C}/speakers/${speakerId}.md`);
       }
 
       const sessionCoSpeakers = coSpeakerIds(session, label, errors);
       for (const id of sessionCoSpeakers) {
         if (!speakerIds.has(id)) {
-          errors.push(`${label}: coSpeakerIds entry "${id}" has no content/speakers/${id}.md`);
+          errors.push(`${label}: coSpeakerIds entry "${id}" has no ${C}/speakers/${id}.md`);
         } else if (id === speakerId) {
           errors.push(`${label}: coSpeakerIds repeats "${id}", which is already the speaker`);
         }
@@ -229,7 +249,7 @@ export function validateContent(root: string = REPO_ROOT): Report {
       if (talkId === undefined) continue;
 
       if (!talkIds.has(talkId)) {
-        errors.push(`${label}: talkId "${talkId}" has no content/talks/${talkId}.md`);
+        errors.push(`${label}: talkId "${talkId}" has no ${C}/talks/${talkId}.md`);
         continue;
       }
 
@@ -244,13 +264,13 @@ export function validateContent(root: string = REPO_ROOT): Report {
       const talk = talks.find((t) => t.id === talkId)!;
       if (talk.data.title !== session.title) {
         errors.push(
-          `${label}: title differs from content/talks/${talkId}.md ("${talk.data.title}") — ` +
+          `${label}: title differs from ${C}/talks/${talkId}.md ("${talk.data.title}") — ` +
             "the program and the speakers page would disagree",
         );
       }
       if (speakerId !== undefined && talk.data.speakerId !== speakerId) {
         errors.push(
-          `${label}: speakerId "${speakerId}" differs from content/talks/${talkId}.md ` +
+          `${label}: speakerId "${speakerId}" differs from ${C}/talks/${talkId}.md ` +
             `("${talk.data.speakerId}")`,
         );
       }
@@ -262,7 +282,7 @@ export function validateContent(root: string = REPO_ROOT): Report {
       if (sessionCoSpeakers.join(",") !== talkCoSpeakers.join(",")) {
         errors.push(
           `${label}: coSpeakerIds [${sessionCoSpeakers.join(", ")}] differs from ` +
-            `content/talks/${talkId}.md [${talkCoSpeakers.join(", ")}]`,
+            `${C}/talks/${talkId}.md [${talkCoSpeakers.join(", ")}]`,
         );
       }
     }
@@ -283,7 +303,7 @@ export function validateContent(root: string = REPO_ROOT): Report {
   );
   for (const s of speakers) {
     if (!speakersWithTalks.has(s.id)) {
-      warnings.push(`${s.file}: no talk in content/talks/ points at "${s.id}" — the card will show no talk`);
+      warnings.push(`${s.file}: no talk in ${C}/talks/ points at "${s.id}" — the card will show no talk`);
     }
   }
 
@@ -292,7 +312,13 @@ export function validateContent(root: string = REPO_ROOT): Report {
 
 // Run as a CLI when invoked directly.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { errors, warnings } = validateContent();
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  for (const edition of editions()) {
+    const report = validateContent(REPO_ROOT, edition);
+    errors.push(...report.errors);
+    warnings.push(...report.warnings);
+  }
 
   for (const w of warnings) console.warn(`warning  ${w}`);
   for (const e of errors) console.error(`error    ${e}`);

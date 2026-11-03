@@ -5,7 +5,7 @@
  *   node scripts/upload-photos.ts 2026-09-29 IMG_0001.jpg IMG_0002.jpg
  *   node scripts/upload-photos.ts --delete 2026-09-29 IMG_0002.jpg
  *
- * Photos show up on /photos within about a minute; no deploy is needed. The
+ * Photos show up on /<year>/photos (e.g. /2026/photos) within about a minute; no deploy is needed. The
  * site resizes thumbnails and reads dimensions itself, so upload the full-size
  * exports as they are.
  *
@@ -166,7 +166,7 @@ async function failure(response: Response, what: string): Promise<Error> {
 /**
  * Turns a camera/export file name into a key the site will serve: letters,
  * digits, `.`, `_` and `-` only, starting with a letter or digit, lower-case
- * extension (see PHOTO_KEY in app/photos/photo-store.ts).
+ * extension (see PHOTO_KEY in app/2026/photos/photo-store.ts).
  */
 export function objectName(file: string): string {
   const ext = extname(file).toLowerCase();
@@ -228,11 +228,16 @@ function config(): R2Config {
 
 /** Only checkable from a repo checkout; the page lists albums that have an `_album.md`. */
 function checkAlbumKnown(album: string) {
-  const photosDir = fileURLToPath(new URL("../content/photos/", import.meta.url));
-  if (existsSync(photosDir) && !existsSync(join(photosDir, album, "_album.md"))) {
-    const known = readdirSync(photosDir).filter((d) => existsSync(join(photosDir, d, "_album.md")));
+  // Albums belong to the edition of their year: content/<year>/photos/<date>/.
+  const edition = album.slice(0, 4);
+  const photosDir = fileURLToPath(new URL(`../content/${edition}/photos/`, import.meta.url));
+  const contentDir = fileURLToPath(new URL("../content/", import.meta.url));
+  if (existsSync(contentDir) && !existsSync(join(photosDir, album, "_album.md"))) {
+    const known = existsSync(photosDir)
+      ? readdirSync(photosDir).filter((d) => existsSync(join(photosDir, d, "_album.md")))
+      : [];
     throw new Error(
-      `No album for ${album} (content/photos/${album}/_album.md) — the page would not show ` +
+      `No album for ${album} (content/${edition}/photos/${album}/_album.md) — the page would not show ` +
         `these photos. Known albums: ${known.join(", ") || "none"}.`,
     );
   }
@@ -319,7 +324,9 @@ async function main(argv: string[]) {
   });
 
   console.log(`\n${uploaded} uploaded, ${skipped} already there, ${failed.length} failed.`);
-  if (uploaded > 0) console.log("New photos appear on https://nodeconf.eu/photos within about a minute.");
+  if (uploaded > 0) {
+    console.log(`New photos appear on https://nodeconf.eu/${album.slice(0, 4)}/photos within about a minute.`);
+  }
   if (failed.length > 0) {
     console.log("Re-run the same command to retry; finished files are skipped.");
     process.exitCode = 1;

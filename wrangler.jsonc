@@ -8,7 +8,7 @@
     "not_found_handling": "none"
   },
   // Conference photos, keyed `<album date>/<file>.jpg` (e.g. 2026-09-29/0001.jpg).
-  // Listed at request time by app/photos/photo-store.ts, so new uploads show
+  // Listed at request time by app/2026/photos/photo-store.ts, so new uploads show
   // up without a redeploy.
   "r2_buckets": [
     {
