@@ -23,18 +23,28 @@ const pulseStats = [
   { value: "∞", label: "side quests and conversations" },
 ];
 
+// Photos from NodeConf EU 2026 (resized copies of the /2026/photos originals,
+// kept in public/home/ so the home page does not depend on the photo bucket).
+const photoCredit = {
+  name: "Nico Kaiser",
+  href: "https://bsky.app/profile/nico.kaiser.me",
+};
+
 const highlights = [
   {
+    photo: { src: "/home/room.jpg", alt: "A full room listening to a talk at NodeConf EU 2026" },
     title: "Runtime and platform talks",
     body:
       "Expect a focused program for engineers working on Node.js applications, runtimes, tooling, observability, architecture, and production systems.",
   },
   {
+    photo: { src: "/home/hallway.jpg", alt: "Attendees chatting over coffee between sessions" },
     title: "A schedule built for conversation",
     body:
       "Two days, one venue, and enough breathing room between sessions to actually meet people, compare notes, and keep discussions going after the talks end.",
   },
   {
+    photo: { src: "/home/group.jpg", alt: "The NodeConf EU 2026 group photo, taken from above on the lawn" },
     title: "The community in one room",
     body:
       "You are not just showing up for slides. You are showing up for maintainers, staff engineers, library authors, and teams building serious JavaScript products.",
@@ -235,10 +245,72 @@ export default function Page() {
           <div className="experience-cards">
             {highlights.map((item) => (
               <article key={item.title} className="experience-card">
+                <img
+                  className="experience-photo"
+                  src={item.photo.src}
+                  alt={item.photo.alt}
+                  width={1100}
+                  height={733}
+                  loading="lazy"
+                />
                 <h3>{item.title}</h3>
                 <p>{item.body}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section
+          id="venue"
+          className="venue-feature"
+          aria-labelledby="venue-title"
+        >
+          <figure className="venue-photo">
+            <img
+              src="/home/venue.jpg"
+              alt="Hotel Savoia Regency in Bologna at sunrise, seen from the lawn"
+              width={1600}
+              height={1066}
+              loading="lazy"
+            />
+          </figure>
+          <div className="venue-copy">
+            <p className="eyebrow">Same venue as 2026</p>
+            <h2 id="venue-title">Back at {venue.name}.</h2>
+            <p>
+              NodeConf EU 2027 returns to the same hotel on the edge of
+              Bologna: one building for the main stage, the coffee breaks and
+              the lunches, with a garden for the moments in between.
+            </p>
+            <address>Via del Pilastro 2, 40127 Bologna BO, Italy</address>
+            <div className="venue-actions">
+              <a
+                className="text-link"
+                href={venue.href}
+                {...externalLinkProps("Venue details")}
+              >
+                <LinkIcon name="venue" />
+                <span>Venue details</span>
+              </a>
+              <a
+                className="text-link"
+                href={venue.map}
+                {...externalLinkProps("Open map")}
+              >
+                <LinkIcon name="map" />
+                <span>Open map</span>
+              </a>
+            </div>
+            <p className="photo-credit">
+              Photos from NodeConf EU 2026 by{" "}
+              <a
+                href={photoCredit.href}
+                {...externalLinkProps(`${photoCredit.name}, photographer`)}
+              >
+                {photoCredit.name}
+              </a>
+              . <a href="/2026/photos">See them all</a>.
+            </p>
           </div>
         </section>
 
