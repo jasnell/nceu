@@ -2,10 +2,10 @@
 // live under app/<year>/ with their own constants (e.g. app/2026/event.ts).
 
 /** Set to the ti.to page once tickets go on sale; until then the CTA reads "Tickets coming soon". */
-export const ticketsUrl: string | null = null;
+export const ticketsUrl: string | null = "https://ti.to/apropos/nodeconf-eu-2027";
 
 /** Set to e.g. "28-29 September" once the dates are confirmed. */
-export const eventDates: string | null = null;
+export const eventDates: string | null = "14-15 September";
 
 export const venue = {
   name: "Hotel Savoia Regency",

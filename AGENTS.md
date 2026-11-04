@@ -5,7 +5,7 @@ Agent-facing notes for the NodeConf EU 2026 website.
 ## Project Summary
 
 - Repository purpose: website for NodeConf EU. The current edition (2027) is at the root; past editions are archived under a year prefix (`/2026`, `app/2026/`, `content/2026/`, `public/2026/`).
-- 2027 status: dates TBD, tickets coming soon, same venue (Hotel Savoia Regency, Bologna). Fill in `ticketsUrl` and `eventDates` in `app/event.ts` when known; the home page switches its CTA and kicker automatically.
+- 2027 status: 14-15 September 2027, tickets on sale at https://ti.to/apropos/nodeconf-eu-2027, same venue (Hotel Savoia Regency, Bologna). Both live in `ticketsUrl` and `eventDates` in `app/event.ts`; the home page CTA and kicker read from them.
 - Old 2026 URLs (`/program`, `/speakers`, `/photos/*`, `/app`, `/program.ics`, …) are 307-redirected to `/2026/...` by `redirects()` in `next.config.ts`. Remove an entry there before reusing that path for 2027. `public/sw.js` is a retirement worker that unregisters the old `/app`-scoped service worker.
 - Hosted on Cloudflare Workers via `vinext deploy`.
 
