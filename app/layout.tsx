@@ -3,7 +3,7 @@ import "./globals.css";
 
 const title = "NodeConf EU 2027 | Bologna, Italy";
 const description =
-  "NodeConf EU 2027 returns to Bologna and Hotel Savoia Regency. Dates and tickets coming soon; every 2026 talk is on YouTube.";
+  "NodeConf EU 2027 returns to Bologna and Hotel Savoia Regency on 14-15 September. Tickets are on sale; every 2026 talk is on YouTube.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nodeconf.eu"),
